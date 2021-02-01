@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Cake\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Cake\\.nuget\\packages"
+    ]
+  }
+}
