@@ -15,12 +15,16 @@ namespace Server.Game.Furnitures {
         [JsonIgnore]
         public int Id;
 
+        [JsonProperty("line")]
+        public string Line;
+
         [JsonProperty("asset")]
         public string Asset;
 
         public GameFurniture(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
 
+            Line = reader.GetString("line");
             Asset = reader.GetString("asset");
         }
     }
