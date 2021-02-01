@@ -10,6 +10,7 @@ using Server.Game.Users;
 
 using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Users;
+using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Navigator;
 using Server.Game.Rooms.Navigator.Messages;
 
@@ -26,6 +27,9 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public List<GameRoomUser> Users = new List<GameRoomUser>();
 
+        [JsonIgnore]
+        public List<GameRoomFurniture> Furnitures = new List<GameRoomFurniture>();
+
         [JsonProperty("map")]
         public GameRoomMap Map;
 
@@ -35,16 +39,30 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public GameRoomEvents Events;
 
-        public GameRoom(MySqlDataReader reader) {
-            Id = reader.GetInt32("id");
+        public GameRoom(MySqlDataReader room) {
+            Id = room.GetInt32("id");
 
             Navigator = GameRoomNavigator.Rooms.FirstOrDefault(x => x.Id == Id);
 
-            Map = new GameRoomMap(reader.GetString("map"));
+            Map = new GameRoomMap(room.GetString("map"));
 
-            Door = new GameRoomPoint(reader.GetDouble("door_row"), reader.GetDouble("door_column"), 0, reader.GetInt32("door_direction"));
+            Door = new GameRoomPoint(room.GetDouble("door_row"), room.GetDouble("door_column"), 0, room.GetInt32("door_direction"));
 
             Events = new GameRoomEvents(this);
+
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using(MySqlCommand command = new MySqlCommand("SELECT * FROM room_furnitures WHERE room = @room", connection)) {
+                command.Parameters.AddWithValue("@room", Id);
+
+                using(MySqlDataReader reader = command.ExecuteReader()) {
+                    while(reader.Read()) {
+                        Furnitures.Add(new GameRoomFurniture(reader));
+                    }
+                }
+            }
         }
 
         public void AddUser(GameUser user) {
@@ -60,9 +78,15 @@ namespace Server.Game.Rooms {
 
             message.Add("OnRoomEnter", this);
 
-            message.Add("OnRoomEntityAdd", new {
-                users = Users
-            });
+            Dictionary<string, object> properties = new Dictionary<string, object>();
+
+            if(Users.Count != 0)
+                properties.Add("users", Users);
+                
+            if(Furnitures.Count != 0)
+                properties.Add("furnitures", Furnitures);
+
+            message.Add("OnRoomEntityAdd", properties);
 
             user.Client.Send(message.Compose());
         }

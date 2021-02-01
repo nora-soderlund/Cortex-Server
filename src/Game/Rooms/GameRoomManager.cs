@@ -14,7 +14,11 @@ namespace Server.Game.Rooms {
         public static List<GameRoom> Rooms = new List<GameRoom>();
 
         public static GameRoom Load(int id) {
-            using MySqlCommand command = new MySqlCommand("SELECT * FROM rooms WHERE id = @id", Program.Database.Connection);
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using MySqlCommand command = new MySqlCommand("SELECT * FROM rooms WHERE id = @id", connection);
 
             command.Parameters.AddWithValue("@id", id);
 

@@ -52,7 +52,11 @@ namespace Server.Socket {
 
             Program.WriteLine("Receiving connection from client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + " with key " + key + "...");
 
-            MySqlCommand keyCommand = new MySqlCommand("SELECT * FROM user_keys WHERE `key` = @key", Program.Database.Connection);
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using MySqlCommand keyCommand = new MySqlCommand("SELECT * FROM user_keys WHERE `key` = @key", connection);
 
             keyCommand.Parameters.AddWithValue("@key", key);
 
@@ -78,7 +82,7 @@ namespace Server.Socket {
 
             keyReader.Close();
 
-            MySqlCommand userCommand = new MySqlCommand("SELECT * FROM users WHERE id = @id", Program.Database.Connection);
+            using MySqlCommand userCommand = new MySqlCommand("SELECT * FROM users WHERE id = @id", connection);
 
             userCommand.Parameters.AddWithValue("@id", id);
 

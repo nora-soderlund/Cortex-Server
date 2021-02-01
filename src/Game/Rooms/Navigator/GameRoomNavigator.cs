@@ -21,7 +21,11 @@ namespace Server.Game.Rooms.Navigator {
         public static List<GameRoomNavigatorMessage> Rooms = new List<GameRoomNavigatorMessage>();
 
         public void OnInitialization() {
-            using MySqlCommand command = new MySqlCommand("SELECT * FROM rooms", Program.Database.Connection);
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using MySqlCommand command = new MySqlCommand("SELECT * FROM rooms", connection);
 
             using MySqlDataReader reader = command.ExecuteReader();
 

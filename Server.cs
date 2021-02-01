@@ -15,6 +15,8 @@ namespace Server {
         
         static public DatabaseClass Database;
 
+        public static string Connection = "server=127.0.0.1;uid=root;database=cortex";
+
         static void Main(string[] args) {
             Console.Title = "Project Cortex Server";
 
@@ -65,7 +67,11 @@ namespace Server {
 
                     string query = input.Substring(start);
 
-                    using MySqlCommand command = new MySqlCommand(query, Database.Connection);
+                    using MySqlConnection connection = new MySqlConnection(Connection);
+
+                    connection.Open();
+
+                    using MySqlCommand command = new MySqlCommand(query, connection);
 
                     int affected = command.ExecuteNonQuery();
 
