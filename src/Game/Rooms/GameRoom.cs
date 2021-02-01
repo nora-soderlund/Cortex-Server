@@ -46,7 +46,7 @@ namespace Server.Game.Rooms {
 
             Map = new GameRoomMap(room.GetString("map"));
 
-            Door = new GameRoomPoint(room.GetDouble("door_row"), room.GetDouble("door_column"), 0, room.GetInt32("door_direction"));
+            Door = new GameRoomPoint(room.GetDouble("door_row"), room.GetDouble("door_column"), Map.GetDepth(room.GetInt32("door_row"), room.GetInt32("door_column")), room.GetInt32("door_direction"));
 
             Events = new GameRoomEvents(this);
 
