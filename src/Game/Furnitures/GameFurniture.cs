@@ -18,10 +18,23 @@ namespace Server.Game.Furnitures {
         [JsonProperty("line")]
         public string Line;
 
+        [JsonProperty("title")]
+        public string Title;
+
+        [JsonProperty("description")]
+        public string Description;
+
+        [JsonProperty("flags")]
+        public GameFurnitureFlags Flags;
+
         public GameFurniture(MySqlDataReader reader) {
             Id = reader.GetString("id");
-
             Line = reader.GetString("line");
+            
+            Title = reader.GetString("title");
+            Description = reader.GetString("description");
+
+            Flags = (GameFurnitureFlags)reader.GetInt32("flags");
         }
     }
 }
