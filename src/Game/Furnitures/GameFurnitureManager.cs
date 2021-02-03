@@ -15,7 +15,7 @@ namespace Server.Game.Furnitures {
         public static List<GameFurniture> Furnitures = new List<GameFurniture>();
         public static List<GameUserFurniture> UserFurnitures = new List<GameUserFurniture>();
 
-        public static GameFurniture GetGameFurniture(int id) {
+        public static GameFurniture GetGameFurniture(string id) {
             GameFurniture furniture = Furnitures.Find(x => x.Id == id);
 
             if(furniture != null)

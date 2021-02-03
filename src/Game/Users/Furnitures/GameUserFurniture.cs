@@ -26,7 +26,7 @@ namespace Server.Game.Users.Furnitures {
 
             User = furniture.GetInt32("user");
 
-            Furniture = GameFurnitureManager.GetGameFurniture(furniture.GetInt32("furniture"));
+            Furniture = GameFurnitureManager.GetGameFurniture(furniture.GetString("furniture"));
         }
     }
 }
