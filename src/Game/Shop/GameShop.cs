@@ -27,12 +27,11 @@ namespace Server.Game.Shop {
 
             connection.Open();
 
-            using MySqlCommand command = new MySqlCommand("SELECT * FROM shop", connection);
-
-            using MySqlDataReader reader = command.ExecuteReader();
-
-            while(reader.Read())
-                Pages.Add(new GameShopPage(reader));
+            using(MySqlCommand command = new MySqlCommand("SELECT * FROM shop", connection)) 
+            using(MySqlDataReader reader = command.ExecuteReader()) {
+                while(reader.Read())
+                    Pages.Add(new GameShopPage(reader));
+            }
 
             Pages.OrderBy(x => x.Parent).ThenBy(x => x.Order).ToList();
         }

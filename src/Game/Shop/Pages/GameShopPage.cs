@@ -16,6 +16,8 @@ using Server.Game.Rooms.Navigator.Messages;
 
 using Server.Socket.Messages;
 
+using Server.Game.Shop.Furnitures;
+
 namespace Server.Game.Shop {
     class GameShopPage {
         [JsonProperty("id")]
@@ -48,6 +50,9 @@ namespace Server.Game.Shop {
         [JsonIgnore]
         public string Content;
 
+        [JsonIgnore]
+        public List<GameShopFurniture> Furnitures = new List<GameShopFurniture>();
+
         public GameShopPage(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
             Parent = reader.GetInt32("parent");
@@ -58,11 +63,24 @@ namespace Server.Game.Shop {
             Type = reader.GetString("type");
 
             Title = reader.GetString("title");
-            
+
             Description = (Convert.IsDBNull(reader["description"]))?(null):(reader.GetString("description"));
             Header = (Convert.IsDBNull(reader["header"]))?(null):(reader.GetString("header"));
             Teaser = (Convert.IsDBNull(reader["teaser"]))?(null):(reader.GetString("teaser"));
             Content = (Convert.IsDBNull(reader["content"]))?(null):(reader.GetString("content"));
+
+            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                connection.Open();
+
+                using(MySqlCommand command = new MySqlCommand("SELECT * FROM shop_items WHERE page = @page", connection)) {
+                    command.Parameters.AddWithValue("@page", Id);
+
+                    using(MySqlDataReader data = command.ExecuteReader()) {
+                        while(data.Read())
+                            Furnitures.Add(new GameShopFurniture(data));
+                    }
+                }
+            }
         }
     }
 }
