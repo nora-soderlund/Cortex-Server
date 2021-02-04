@@ -16,8 +16,25 @@ using Server.Game.Rooms.Navigator.Messages;
 
 using Server.Socket.Messages;
 
+using Server.Events;
+
 namespace Server.Game.Shop {
-    class GameShop {
+    class GameShop : IInitializationEvent {
         public static List<GameShopPage> Pages = new List<GameShopPage>();
+
+        public void OnInitialization() {
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using MySqlCommand command = new MySqlCommand("SELECT * FROM shop", connection);
+
+            using MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+                Pages.Add(new GameShopPage(reader));
+
+            Pages.OrderBy(x => x.Parent).ThenBy(x => x.Order).ToList();
+        }
     }
 }

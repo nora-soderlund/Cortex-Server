@@ -18,6 +18,51 @@ using Server.Socket.Messages;
 
 namespace Server.Game.Shop {
     class GameShopPage {
-        
+        [JsonProperty("id")]
+        public int Id;
+
+        [JsonProperty("parent")]
+        public int Parent;
+
+        [JsonProperty("icon")]
+        public int Icon;
+
+        [JsonIgnore]
+        public int Order;
+
+        [JsonIgnore]
+        public string Type;
+
+        [JsonProperty("title")]
+        public string Title;
+
+        [JsonIgnore]
+        public string Description;
+
+        [JsonIgnore]
+        public string Header;
+
+        [JsonIgnore]
+        public string Teaser;
+
+        [JsonIgnore]
+        public string Content;
+
+        public GameShopPage(MySqlDataReader reader) {
+            Id = reader.GetInt32("id");
+            Parent = reader.GetInt32("parent");
+
+            Icon = reader.GetInt32("icon");
+            Order = reader.GetInt32("order");
+
+            Type = reader.GetString("type");
+
+            Title = reader.GetString("title");
+            Description = reader.GetString("description");
+
+            Header = reader.GetString("header");
+            Teaser = reader.GetString("teaser");
+            Content = reader.GetString("content");
+        }
     }
 }
