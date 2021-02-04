@@ -58,11 +58,11 @@ namespace Server.Game.Shop {
             Type = reader.GetString("type");
 
             Title = reader.GetString("title");
-            Description = reader.GetString("description");
-
-            Header = reader.GetString("header");
-            Teaser = reader.GetString("teaser");
-            Content = reader.GetString("content");
+            
+            Description = (Convert.IsDBNull(reader["description"]))?(null):(reader.GetString("description"));
+            Header = (Convert.IsDBNull(reader["header"]))?(null):(reader.GetString("header"));
+            Teaser = (Convert.IsDBNull(reader["teaser"]))?(null):(reader.GetString("teaser"));
+            Content = (Convert.IsDBNull(reader["content"]))?(null):(reader.GetString("content"));
         }
     }
 }
