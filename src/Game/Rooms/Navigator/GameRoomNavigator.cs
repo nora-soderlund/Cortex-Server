@@ -42,7 +42,7 @@ namespace Server.Game.Rooms.Navigator {
                 switch(data.ToString()) {
                     case "my_rooms": {
                         client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
-                            owned = Rooms.Where(x => x.Owner == client.User.Id).ToList()
+                            owned = Rooms.Where(x => x.User == client.User.Id).ToList()
                         }).Compose());
 
                         return 1;

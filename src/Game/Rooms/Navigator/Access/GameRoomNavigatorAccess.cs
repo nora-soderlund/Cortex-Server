@@ -1,3 +1,3 @@
 namespace Server.Game.Rooms.Navigator {
-    public enum NavigatorRoomAccess { Public = 1, Private, Password };
+    public enum NavigatorRoomAccess { Private = 0, Public, Password };
 }

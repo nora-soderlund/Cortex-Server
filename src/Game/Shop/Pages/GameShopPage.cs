@@ -72,8 +72,8 @@ namespace Server.Game.Shop {
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();
 
-                using(MySqlCommand command = new MySqlCommand("SELECT * FROM shop_items WHERE page = @page", connection)) {
-                    command.Parameters.AddWithValue("@page", Id);
+                using(MySqlCommand command = new MySqlCommand("SELECT * FROM shop_furnitures WHERE shop = @shop", connection)) {
+                    command.Parameters.AddWithValue("@shop", Id);
 
                     using(MySqlDataReader data = command.ExecuteReader()) {
                         while(data.Read())

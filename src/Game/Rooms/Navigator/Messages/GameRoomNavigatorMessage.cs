@@ -19,7 +19,7 @@ namespace Server.Game.Rooms.Navigator.Messages {
         public int Id;
 
         [JsonIgnore]
-        public int Owner;
+        public int User;
 
         [JsonProperty("title")]
         public string Title;
@@ -35,7 +35,7 @@ namespace Server.Game.Rooms.Navigator.Messages {
 
         public GameRoomNavigatorMessage(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
-            Owner = reader.GetInt32("owner");
+            User = reader.GetInt32("user");
             Title = reader.GetString("title");
 
             Access = reader.GetInt32("access");
