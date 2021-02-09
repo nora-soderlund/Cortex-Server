@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 using MySql.Data.MySqlClient;
 
-using Server.Database;
 using Server.Socket;
 using Server.Events;
 using Server.Socket.Events;
@@ -13,8 +12,6 @@ namespace Server {
     class Program {
         static private SocketClass socket;
         
-        static public DatabaseClass Database;
-
         public static string Connection = "server=127.0.0.1;uid=root;database=cortex";
 
         static void Main(string[] args) {
@@ -32,8 +29,6 @@ namespace Server {
             Console.WriteLine("Project Cortex Server by Cake\t\thttps://project-cortex.net/" + Environment.NewLine);
 
             Console.ResetColor();
-
-            Database = new DatabaseClass();
 
             socket = new SocketClass();
 

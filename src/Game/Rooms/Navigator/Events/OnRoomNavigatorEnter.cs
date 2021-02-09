@@ -8,8 +8,6 @@ using MySql.Data.MySqlClient;
 
 using Server.Events;
 
-using Server.Database;
-
 using Server.Socket.Clients;
 using Server.Socket.Messages;
 using Server.Socket.Events;

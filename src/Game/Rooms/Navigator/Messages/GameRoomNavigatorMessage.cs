@@ -7,8 +7,6 @@ using MySql.Data.MySqlClient;
 
 using Server.Events;
 
-using Server.Database;
-
 using Server.Game.Rooms.Navigator;
 
 using Server.Socket.Clients;
