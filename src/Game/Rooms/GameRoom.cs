@@ -72,9 +72,17 @@ namespace Server.Game.Rooms {
 
             roomUser.Position = new GameRoomPoint(Door);
 
+            SocketMessage message = new SocketMessage();
+
+            message.Add("OnRoomEntityAdd", new {
+                users = roomUser
+            });
+
+            Send(message.Compose());
+
             Users.Add(roomUser);
 
-            SocketMessage message = new SocketMessage();
+            message = new SocketMessage();
 
             message.Add("OnRoomEnter", this);
 
