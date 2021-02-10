@@ -27,6 +27,9 @@ namespace Server.Game.Furnitures {
         [JsonProperty("flags")]
         public GameFurnitureFlags Flags;
 
+        [JsonIgnore]
+        public int Direction;
+
         public GameFurniture(MySqlDataReader reader) {
             Id = reader.GetString("id");
             Line = reader.GetString("line");
@@ -35,6 +38,8 @@ namespace Server.Game.Furnitures {
             Description = reader.GetString("description");
 
             Flags = (GameFurnitureFlags)reader.GetInt32("flags");
+            
+            Direction = reader.GetInt32("direction");
         }
     }
 }
