@@ -23,6 +23,9 @@ namespace Server.Game.Shop.Furnitures {
         [JsonProperty("id")]
         public int Id;
         
+        [JsonIgnore]
+        public int Page;
+        
         
         [JsonProperty("furniture")]
         public GameFurniture Furniture;
@@ -39,6 +42,7 @@ namespace Server.Game.Shop.Furnitures {
 
         public GameShopFurniture(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
+            Page = reader.GetInt32("shop");
             
             Furniture = GameFurnitureManager.GetGameFurniture(reader.GetString("furniture"));
         }

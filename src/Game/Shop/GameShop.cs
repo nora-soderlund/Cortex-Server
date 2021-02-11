@@ -18,9 +18,12 @@ using Server.Socket.Messages;
 
 using Server.Events;
 
+using Server.Game.Shop.Furnitures;
+
 namespace Server.Game.Shop {
     class GameShop : IInitializationEvent {
         public static List<GameShopPage> Pages = new List<GameShopPage>();
+        public static List<GameShopFurniture> Furnitures = new List<GameShopFurniture>();
 
         public void OnInitialization() {
             using MySqlConnection connection = new MySqlConnection(Program.Connection);

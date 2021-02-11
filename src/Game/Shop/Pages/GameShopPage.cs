@@ -50,9 +50,6 @@ namespace Server.Game.Shop {
         [JsonIgnore]
         public string Content;
 
-        [JsonIgnore]
-        public List<GameShopFurniture> Furnitures = new List<GameShopFurniture>();
-
         public GameShopPage(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
             Parent = reader.GetInt32("parent");
@@ -77,7 +74,7 @@ namespace Server.Game.Shop {
 
                     using(MySqlDataReader data = command.ExecuteReader()) {
                         while(data.Read())
-                            Furnitures.Add(new GameShopFurniture(data));
+                            GameShop.Furnitures.Add(new GameShopFurniture(data));
                     }
                 }
             }

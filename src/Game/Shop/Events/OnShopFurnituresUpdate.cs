@@ -14,9 +14,9 @@ namespace Server.Game.Shop.Events {
         public string Event => "OnShopFurnituresUpdate";
 
         public int Execute(SocketClient client, JToken data) {
-            int id = data.ToObject<int>();
+            int page = data.ToObject<int>();
 
-            client.Send(new SocketMessage("OnShopFurnituresUpdate", GameShop.Pages.Find(x => x.Id == id).Furnitures).Compose());
+            client.Send(new SocketMessage("OnShopFurnituresUpdate", GameShop.Furnitures.FindAll(x => x.Page == page)).Compose());
 
             return 1;
         }
