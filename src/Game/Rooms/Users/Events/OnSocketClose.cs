@@ -16,6 +16,10 @@ namespace Server.Game.Rooms.Users.Events {
             if(client.User.Room == null)
                 return 0;
 
+            GameRoomUser roomUser = client.User.Room.Users.Find(x => x.Id == client.User.Id);
+
+            client.User.Room.Events.Users.Remove(roomUser);
+
             GameRoomManager.RemoveUser(client.User);
 
             return 1;
