@@ -14,7 +14,7 @@ namespace Server.Game.Rooms.Map {
         public string Floor;
 
         [JsonProperty("height")]
-        public string Height;
+        public Dictionary<int, Dictionary<int, double?>> Height;
 
         [JsonIgnore]
         public string[] FloorGrid;
@@ -42,6 +42,8 @@ namespace Server.Game.Rooms.Map {
                     Grid.BlockCell(new Position(row, column));
                 }
             }
+
+            UpdateHeight();
         }
 
         public Position[] GetPath(GameRoomPoint start, GameRoomPoint end) {
@@ -77,6 +79,8 @@ namespace Server.Game.Rooms.Map {
                     height[row].Add(column, GetDepth(row, column));
                 }
             }
+
+            Height = height;
         }
     }
 }
