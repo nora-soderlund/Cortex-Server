@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 
 using Server.Game.Users;
 using Server.Game.Rooms.Actions;
+using Server.Game.Rooms;
 
 using Server.Game.Users.Furnitures;
 
@@ -28,6 +29,9 @@ namespace Server.Game.Furnitures {
         public GameFurnitureFlags Flags;
 
         [JsonIgnore]
+        public GameRoomPoint Dimension;
+
+        [JsonIgnore]
         public int Direction;
 
         public GameFurniture(MySqlDataReader reader) {
@@ -40,6 +44,8 @@ namespace Server.Game.Furnitures {
             Flags = (GameFurnitureFlags)reader.GetInt32("flags");
             
             Direction = reader.GetInt32("direction");
+
+            Dimension = new GameRoomPoint(reader.GetDouble("breadth"), reader.GetDouble("height"), reader.GetDouble("depth"));
         }
     }
 }

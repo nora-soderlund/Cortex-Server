@@ -44,7 +44,7 @@ namespace Server.Game.Rooms {
 
             Navigator = GameRoomNavigator.Rooms.FirstOrDefault(x => x.Id == Id);
 
-            Map = new GameRoomMap(room.GetString("map"));
+            Map = new GameRoomMap(this, room.GetString("map"));
 
             Door = new GameRoomPoint(room.GetDouble("door_row"), room.GetDouble("door_column"), Map.GetDepth(room.GetInt32("door_row"), room.GetInt32("door_column")), room.GetInt32("door_direction"));
 
