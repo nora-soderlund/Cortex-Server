@@ -19,12 +19,16 @@ namespace Server.Game.Users.Furnitures {
         public int User;
 
         [JsonIgnore]
+        public int Room;
+
+        [JsonIgnore]
         public GameFurniture Furniture;
 
         public GameUserFurniture(MySqlDataReader furniture) {
             Id = furniture.GetInt32("id");
 
             User = furniture.GetInt32("user");
+            Room = furniture.GetInt32("room");
 
             Furniture = GameFurnitureManager.GetGameFurniture(furniture.GetString("furniture"));
         }

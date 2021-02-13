@@ -59,7 +59,7 @@ namespace Server.Game.Rooms.Map {
             GameRoomFurniture furniture = GetFurniture(row, column);
 
             if(furniture != null)
-                return furniture.Position.Depth + furniture.Furniture.Dimension.Depth;
+                return furniture.Position.Depth + furniture.UserFurniture.Furniture.Dimension.Depth;
 
             if(Char.ToUpper(FloorGrid[row][column]) != Char.ToLower(FloorGrid[row][column]))
                 return (double)((FloorGrid[row][column] - 97) - '0');
@@ -84,6 +84,23 @@ namespace Server.Game.Rooms.Map {
             Height = height;
         }
 
+        public bool IsValidRow(int row) {
+            if(!Height.ContainsKey(row))
+                return false;
+
+            return true;
+        }
+
+        public bool IsValidColumn(int row, int column) {
+            if(!Height.ContainsKey(row))
+                return false;
+
+            if(!Height[row].ContainsKey(column))
+                return false;
+
+            return true;
+        }
+
         public Dictionary<int, Dictionary<int, double?>> GetStackMap() {
             Dictionary<int, Dictionary<int, double?>> map = new Dictionary<int, Dictionary<int, double?>>();
 
@@ -96,7 +113,7 @@ namespace Server.Game.Rooms.Map {
 
                     GameRoomFurniture roomFurniture = GetFurniture(row, column);
 
-                    if(roomFurniture != null && !roomFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
+                    if(roomFurniture != null && !roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
                         continue;
 
                     map[row].Add(column, GetDepth(row, column));
