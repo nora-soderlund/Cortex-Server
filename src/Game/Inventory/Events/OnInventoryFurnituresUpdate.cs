@@ -18,7 +18,7 @@ namespace Server.Game.Inventory.Events {
         public int Execute(SocketClient client, JToken data) {
             Dictionary<string, int> furnitures = new Dictionary<string, int>();
 
-            foreach(GameUserFurniture furniture in client.User.Furnitures) {
+            foreach(GameUserFurniture furniture in client.User.Furnitures.FindAll(x => x.Room == 0)) {
                 if(!furnitures.ContainsKey(furniture.Furniture.Id))
                     furnitures.Add(furniture.Furniture.Id, 0);
 

@@ -17,7 +17,7 @@ namespace Server.Game.Users.Events {
 
         public int Execute(SocketClient client, JToken data) {
             if(client.User.Room == null && client.User.Home != null) {
-                //GameRoomManager.AddUser((int)client.User.Home, client.User);
+                GameRoomManager.AddUser((int)client.User.Home, client.User);
             }
 
             return 1;
