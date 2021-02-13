@@ -76,6 +76,8 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             client.User.Room.Furnitures.Add(roomFurniture);
 
+            userFurniture.Room = client.User.Room.Id;
+
             using(MySqlCommand command = new MySqlCommand("UPDATE user_furnitures SET room = @room WHERE id = @id", connection)) {
                 command.Parameters.AddWithValue("@id", userFurniture.Id);
                 command.Parameters.AddWithValue("@room", client.User.Room.Id);
