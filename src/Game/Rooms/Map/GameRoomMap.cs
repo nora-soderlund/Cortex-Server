@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 using RoyT.AStar;
 
+using Server.Game.Furnitures;
 using Server.Game.Rooms.Furnitures;
 
 namespace Server.Game.Rooms.Map {
@@ -81,6 +82,28 @@ namespace Server.Game.Rooms.Map {
             }
 
             Height = height;
+        }
+
+        public Dictionary<int, Dictionary<int, double?>> GetStackMap() {
+            Dictionary<int, Dictionary<int, double?>> map = new Dictionary<int, Dictionary<int, double?>>();
+
+            for(int row = 0; row < FloorGrid.Length; row++) {
+                map.Add(row, new Dictionary<int, double?>());
+
+                for(int column = 0; column < FloorGrid[row].Length; column++) {
+                    if(FloorGrid[row][column] == 'X')
+                        continue;
+
+                    GameRoomFurniture roomFurniture = GetFurniture(row, column);
+
+                    if(roomFurniture != null && !roomFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
+                        continue;
+
+                    map[row].Add(column, GetDepth(row, column));
+                }
+            }
+
+            return map;
         }
     }
 }
