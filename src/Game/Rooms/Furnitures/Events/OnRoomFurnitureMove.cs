@@ -48,21 +48,9 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             double? depth = client.User.Room.Map.GetDepth(row, column);
 
-            roomFurniture.Position = new GameRoomPoint(row, column, depth, direction);
+            client.Send(new SocketMessage("OnRoomFurnitureMove", roomFurniture.Id).Compose());
 
-            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
-                connection.Open();
-
-                using(MySqlCommand command = new MySqlCommand("UPDATE room_furnitures SET row = @row, `column` = @column, depth = @depth, direction = @direction WHERE id = @id", connection)) {
-                    command.Parameters.AddWithValue("@id", roomFurniture.Id);
-                    command.Parameters.AddWithValue("@row", roomFurniture.Position.Row);
-                    command.Parameters.AddWithValue("@column", roomFurniture.Position.Column);
-                    command.Parameters.AddWithValue("@depth", roomFurniture.Position.Depth);
-                    command.Parameters.AddWithValue("@direction", roomFurniture.Position.Direction);
-
-                    command.ExecuteNonQuery();
-                }
-            }
+            client.User.Room.Events.AddFurniture(roomFurniture, new GameRoomFurniturePositionAction(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
 
             return 1;
         }

@@ -22,11 +22,15 @@ namespace Server.Game.Rooms.Actions {
         public double Row;
         public double Column;
 
-        public GameRoomUserPositionAction(GameRoomUser user, double row, double column) {
+        public int Speed;
+
+        public GameRoomUserPositionAction(GameRoomUser user, double row, double column, int speed = 500) {
             User = user;
 
             Row = row;
             Column = column;
+
+            Speed = speed;
         }
 
         public int Execute() {
@@ -60,7 +64,13 @@ namespace Server.Game.Rooms.Actions {
             User.Position.Column = path[1].Y;
             User.Position.Depth = User.User.Room.Map.GetDepth((int)User.Position.Row, (int)User.Position.Column);
 
-            Value = User.Position;
+            Value = new {
+                row = User.Position.Row,
+                column = User.Position.Column,
+                depth = User.Position.Depth,
+                direction = User.Position.Direction,
+                speed = Speed
+            };
 
             return 1;
         }

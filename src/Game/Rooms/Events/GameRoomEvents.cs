@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using RoyT.AStar;
 
 using Server.Game.Rooms.Users;
+using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Actions;
 
@@ -31,6 +32,23 @@ namespace Server.Game.Rooms {
                 Users.Add(user, new List<IGameRoomUserAction>());
 
             Users[user].Add(action);
+
+            Start();
+        }
+
+        public Dictionary<GameRoomFurniture, List<IGameRoomFurnitureAction>> Furnitures = new Dictionary<GameRoomFurniture, List<IGameRoomFurnitureAction>>();
+
+        public void AddFurniture(GameRoomFurniture furniture, IGameRoomFurnitureAction action) {
+            if(Furnitures.ContainsKey(furniture)) {
+                IGameRoomFurnitureAction duplicate = Furnitures[furniture].Find(x => x.Key == action.Key);
+
+                if(duplicate != null)
+                    Furnitures[furniture].Remove(duplicate);
+            }
+            else
+                Furnitures.Add(furniture, new List<IGameRoomFurnitureAction>());
+
+            Furnitures[furniture].Add(action);
 
             Start();
         }
@@ -82,12 +100,39 @@ namespace Server.Game.Rooms {
                     Users.Remove(user.Key);
             }
 
-            if(messageUsers.Count != 0)
-                message.Add("OnRoomEntityUpdate", new { users = messageUsers });
+            Dictionary<int, object> messageFurnitures = new Dictionary<int, object>();
+
+            foreach(KeyValuePair<GameRoomFurniture, List<IGameRoomFurnitureAction>> furniture in Furnitures) {
+                Dictionary<string, object> changes = new Dictionary<string, object>();
+                
+                for(int index = 0; index < furniture.Value.Count; index++) {
+                    int value = furniture.Value[index].Execute();
+
+                    if(value == 0) {
+                        furniture.Value.Remove(furniture.Value[index]);
+
+                        continue;
+                    }
+
+                    changes.TryAdd(furniture.Value[index].Key, furniture.Value[index].Value);
+
+                    if(value == -1)
+                        furniture.Value.Remove(furniture.Value[index]);
+                }
+
+                if(changes.Count != 0)
+                    messageFurnitures.Add(furniture.Key.Id, changes);
+                
+                if(furniture.Value.Count == 0)
+                    Furnitures.Remove(furniture.Key);
+            }
+
+            if(messageUsers.Count != 0 || messageFurnitures.Count != 0)
+                message.Add("OnRoomEntityUpdate", new { users = messageUsers, furnitures = messageFurnitures });
 
             Room.Send(message.Compose());
 
-            if(Users.Count == 0)
+            if(Users.Count == 0 && Furnitures.Count == 0)
                 Timer.Stop();
         }
     }
