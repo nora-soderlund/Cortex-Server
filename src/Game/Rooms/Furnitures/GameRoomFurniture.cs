@@ -13,7 +13,7 @@ using Server.Game.Users.Furnitures;
 
 namespace Server.Game.Rooms.Furnitures {
     class GameRoomFurniture {
-        [JsonIgnore]
+        [JsonProperty("id")]
         public int Id;
 
         [JsonProperty("position")]
