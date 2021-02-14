@@ -23,6 +23,13 @@ namespace Server.Game.Rooms {
             Direction = direction;
         }
 
+        public GameRoomPoint(int row, int column, double? depth, int direction) {
+            Row = row;
+            Column = column;
+            Depth = depth;
+            Direction = direction;
+        }
+
         public GameRoomPoint(GameRoomPoint point) {
             Row = point.Row;
             Column = point.Column;
