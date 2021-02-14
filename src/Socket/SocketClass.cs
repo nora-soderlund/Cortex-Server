@@ -104,7 +104,7 @@ namespace Server.Socket {
 
             clients.Add(client);
             
-            socket.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
+            client.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
         }
 
         private void onMessage(IWebSocketConnection socket, string message) {
@@ -116,6 +116,8 @@ namespace Server.Socket {
 
                 return;
             }
+
+            client.Received++;
 
             Program.WriteLine("Received message from " + client.GetAddressPort() + ":");
             Program.WriteLine(message);

@@ -13,12 +13,17 @@ namespace Server.Socket.Clients {
 
         public GameUser User;
 
+        public int Sent = 0;
+        public int Received = 0;
+
         public SocketClient(IWebSocketConnection connection, GameUser user) {
             Connection = connection;
             User = user;
         }
 
         public void Send(string message) {
+            Sent++;
+            
             Connection.Send(message);
         }
 
