@@ -38,6 +38,9 @@ namespace Server.Game.Rooms.Furnitures.Events {
             
             int direction = data["position"]["direction"].ToObject<int>();
 
+            if(row == roomFurniture.Position.Row && column == roomFurniture.Position.Column && direction == roomFurniture.Position.Direction)
+                return 0;
+
             if(!client.User.Room.Map.IsValidColumn(row, column))
                 return 0;
 
