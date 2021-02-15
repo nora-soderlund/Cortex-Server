@@ -29,6 +29,8 @@ namespace Server.Game.Rooms.Navigator {
 
             while(reader.Read())
                 Rooms.Add(new GameRoomNavigatorMessage(reader));
+
+            Program.WriteLine("Read " + Rooms.Count + " rooms to the navigator memory...");
         }
 
         public static void UpdateRooms() {

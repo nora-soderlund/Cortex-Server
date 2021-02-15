@@ -30,6 +30,10 @@ namespace Server {
 
             Console.ResetColor();
 
+            foreach (var instance in System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(a => a.GetConstructor(Type.EmptyTypes) != null).Select(Activator.CreateInstance).OfType<IInitializationEvent>()) {
+                instance.OnInitialization();
+            }
+
             socket = new SocketClass();
 
             foreach (var instance in System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(a => a.GetConstructor(Type.EmptyTypes) != null).Select(Activator.CreateInstance).OfType<ISocketEvent>()) {
@@ -43,10 +47,6 @@ namespace Server {
             }
 
             socket.Open();
-
-            foreach (var instance in System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(a => a.GetConstructor(Type.EmptyTypes) != null).Select(Activator.CreateInstance).OfType<IInitializationEvent>()) {
-                instance.OnInitialization();
-            }
 
             while(true) {
                 string input = Console.ReadLine();
