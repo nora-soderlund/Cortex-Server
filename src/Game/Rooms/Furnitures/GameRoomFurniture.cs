@@ -22,6 +22,9 @@ namespace Server.Game.Rooms.Furnitures {
         [JsonProperty("furniture")]
         public string Furniture;
 
+        [JsonProperty("animation")]
+        public int? Animation = null;
+
         [JsonIgnore]
         public GameUserFurniture UserFurniture;
 
@@ -33,6 +36,8 @@ namespace Server.Game.Rooms.Furnitures {
             Furniture = UserFurniture.Furniture.Id;
 
             Position = new GameRoomPoint(furniture.GetDouble("row"), furniture.GetDouble("column"), furniture.GetDouble("depth"), furniture.GetInt32("direction"));
+            
+            Animation = (furniture.GetInt32("animation") != 0)?(furniture.GetInt32("animation")):(null);
         }
 
         public GameRoomFurniture(int id, int userFurniture, GameRoomPoint position) {
