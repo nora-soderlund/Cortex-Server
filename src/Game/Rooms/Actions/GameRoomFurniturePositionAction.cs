@@ -41,6 +41,7 @@ namespace Server.Game.Rooms.Actions {
                 row = Position.Row,
                 column = Position.Column,
                 depth = Position.Depth,
+                direction = Position.Direction,
                 speed = Speed
             };
 
