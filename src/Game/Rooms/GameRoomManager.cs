@@ -13,7 +13,7 @@ namespace Server.Game.Rooms {
     class GameRoomManager {
         public static List<GameRoom> Rooms = new List<GameRoom>();
 
-        public static GameRoom Load(int id) {
+        public static GameRoom Load(long id) {
             using MySqlConnection connection = new MySqlConnection(Program.Connection);
 
             connection.Open();
@@ -34,7 +34,7 @@ namespace Server.Game.Rooms {
             return room;
         }
 
-        public static void AddUser(int id, GameUser user) {
+        public static void AddUser(long id, GameUser user) {
             if(user.Room != null && user.Room.Id == id)
                 return;
 
@@ -47,7 +47,8 @@ namespace Server.Game.Rooms {
 
             room.AddUser(user);
 
-            user.Room.Navigator.UpdateUsers(user.Room.Users.Count());
+            if(user.Room.Navigator != null)
+                user.Room.Navigator.UpdateUsers(user.Room.Users.Count());
         }
 
         public static void RemoveUser(GameUser user) {
