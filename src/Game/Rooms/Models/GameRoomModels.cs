@@ -40,7 +40,7 @@ namespace Server.Game.Rooms.Models {
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();
 
-                using(MySqlCommand command = new MySqlCommand("SELECT * FROM room_models WHERE enabled = 1", connection))
+                using(MySqlCommand command = new MySqlCommand("SELECT * FROM room_models WHERE enabled = 1 ORDER BY LENGTH(map) ASC", connection))
                 using(MySqlDataReader reader = command.ExecuteReader()) {
                     while(reader.Read())
                         Models.Add(new GameRoomModel(reader));
