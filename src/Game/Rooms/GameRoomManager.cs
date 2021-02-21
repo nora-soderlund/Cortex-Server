@@ -62,7 +62,8 @@ namespace Server.Game.Rooms {
 
             user.Room.Users.Remove(roomUser);
 
-            user.Room.Navigator.UpdateUsers(user.Room.Users.Count());
+            if(user.Room.Navigator != null)
+                user.Room.Navigator.UpdateUsers(user.Room.Users.Count());
 
             user.Room = null;
         }
