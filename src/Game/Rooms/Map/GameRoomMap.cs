@@ -11,6 +11,12 @@ using Server.Game.Rooms.Furnitures;
 
 namespace Server.Game.Rooms.Map {
     class GameRoomMap {
+        [JsonIgnore]
+        public int Rows;
+
+        [JsonIgnore]
+        public int Columns;
+
         [JsonProperty("floor")]
         public string Floor;
 
@@ -33,9 +39,16 @@ namespace Server.Game.Rooms.Map {
 
             FloorGrid = floor.Split('|');
 
-            Grid = new Grid(FloorGrid.Length, FloorGrid[0].Length, 1.0f);
+            Rows = FloorGrid.Length;
 
-            for(int row = 0; row < FloorGrid.Length; row++) {
+            for(int row = 0; row < Rows; row++) {
+                if(FloorGrid[row].Length > Columns)
+                    Columns = FloorGrid[row].Length;
+            }
+
+            Grid = new Grid(Rows, Columns, 1.0f);
+
+            for(int row = 0; row < Rows; row++) {
                 for(int column = 0; column < FloorGrid[row].Length; column++) {
                     if(FloorGrid[row][column] != 'X')
                         continue;
@@ -70,7 +83,7 @@ namespace Server.Game.Rooms.Map {
         public void UpdateHeight() {
             Dictionary<int, Dictionary<int, double?>> height = new Dictionary<int, Dictionary<int, double?>>();
 
-            for(int row = 0; row < FloorGrid.Length; row++) {
+            for(int row = 0; row < Rows; row++) {
                 height.Add(row, new Dictionary<int, double?>());
 
                 for(int column = 0; column < FloorGrid[row].Length; column++) {
@@ -104,7 +117,7 @@ namespace Server.Game.Rooms.Map {
         public Dictionary<int, Dictionary<int, double?>> GetStackMap() {
             Dictionary<int, Dictionary<int, double?>> map = new Dictionary<int, Dictionary<int, double?>>();
 
-            for(int row = 0; row < FloorGrid.Length; row++) {
+            for(int row = 0; row < Rows; row++) {
                 map.Add(row, new Dictionary<int, double?>());
 
                 for(int column = 0; column < FloorGrid[row].Length; column++) {
