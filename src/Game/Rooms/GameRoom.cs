@@ -33,7 +33,7 @@ namespace Server.Game.Rooms {
         [JsonProperty("map")]
         public GameRoomMap Map;
 
-        [JsonIgnore]
+        [JsonProperty("door")]
         public GameRoomPoint Door;
 
         [JsonIgnore]

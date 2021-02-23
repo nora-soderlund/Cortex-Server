@@ -32,9 +32,6 @@ namespace Server.Game.Rooms.Map {
         [JsonIgnore]
         public GameRoom Room;
 
-        [JsonProperty("door")]
-        public GameRoomPoint Door;
-
         public GameRoomMap(GameRoom room, string floor) {
             Room = room;
 
@@ -61,8 +58,6 @@ namespace Server.Game.Rooms.Map {
             }
 
             UpdateHeight();
-
-            Door = room.Door;
         }
 
         public Position[] GetPath(GameRoomPoint start, GameRoomPoint end) {
