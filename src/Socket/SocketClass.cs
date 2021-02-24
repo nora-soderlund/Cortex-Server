@@ -106,7 +106,7 @@ namespace Server.Socket {
             
             client.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
 
-            Program.Discord.Client.SetGameAsync("with " + clients.Count + " others!");
+            Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
         }
 
         private void onMessage(IWebSocketConnection socket, string message) {
@@ -161,7 +161,7 @@ namespace Server.Socket {
 
             clients.Remove(client);
 
-            Program.Discord.Client.SetGameAsync("with " + clients.Count + " others!");
+            Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
         }
     }
 }
