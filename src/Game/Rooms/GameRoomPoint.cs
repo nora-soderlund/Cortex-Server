@@ -5,25 +5,18 @@ using Newtonsoft.Json;
 namespace Server.Game.Rooms {
     class GameRoomPoint {
         [JsonProperty("row")]
-        public double? Row;
+        public int Row;
 
         [JsonProperty("column")]
-        public double? Column;
+        public int Column;
 
         [JsonProperty("depth")]
-        public double? Depth;
+        public double Depth;
 
         [JsonProperty("direction")]
-        public int? Direction;
+        public int Direction;
 
-        public GameRoomPoint(double? row = null, double? column = null, double? depth = null, int? direction = null) {
-            Row = row;
-            Column = column;
-            Depth = depth;
-            Direction = direction;
-        }
-
-        public GameRoomPoint(int row, int column, double? depth, int direction) {
+        public GameRoomPoint(int row = 0, int column = 0, double depth = 0.0, int direction = 0) {
             Row = row;
             Column = column;
             Depth = depth;

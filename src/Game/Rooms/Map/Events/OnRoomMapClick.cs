@@ -22,8 +22,8 @@ namespace Server.Game.Rooms.Map.Events {
 
             GameRoomUser roomUser = client.User.Room.Users.Find(x => x.User == client.User);
                 
-            double row = data.Value<double>("row");
-            double column = data.Value<double>("column");
+            int row = data.Value<int>("row");
+            int column = data.Value<int>("column");
 
             //client.User.Room.Events.User[roomUser] = new GameRoomUserEvent(roomUser, row, column);
 

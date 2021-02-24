@@ -35,7 +35,7 @@ namespace Server.Game.Rooms.Furnitures {
 
             Furniture = UserFurniture.Furniture.Id;
 
-            Position = new GameRoomPoint(furniture.GetDouble("row"), furniture.GetDouble("column"), furniture.GetDouble("depth"), furniture.GetInt32("direction"));
+            Position = new GameRoomPoint(furniture.GetInt32("row"), furniture.GetInt32("column"), furniture.GetDouble("depth"), furniture.GetInt32("direction"));
             
             Animation = (furniture.GetInt32("animation") != 0)?(furniture.GetInt32("animation")):(null);
         }

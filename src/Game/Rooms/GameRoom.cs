@@ -20,6 +20,9 @@ namespace Server.Game.Rooms {
     class GameRoom {
         [JsonIgnore]
         public int Id;
+        
+        [JsonIgnore]
+        public int User;
 
         [JsonIgnore]
         public GameRoomNavigatorMessage Navigator;
@@ -33,20 +36,17 @@ namespace Server.Game.Rooms {
         [JsonProperty("map")]
         public GameRoomMap Map;
 
-        [JsonProperty("door")]
-        public GameRoomPoint Door;
-
         [JsonIgnore]
         public GameRoomEvents Events;
 
         public GameRoom(MySqlDataReader room) {
             Id = room.GetInt32("id");
+            
+            User = room.GetInt32("user");
 
             Navigator = GameRoomNavigator.Rooms.FirstOrDefault(x => x.Id == Id);
 
-            Map = new GameRoomMap(this, room.GetString("map"));
-
-            Door = new GameRoomPoint(room.GetDouble("door_row"), room.GetDouble("door_column"), Map.GetDepth(room.GetInt32("door_row"), room.GetInt32("door_column")), room.GetInt32("door_direction"));
+            Map = new GameRoomMap(this, room.GetString("map"), new GameRoomPoint(room.GetInt32("door_row"), room.GetInt32("door_column"), 0, room.GetInt32("door_direction")));
 
             Events = new GameRoomEvents(this);
 
@@ -70,7 +70,7 @@ namespace Server.Game.Rooms {
 
             GameRoomUser roomUser = new GameRoomUser(user);
 
-            roomUser.Position = new GameRoomPoint(Door);
+            roomUser.Position = new GameRoomPoint(Map.Door.Row, Map.Door.Column, Map.GetFloorDepth(Map.Door.Row, Map.Door.Column), Map.Door.Direction);
 
             SocketMessage message = new SocketMessage();
 

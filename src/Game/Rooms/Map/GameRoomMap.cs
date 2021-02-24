@@ -12,6 +12,128 @@ using Server.Game.Rooms.Furnitures;
 namespace Server.Game.Rooms.Map {
     class GameRoomMap {
         [JsonIgnore]
+        public GameRoom Room;
+
+        [JsonProperty("floor")]
+        public List<string> Floor = new List<string>();
+
+        [JsonProperty("door")]
+        public GameRoomPoint Door;
+
+        [JsonIgnore]
+        public int Rows;
+
+        [JsonIgnore]
+        public int Columns;
+
+        public GameRoomMap(GameRoom room, string floor, GameRoomPoint door) {
+            Room = room;
+
+            Floor = floor.ToUpper().Split('|').ToList();
+
+            Rows = Floor.Count;
+
+            for(int row = 0; row < Rows; row++)
+                if(Floor[row].Length > Columns)
+                    Columns = Floor[row].Length;
+
+            Door = door;
+        }
+
+        public double GetFloorDepth(int row, int column) {
+            if(Char.ToUpper(Floor[row][column]) != Char.ToLower(Floor[row][column]))
+                return (double)((Floor[row][column] - 97) - '0');
+
+            return (double)(Floor[row][column] - '0');
+        }
+        public Position[] GetFloorPath(GameRoomPoint start, GameRoomPoint end) {
+            Grid grid = new Grid(Rows, Columns);
+
+            for(int row = 0; row < Rows; row++)
+            for(int column = 0; column < Floor[row].Length; column++) {
+                if(Floor[row][column] == 'X') {
+                    grid.BlockCell(new Position(row, column));
+
+                    continue;
+                }
+            }
+
+            return grid.GetPath(new Position(start.Row, start.Column), new Position(end.Row, end.Column));
+        }
+
+        public GameRoomFurniture GetFloorFurniture(int row, int column) {
+
+
+            GameRoomFurniture result = null;
+
+            foreach(GameRoomFurniture furniture in Room.Furnitures) {
+                if(furniture.Position.Row > row)
+                    continue;
+                    
+                if(furniture.Position.Column > column)
+                    continue;
+
+                GameRoomPoint dimensions = furniture.UserFurniture.Furniture.Dimension;
+
+                if(furniture.Position.Row + dimensions.Row < row)
+                    continue;
+
+                if(furniture.Position.Column + dimensions.Column < column)
+                    continue;
+
+                if(result != null && (furniture.Position.Depth + dimensions.Depth) < (result.Position.Depth + result.UserFurniture.Furniture.Dimension.Depth))
+                    continue;
+
+                result = furniture;
+            }
+
+            return result;
+        }
+
+        public bool IsValidFloor(int row, int column) {
+            if(Floor[row] == null)
+                return false;
+
+            if(Floor[row].Length < column)
+                return false;
+
+            if(Floor[row][column] == 'X')
+                return false;
+
+            return true;
+        }
+
+        public Dictionary<int, Dictionary<int, double>> GetStackableFloor() {
+            Dictionary<int, Dictionary<int, double>> map = new Dictionary<int, Dictionary<int, double>>();
+
+            for(int row = 0; row < Rows; row++) {
+                map.Add(row, new Dictionary<int, double>());
+
+                for(int column = 0; column < Floor[row].Length; column++) {
+                    if(Floor[row][column] == 'X')
+                        continue;
+
+                    double depth = GetFloorDepth(row, column);
+
+                    GameRoomFurniture roomFurniture = GetFloorFurniture(row, column);
+
+                    if(roomFurniture != null) {
+                        if(!roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
+                            continue;
+
+                        depth = roomFurniture.Position.Depth + roomFurniture.UserFurniture.Furniture.Dimension.Depth;
+                    }
+
+                    map[row].Add(column, depth);
+                }
+            }
+
+            return map;
+        }
+    }
+
+    class GameRoomMaps {
+        [JsonIgnore]
         public int Rows;
 
         [JsonIgnore]
@@ -32,7 +154,7 @@ namespace Server.Game.Rooms.Map {
         [JsonIgnore]
         public GameRoom Room;
 
-        public GameRoomMap(GameRoom room, string floor) {
+        public GameRoomMaps(GameRoom room, string floor) {
             Room = room;
 
             Floor = floor;

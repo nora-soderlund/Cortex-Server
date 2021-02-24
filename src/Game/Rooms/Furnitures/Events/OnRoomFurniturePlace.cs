@@ -38,15 +38,20 @@ namespace Server.Game.Rooms.Furnitures.Events {
             
             int direction = data["position"]["direction"].ToObject<int>();
 
-            if(!client.User.Room.Map.IsValidColumn(row, column))
+            if(!client.User.Room.Map.IsValidFloor(row, column))
                 return 0;
 
-            GameRoomFurniture stackedFurniture = client.User.Room.Map.GetFurniture(row, column);
+            GameRoomFurniture stackedFurniture = client.User.Room.Map.GetFloorFurniture(row, column);
+            
 
-            if(stackedFurniture != null && !stackedFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
-                return 0;
+            double depth = client.User.Room.Map.GetFloorDepth(row, column);
 
-            double? depth = client.User.Room.Map.GetDepth(row, column);
+            if(stackedFurniture != null) {
+                if(!stackedFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
+                    return 0;
+
+                depth = stackedFurniture.Position.Depth + stackedFurniture.UserFurniture.Furniture.Dimension.Depth;
+            }
 
             using MySqlConnection connection = new MySqlConnection(Program.Connection);
 

@@ -42,6 +42,14 @@ namespace Server.Game.Rooms.Navigator {
 
             public int Execute(SocketClient client, JToken data) {
                 switch(data.ToString()) {
+                    case "all_rooms": {
+                        client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
+                            popular = Rooms.OrderByDescending(x => x.Users).Take(20)
+                        }).Compose());
+
+                        return 1;
+                    }
+
                     case "my_rooms": {
                         client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
                             owned = Rooms.Where(x => x.User == client.User.Id).ToList()

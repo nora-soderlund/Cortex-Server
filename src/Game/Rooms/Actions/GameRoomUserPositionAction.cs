@@ -19,12 +19,12 @@ namespace Server.Game.Rooms.Actions {
         public string Key => "position";
         public object Value  { get; set; }
 
-        public double Row;
-        public double Column;
+        public int Row;
+        public int Column;
 
         public int Speed;
 
-        public GameRoomUserPositionAction(GameRoomUser user, double row, double column, int speed = 500) {
+        public GameRoomUserPositionAction(GameRoomUser user, int row, int column, int speed = 500) {
             User = user;
 
             Row = row;
@@ -37,7 +37,7 @@ namespace Server.Game.Rooms.Actions {
             if(User.Position.Row == Row && User.Position.Column == Column)
                 return 0;
 
-            Position[] path = User.User.Room.Map.GetPath(User.Position, new GameRoomPoint(Row, Column));
+            Position[] path = User.User.Room.Map.GetFloorPath(User.Position, new GameRoomPoint(Row, Column));
 
             if(path.Length < 2)
                 return 0;
@@ -62,7 +62,7 @@ namespace Server.Game.Rooms.Actions {
 
             User.Position.Row = path[1].X;
             User.Position.Column = path[1].Y;
-            User.Position.Depth = User.User.Room.Map.GetDepth((int)User.Position.Row, (int)User.Position.Column);
+            User.Position.Depth = User.User.Room.Map.GetFloorDepth(User.Position.Row, User.Position.Column);
 
             Value = new {
                 row = User.Position.Row,

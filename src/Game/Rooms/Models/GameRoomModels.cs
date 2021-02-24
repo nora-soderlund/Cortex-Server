@@ -29,7 +29,7 @@ namespace Server.Game.Rooms.Models {
 
             Map = reader.GetString("map").ToUpper();
 
-            Door = new GameRoomPoint(reader.GetDouble("door_row"), reader.GetDouble("door_column"), 0, reader.GetInt32("door_direction"));
+            Door = new GameRoomPoint(reader.GetInt32("door_row"), reader.GetInt32("door_column"), 0, reader.GetInt32("door_direction"));
         }
     }
 

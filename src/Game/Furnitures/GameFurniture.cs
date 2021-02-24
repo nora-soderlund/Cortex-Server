@@ -45,7 +45,7 @@ namespace Server.Game.Furnitures {
             
             Direction = reader.GetInt32("direction");
 
-            Dimension = new GameRoomPoint(reader.GetDouble("breadth"), reader.GetDouble("height"), reader.GetDouble("depth"));
+            Dimension = new GameRoomPoint(reader.GetInt32("breadth"), reader.GetInt32("height"), reader.GetDouble("depth"));
         }
     }
 }

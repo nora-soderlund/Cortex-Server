@@ -20,7 +20,7 @@ namespace Server.Game.Rooms.Map.Events {
             if(client.User.Room == null)
                 return 0;
 
-            client.Send(new SocketMessage("OnRoomMapStackUpdate", client.User.Room.Map.GetStackMap()).Compose());
+            client.Send(new SocketMessage("OnRoomMapStackUpdate", client.User.Room.Map.GetStackableFloor()).Compose());
 
             return 1;
         }
