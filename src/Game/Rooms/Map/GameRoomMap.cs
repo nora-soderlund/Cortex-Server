@@ -56,6 +56,16 @@ namespace Server.Game.Rooms.Map {
 
                     continue;
                 }
+
+                GameRoomFurniture furniture = GetFloorFurniture(row, column);
+
+                if(furniture != null) {
+                    if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Walkable)) {
+                        grid.BlockCell(new Position(row, column));
+
+                        continue;
+                    }
+                }
             }
 
             return grid.GetPath(new Position(start.Row, start.Column), new Position(end.Row, end.Column));
@@ -75,10 +85,10 @@ namespace Server.Game.Rooms.Map {
 
                 GameRoomPoint dimensions = furniture.GetDimension();
 
-                if(furniture.Position.Row + dimensions.Row < row)
+                if(furniture.Position.Row + dimensions.Row <= row)
                     continue;
 
-                if(furniture.Position.Column + dimensions.Column < column)
+                if(furniture.Position.Column + dimensions.Column <= column)
                     continue;
 
                 if(result != null && (furniture.Position.Depth + dimensions.Depth) < (result.Position.Depth + result.GetDimension().Depth))

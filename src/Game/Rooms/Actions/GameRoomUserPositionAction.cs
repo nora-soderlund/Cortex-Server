@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using RoyT.AStar;
 
 using Server.Game.Rooms.Users;
+using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Actions;
 
@@ -42,6 +43,13 @@ namespace Server.Game.Rooms.Actions {
             if(path.Length < 2)
                 return 0;
 
+            double depth = User.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
+
+            GameRoomFurniture furniture = User.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
+
+            if(furniture != null)
+                depth = furniture.Position.Depth + furniture.GetDimension().Depth;
+
             if((User.Position.Row - 1 == path[1].X) && (User.Position.Column == path[1].Y))
                 User.Position.Direction = 0;
             else if((User.Position.Row - 1 == path[1].X) && (User.Position.Column + 1 == path[1].Y))
@@ -59,10 +67,9 @@ namespace Server.Game.Rooms.Actions {
             else if((User.Position.Row - 1 == path[1].X) && (User.Position.Column - 1 == path[1].Y))
                 User.Position.Direction = 7;
 
-
             User.Position.Row = path[1].X;
             User.Position.Column = path[1].Y;
-            User.Position.Depth = User.User.Room.Map.GetFloorDepth(User.Position.Row, User.Position.Column);
+            User.Position.Depth = depth;
 
             Value = new {
                 row = User.Position.Row,
