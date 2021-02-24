@@ -52,7 +52,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
                 if(!stackedFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
                     return 0;
 
-                depth = stackedFurniture.Position.Depth + stackedFurniture.UserFurniture.Furniture.Dimension.Depth;
+                depth = stackedFurniture.Position.Depth + stackedFurniture.GetDimension().Depth;
             }
 
             client.Send(new SocketMessage("OnRoomFurnitureMove", roomFurniture.Id).Compose());

@@ -49,5 +49,18 @@ namespace Server.Game.Rooms.Furnitures {
 
             Position = position;
         }
+
+        public GameRoomPoint GetDimension() {
+            GameRoomPoint dimension = new GameRoomPoint(UserFurniture.Furniture.Dimension);
+
+            if(Position.Direction == 0 || Position.Direction == 4) {
+                int spare = dimension.Row;
+
+                dimension.Row = dimension.Column;
+                dimension.Column = spare;
+            }
+
+            return dimension;
+        }
     }
 }

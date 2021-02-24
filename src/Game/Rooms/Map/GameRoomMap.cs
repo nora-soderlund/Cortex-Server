@@ -73,7 +73,7 @@ namespace Server.Game.Rooms.Map {
                 if(furniture.Position.Column > column)
                     continue;
 
-                GameRoomPoint dimensions = furniture.UserFurniture.Furniture.Dimension;
+                GameRoomPoint dimensions = furniture.GetDimension();
 
                 if(furniture.Position.Row + dimensions.Row < row)
                     continue;
@@ -81,7 +81,7 @@ namespace Server.Game.Rooms.Map {
                 if(furniture.Position.Column + dimensions.Column < column)
                     continue;
 
-                if(result != null && (furniture.Position.Depth + dimensions.Depth) < (result.Position.Depth + result.UserFurniture.Furniture.Dimension.Depth))
+                if(result != null && (furniture.Position.Depth + dimensions.Depth) < (result.Position.Depth + result.GetDimension().Depth))
                     continue;
 
                 result = furniture;
@@ -121,7 +121,7 @@ namespace Server.Game.Rooms.Map {
                         if(!roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
                             continue;
 
-                        depth = roomFurniture.Position.Depth + roomFurniture.UserFurniture.Furniture.Dimension.Depth;
+                        depth = roomFurniture.Position.Depth + roomFurniture.GetDimension().Depth;
                     }
 
                     map[row].Add(column, depth);
@@ -194,7 +194,7 @@ namespace Server.Game.Rooms.Map {
             GameRoomFurniture furniture = GetFurniture(row, column);
 
             if(furniture != null)
-                return furniture.Position.Depth + furniture.UserFurniture.Furniture.Dimension.Depth;
+                return furniture.Position.Depth + furniture.GetDimension().Depth;
 
             if(Char.ToUpper(FloorGrid[row][column]) != Char.ToLower(FloorGrid[row][column]))
                 return (double)((FloorGrid[row][column] - 97) - '0');
