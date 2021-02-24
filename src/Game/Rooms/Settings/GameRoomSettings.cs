@@ -25,7 +25,11 @@ namespace Server.Game.Rooms.Settings {
                     if(client.User.Id != client.User.Room.User)
                         return 0;
 
-                    
+                    client.User.Room.Map = new Map.GameRoomMap(client.User.Room, data["map"]["floor"].ToString(), client.User.Room.Map.Door);
+
+                    client.Send(new SocketMessage("OnRoomSettingsUpdate", true).Compose());
+
+                    client.User.Room.Send(new SocketMessage("OnRoomMapUpdate", client.User.Room.Map).Compose());
                 }
 
                 return 1;

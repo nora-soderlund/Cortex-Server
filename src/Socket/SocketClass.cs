@@ -105,6 +105,8 @@ namespace Server.Socket {
             clients.Add(client);
             
             client.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
+
+            Program.Discord.Client.SetGameAsync("with " + clients.Count + " others!");
         }
 
         private void onMessage(IWebSocketConnection socket, string message) {
@@ -158,6 +160,8 @@ namespace Server.Socket {
             Program.WriteLine("Lost connection with client at " + client.GetAddressPort() + "!");
 
             clients.Remove(client);
+
+            Program.Discord.Client.SetGameAsync("with " + clients.Count + " others!");
         }
     }
 }

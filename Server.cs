@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -8,11 +9,15 @@ using Server.Socket;
 using Server.Events;
 using Server.Socket.Events;
 
+using Server.Discord;
+
 namespace Server {
     class Program {
         static private SocketClass socket;
         
         public static string Connection = "server=127.0.0.1;uid=root;database=cortex";
+
+        public static DiscordClient Discord;
 
         static void Main(string[] args) {
             Console.Title = "Project Cortex Server";
@@ -47,6 +52,12 @@ namespace Server {
             }
 
             socket.Open();
+
+
+            Discord = new DiscordClient();
+
+            Thread discord = new Thread(Discord.Start);
+            discord.Start();
 
             while(true) {
                 string input = Console.ReadLine();
