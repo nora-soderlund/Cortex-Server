@@ -23,7 +23,7 @@ namespace Server.Game.Users.Events {
                 if(!furnitures.ContainsKey(furniture.Furniture.Id))
                     furnitures.Add(furniture.Furniture.Id, new Dictionary<string, int>());
 
-                if(furniture.Room == 0) {
+                if(furniture.Room != 0) {
                     if(!furnitures[furniture.Furniture.Id].ContainsKey("room"))
                         furnitures[furniture.Furniture.Id].Add("room", 0);
 
