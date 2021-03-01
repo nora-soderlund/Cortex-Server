@@ -27,7 +27,7 @@ namespace Server.Game.Rooms.Users {
             if(Actions.Contains(action))
                 return 0;
 
-            User.Room.Events.AddUser(this, new GameRoomUserAction(this, action, GameRoomUserActionType.Add));
+            //User.Room.Events.AddUser(this, new GameRoomUserAction(this, action, GameRoomUserActionType.Add));
 
             return 1;
         }
@@ -41,7 +41,7 @@ namespace Server.Game.Rooms.Users {
 
             Figure = user.Figure;
 
-            User.Room.Events.AddUser(this, new GameRoomUserAction(this, "GestureAngry", GameRoomUserActionType.Add));
+            //User.Room.Events.AddUser(this, new GameRoomUserAction(this, "GestureAngry", GameRoomUserActionType.Add));
         }
     }
 }

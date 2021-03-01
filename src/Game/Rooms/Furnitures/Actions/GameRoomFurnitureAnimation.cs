@@ -15,25 +15,22 @@ using Server.Game.Rooms.Actions;
 
 using Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Actions {
-    class GameRoomFurnitureAnimationAction : IGameRoomFurnitureAction {
-        public GameRoomFurniture Furniture { get; set; }
-
-        public string Key => "animation";
-        public object Value  { get; set; }
-
-        public int Animation;
-
-        public GameRoomFurnitureAnimationAction(GameRoomFurniture furniture, int animation) {
-            Furniture = furniture;
-            
-            Animation = animation;
-        }
+namespace Server.Game.Rooms.Furnitures.Actions {
+    class GameRoomFurnitureAnimation : IGameRoomAction {
+        public object Result  { get; set; }
 
         public int Execute() {
-            Furniture.Animation = Animation;
+            Result = new { id = Furniture.Id, animation = Furniture.Animation };
 
-            Value = Animation;
+            return -1;
+        }
+
+        public GameRoomFurniture Furniture { get; set; }
+
+        public GameRoomFurnitureAnimation(GameRoomFurniture furniture, int animation) {
+            Furniture = furniture;
+
+            Furniture.Animation = animation;
 
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();
@@ -45,8 +42,6 @@ namespace Server.Game.Rooms.Actions {
                     command.ExecuteNonQuery();
                 }
             }
-
-            return -1;
         }
     }
 }

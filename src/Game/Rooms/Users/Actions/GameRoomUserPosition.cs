@@ -6,33 +6,18 @@ using Newtonsoft.Json;
 
 using RoyT.AStar;
 
+using MySql.Data.MySqlClient;
+
 using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Actions;
+using Server.Game.Rooms.Furnitures;
 
 using Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Actions {
-    class GameRoomUserPositionAction : IGameRoomUserAction {
-        public GameRoomUser User { get; set; }
-
-        public string Key => "position";
-        public object Value  { get; set; }
-
-        public int Row;
-        public int Column;
-
-        public int Speed;
-
-        public GameRoomUserPositionAction(GameRoomUser user, int row, int column, int speed = 500) {
-            User = user;
-
-            Row = row;
-            Column = column;
-
-            Speed = speed;
-        }
+namespace Server.Game.Rooms.Users.Actions {
+    class GameRoomUserPosition : IGameRoomAction {
+        public object Result  { get; set; }
 
         public int Execute() {
             if(User.Position.Row == Row && User.Position.Column == Column)
@@ -71,15 +56,36 @@ namespace Server.Game.Rooms.Actions {
             User.Position.Column = path[1].Y;
             User.Position.Depth = depth;
 
-            Value = new {
-                row = User.Position.Row,
-                column = User.Position.Column,
-                depth = User.Position.Depth,
-                direction = User.Position.Direction,
-                speed = Speed
+            Result = new {
+                id = User.Id,
+                
+                position = new {
+                    row = User.Position.Row,
+                    column = User.Position.Column,
+                    depth = User.Position.Depth,
+                    direction = User.Position.Direction,
+                    speed = Speed
+                }
             };
 
             return 1;
+        }
+
+        public GameRoomUser User { get; set; }
+
+        public int Speed;
+
+        public int Row;
+        public int Column;
+
+        public GameRoomUserPosition(GameRoomUser user, int row, int column, int speed = 500) {
+            User = user;
+
+            Speed = speed;
+
+            Row = row;
+
+            Column = column;
         }
     }
 }

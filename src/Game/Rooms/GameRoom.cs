@@ -10,6 +10,7 @@ using Server.Game.Users;
 
 using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Users;
+using Server.Game.Rooms.Actions;
 using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Navigator;
 using Server.Game.Rooms.Navigator.Messages;
@@ -43,7 +44,7 @@ namespace Server.Game.Rooms {
         public GameRoomMap Map;
 
         [JsonIgnore]
-        public GameRoomEvents Events;
+        public GameRoomActions Actions;
 
         public GameRoom(MySqlDataReader room) {
             Id = room.GetInt32("id");
@@ -59,7 +60,7 @@ namespace Server.Game.Rooms {
 
             Map = new GameRoomMap(this, room.GetString("map"), new GameRoomPoint(room.GetInt32("door_row"), room.GetInt32("door_column"), 0, room.GetInt32("door_direction")));
 
-            Events = new GameRoomEvents(this);
+            Actions = new GameRoomActions(this);
 
             using MySqlConnection connection = new MySqlConnection(Program.Connection);
 

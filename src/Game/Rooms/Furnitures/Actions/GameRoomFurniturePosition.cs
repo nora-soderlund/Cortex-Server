@@ -15,35 +15,32 @@ using Server.Game.Rooms.Actions;
 
 using Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Actions {
-    class GameRoomFurniturePositionAction : IGameRoomFurnitureAction {
-        public GameRoomFurniture Furniture { get; set; }
-
-        public string Key => "position";
-        public object Value  { get; set; }
-
-        public GameRoomPoint Position;
-
-        public int Speed;
-
-        public GameRoomFurniturePositionAction(GameRoomFurniture furniture, GameRoomPoint position, int speed = 0) {
-            Furniture = furniture;
-
-            Position = position;
-
-            Speed = speed;
-        }
+namespace Server.Game.Rooms.Furnitures.Actions {
+    class GameRoomFurniturePosition : IGameRoomAction {
+        public object Result  { get; set; }
 
         public int Execute() {
-            Furniture.Position = Position;
-
-            Value = new {
-                row = Position.Row,
-                column = Position.Column,
-                depth = Position.Depth,
-                direction = Position.Direction,
-                speed = Speed
+            Result = new {
+                id = Furniture.Id,
+                
+                position = new {
+                    row = Furniture.Position.Row,
+                    column = Furniture.Position.Column,
+                    depth = Furniture.Position.Depth,
+                    direction = Furniture.Position.Direction,
+                    speed = Speed
+                }
             };
+
+            return -1;
+        }
+
+        public GameRoomFurniturePosition(GameRoomFurniture furniture, GameRoomPoint position, int speed = 0) {
+            Furniture = furniture;
+
+            Furniture.Position = position;
+
+            Speed = speed;
 
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();
@@ -58,8 +55,10 @@ namespace Server.Game.Rooms.Actions {
                     command.ExecuteNonQuery();
                 }
             }
-
-            return -1;
         }
+
+        public GameRoomFurniture Furniture { get; set; }
+
+        public int Speed;
     }
 }

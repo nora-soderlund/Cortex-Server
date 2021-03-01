@@ -12,12 +12,8 @@ using Server.Game.Rooms.Map;
 using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Actions {
-    interface IGameRoomUserAction {
-        GameRoomUser User { get; set; }
-
-        string Key { get; }
-
-        object Value { get; set; }
+    interface IGameRoomAction {
+        object Result { get; set; }
 
         int Execute();
     }

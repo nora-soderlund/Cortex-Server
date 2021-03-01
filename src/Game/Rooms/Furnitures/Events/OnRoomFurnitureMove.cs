@@ -11,6 +11,7 @@ using Server.Game.Users.Furnitures;
 using Server.Game.Rooms;
 using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Actions;
+using Server.Game.Rooms.Furnitures.Actions;
 
 using Server.Game.Furnitures;
 
@@ -57,7 +58,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             client.Send(new SocketMessage("OnRoomFurnitureMove", roomFurniture.Id).Compose());
 
-            client.User.Room.Events.AddFurniture(roomFurniture, new GameRoomFurniturePositionAction(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
+            client.User.Room.Actions.Add(500, "OnRoomEntityUpdate", "furnitures", new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
 
             return 1;
         }
