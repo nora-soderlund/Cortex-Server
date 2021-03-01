@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -23,21 +24,19 @@ namespace Server.Game.Rooms.Actions {
 
         public Dictionary<int, Timer> Timers = new Dictionary<int, Timer>();
 
-        public Dictionary<int, Dictionary<string, Dictionary<string, List<IGameRoomAction>>>> Actions = new Dictionary<int, Dictionary<string, Dictionary<string, List<IGameRoomAction>>>>();
+        public Dictionary<int, Dictionary<int, Dictionary<string, IGameRoomEntityAction>>> EntityActions = new Dictionary<int, Dictionary<int, Dictionary<string, IGameRoomEntityAction>>>();
 
-        public void Add(int interval, string header, string subHeader, IGameRoomAction action) {
-            if(!Actions.ContainsKey(interval))
-                Actions.Add(interval, new Dictionary<string, Dictionary<string, List<IGameRoomAction>>>());
+        public void AddEntity(int id, int interval, IGameRoomEntityAction action) {
+            if(!EntityActions.ContainsKey(interval))
+                EntityActions.Add(interval, new Dictionary<int, Dictionary<string, IGameRoomEntityAction>>());
 
-            if(!Actions[interval].ContainsKey(header))
-                Actions[interval].Add(header, new Dictionary<string, List<IGameRoomAction>>());
+            if(!EntityActions[interval].ContainsKey(id))
+                EntityActions[interval].Add(id, new Dictionary<string, IGameRoomEntityAction>());
 
-            if(!Actions[interval][header].ContainsKey(subHeader))
-                Actions[interval][header].Add(subHeader, new List<IGameRoomAction>());
-            else
-                Actions[interval][header][subHeader].Clear();
+            if(EntityActions[interval][id].ContainsKey(action.Property))
+                EntityActions[interval][id].Remove(action.Property);
 
-            Actions[interval][header][subHeader].Add(action);
+            EntityActions[interval][id].Add(action.Property, action);
 
             Start(interval);
         }
@@ -62,48 +61,42 @@ namespace Server.Game.Rooms.Actions {
         }
 
         public void Elapse(int interval) {
-            if(!Actions.ContainsKey(interval))
-                return;
+            Dictionary<string, Dictionary<int, Dictionary<string, object>>> entities = new Dictionary<string, Dictionary<int, Dictionary<string, object>>>();
 
-            SocketMessage message = new SocketMessage();
+            foreach(KeyValuePair<int, Dictionary<string, IGameRoomEntityAction>> entityAction in EntityActions[interval]) {
+                for(int index = 0; index < entityAction.Value.Count; index++) {
+                    KeyValuePair<string, IGameRoomEntityAction> property = entityAction.Value.ElementAt(index);
 
-            foreach(KeyValuePair<string, Dictionary<string, List<IGameRoomAction>>> headers in Actions[interval]) {
-                Dictionary<string, List<object>> messages = new Dictionary<string, List<object>>();
+                    int result = property.Value.Execute();
 
-                foreach(KeyValuePair<string, List<IGameRoomAction>> subHeader in headers.Value) {
-                    messages.Add(subHeader.Key, new List<object>());
+                    if(result == 0) {
+                        entityAction.Value.Remove(property.Key);
 
-                    for(int index = 0; index < subHeader.Value.Count; index++) {
-                        int result = subHeader.Value[index].Execute();
-
-                        if(result == 0) {
-                            subHeader.Value.Remove(subHeader.Value[index]);
-
-                            continue;
-                        }
-
-                        messages[subHeader.Key].Add(subHeader.Value[index].Result);
-
-                        if(result == -1) {
-                            subHeader.Value.Remove(subHeader.Value[index]);
-                        }
+                        continue;
                     }
 
-                    if(messages[subHeader.Key].Count == 0)
-                        messages.Remove(subHeader.Key);
+                    if(!entities.ContainsKey(property.Value.Entity))
+                        entities.Add(property.Value.Entity, new Dictionary<int, Dictionary<string, object>>());
+
+                    if(!entities[property.Value.Entity].ContainsKey(entityAction.Key))
+                        entities[property.Value.Entity].Add(entityAction.Key, new Dictionary<string, object>());
+
+                    entities[property.Value.Entity][entityAction.Key][property.Value.Property] = property.Value.Result;
+
+                    if(result == -1) {
+                        entityAction.Value.Remove(property.Key);
+                    }
                 }
 
-                if(messages.Count != 0)
-                    message.Add(headers.Key, messages);
-
-                if(headers.Value.Count == 0)
-                    Actions[interval].Remove(headers.Key);
+                if(entityAction.Value.Count == 0)
+                    EntityActions[interval].Remove(entityAction.Key);
             }
 
-            Room.Send(message.Compose());
+            if(entities.Count != 0)
+                Room.Send(new SocketMessage("OnRoomEntityUpdate", entities).Compose());
 
-            if(Actions[interval].Count == 0) {
-                Actions.Remove(interval);
+            if(EntityActions[interval].Count == 0) {
+                EntityActions.Remove(interval);
                 
                 Timers[interval].Stop();
 

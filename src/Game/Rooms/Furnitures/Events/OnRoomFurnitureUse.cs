@@ -40,7 +40,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
             
             client.Send(new SocketMessage("OnRoomFurnitureUse", roomFurniture.Id).Compose());
 
-            client.User.Room.Actions.Add(500, "OnRoomEntityUpdate", "furnitures", new GameRoomFurnitureAnimation(roomFurniture, animation));
+            client.User.Room.Actions.AddEntity(roomFurniture.Id, 500, new GameRoomFurnitureAnimation(roomFurniture, animation));
 
             return 1;
         }

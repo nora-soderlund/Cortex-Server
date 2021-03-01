@@ -29,7 +29,7 @@ namespace Server.Game.Rooms.Map.Events {
             //client.User.Room.Events.User[roomUser] = new GameRoomUserEvent(roomUser, row, column);
 
             //client.User.Room.Events.AddUser(roomUser, new GameRoomUserPositionAction(roomUser, row, column));
-            client.User.Room.Actions.Add(500, "OnRoomEntityUpdate", "users", new GameRoomUserPosition(roomUser, row, column));
+            client.User.Room.Actions.AddEntity(roomUser.Id, 500, new GameRoomUserPosition(roomUser, row, column));
 
             return 1;
         }

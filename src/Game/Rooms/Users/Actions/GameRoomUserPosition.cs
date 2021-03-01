@@ -16,70 +16,70 @@ using Server.Game.Rooms.Furnitures;
 using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Users.Actions {
-    class GameRoomUserPosition : IGameRoomAction {
+    class GameRoomUserPosition : IGameRoomUserAction {
+        public string Entity => "users";
+
+        public string Property => "position";
+
         public object Result  { get; set; }
 
         public int Execute() {
-            if(User.Position.Row == Row && User.Position.Column == Column)
+            if(RoomUser.Position.Row == Row && RoomUser.Position.Column == Column)
                 return 0;
 
-            Position[] path = User.User.Room.Map.GetFloorPath(User.Position, new GameRoomPoint(Row, Column));
+            Position[] path = RoomUser.User.Room.Map.GetFloorPath(RoomUser.Position, new GameRoomPoint(Row, Column));
 
             if(path.Length < 2)
                 return 0;
 
-            double depth = User.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
+            double depth = RoomUser.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
 
-            GameRoomFurniture furniture = User.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
+            GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
 
             if(furniture != null)
                 depth = furniture.Position.Depth + furniture.GetDimension().Depth;
 
-            if((User.Position.Row - 1 == path[1].X) && (User.Position.Column == path[1].Y))
-                User.Position.Direction = 0;
-            else if((User.Position.Row - 1 == path[1].X) && (User.Position.Column + 1 == path[1].Y))
-                User.Position.Direction = 1;
-            else if((User.Position.Row == path[1].X) && (User.Position.Column + 1 == path[1].Y))
-                User.Position.Direction = 2;
-            else if((User.Position.Row + 1 == path[1].X) && (User.Position.Column + 1 == path[1].Y))
-                User.Position.Direction = 3;
-            else if((User.Position.Row + 1 == path[1].X) && (User.Position.Column == path[1].Y))
-                User.Position.Direction = 4;
-            else if((User.Position.Row + 1 == path[1].X) && (User.Position.Column - 1 == path[1].Y))
-                User.Position.Direction = 5;
-            else if((User.Position.Row == path[1].X) && (User.Position.Column - 1 == path[1].Y))
-                User.Position.Direction = 6;
-            else if((User.Position.Row - 1 == path[1].X) && (User.Position.Column - 1 == path[1].Y))
-                User.Position.Direction = 7;
+            if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
+                RoomUser.Position.Direction = 0;
+            else if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column + 1 == path[1].Y))
+                RoomUser.Position.Direction = 1;
+            else if((RoomUser.Position.Row == path[1].X) && (RoomUser.Position.Column + 1 == path[1].Y))
+                RoomUser.Position.Direction = 2;
+            else if((RoomUser.Position.Row + 1 == path[1].X) && (RoomUser.Position.Column + 1 == path[1].Y))
+                RoomUser.Position.Direction = 3;
+            else if((RoomUser.Position.Row + 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
+                RoomUser.Position.Direction = 4;
+            else if((RoomUser.Position.Row + 1 == path[1].X) && (RoomUser.Position.Column - 1 == path[1].Y))
+                RoomUser.Position.Direction = 5;
+            else if((RoomUser.Position.Row == path[1].X) && (RoomUser.Position.Column - 1 == path[1].Y))
+                RoomUser.Position.Direction = 6;
+            else if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column - 1 == path[1].Y))
+                RoomUser.Position.Direction = 7;
 
-            User.Position.Row = path[1].X;
-            User.Position.Column = path[1].Y;
-            User.Position.Depth = depth;
+            RoomUser.Position.Row = path[1].X;
+            RoomUser.Position.Column = path[1].Y;
+            RoomUser.Position.Depth = depth;
 
             Result = new {
-                id = User.Id,
-                
-                position = new {
-                    row = User.Position.Row,
-                    column = User.Position.Column,
-                    depth = User.Position.Depth,
-                    direction = User.Position.Direction,
-                    speed = Speed
-                }
+                row = RoomUser.Position.Row,
+                column = RoomUser.Position.Column,
+                depth = RoomUser.Position.Depth,
+                direction = RoomUser.Position.Direction,
+                speed = Speed
             };
 
             return 1;
         }
 
-        public GameRoomUser User { get; set; }
+        public GameRoomUser RoomUser { get; set; }
 
         public int Speed;
 
         public int Row;
         public int Column;
 
-        public GameRoomUserPosition(GameRoomUser user, int row, int column, int speed = 500) {
-            User = user;
+        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, int speed = 500) {
+            RoomUser = roomUser;
 
             Speed = speed;
 
