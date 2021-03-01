@@ -23,6 +23,12 @@ namespace Server.Game.Rooms {
         
         [JsonIgnore]
         public int User;
+        
+        [JsonProperty("title")]
+        public string Title;
+        
+        [JsonProperty("description")]
+        public string Description;
 
         [JsonIgnore]
         public GameRoomNavigatorMessage Navigator;
@@ -43,6 +49,11 @@ namespace Server.Game.Rooms {
             Id = room.GetInt32("id");
             
             User = room.GetInt32("user");
+            
+            Title = room.GetString("title");
+
+            if(room["description"] != DBNull.Value)
+                Description = room.GetString("description");
 
             Navigator = GameRoomNavigator.Rooms.FirstOrDefault(x => x.Id == Id);
 

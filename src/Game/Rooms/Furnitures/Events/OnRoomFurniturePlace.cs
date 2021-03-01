@@ -53,6 +53,8 @@ namespace Server.Game.Rooms.Furnitures.Events {
                 depth = stackedFurniture.Position.Depth + stackedFurniture.GetDimension().Depth;
             }
 
+            depth += 0.001;
+
             using MySqlConnection connection = new MySqlConnection(Program.Connection);
 
             connection.Open();
