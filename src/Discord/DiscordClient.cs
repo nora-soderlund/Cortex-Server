@@ -7,14 +7,20 @@ using Discord.WebSocket;
 
 using Server.Events;
 
+using Server.Discord.Sandbox;
+
 namespace Server.Discord {
     class DiscordClient {
         public readonly DiscordSocketClient Client;
+
+        public DiscordSandbox Sandbox;
 
         public DiscordClient() {
             Client = new DiscordSocketClient();
 
             Client.Ready += ReadyAsync;
+
+            Sandbox = new DiscordSandbox(Client);
         }
 
         public void Start() {
