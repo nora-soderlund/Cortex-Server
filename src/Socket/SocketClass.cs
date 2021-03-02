@@ -98,6 +98,18 @@ namespace Server.Socket {
                 return;
             }
 
+            SocketClient previousClient = clients.Find(x => x.User.Id == id);
+
+            if(previousClient != null) {
+                previousClient.Connection.Close();
+
+                socket.Send(new SocketMessage("OnSocketClose", "USER_DUPLICATE").Compose());
+
+                socket.Close();
+
+                return;
+            }
+
             GameUser user = new GameUser(userReader);
 
             SocketClient client = new SocketClient(socket, user);
