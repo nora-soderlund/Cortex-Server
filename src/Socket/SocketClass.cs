@@ -70,7 +70,9 @@ namespace Server.Socket {
                 return;
             }
 
-            if(keyReader.GetString("address") != socket.ConnectionInfo.ClientIpAddress) {
+            string address = keyReader.GetString("address");
+
+            if(address != "Discord" && address != socket.ConnectionInfo.ClientIpAddress) {
                 socket.Send(new SocketMessage("OnSocketClose", "USER_KEY_UNAUTHORIZED").Compose());
 
                 socket.Close();
@@ -78,7 +80,7 @@ namespace Server.Socket {
                 return;
             }
 
-            int id = keyReader.GetInt32("id");
+            long id = keyReader.GetInt64("user");
 
             keyReader.Close();
 
