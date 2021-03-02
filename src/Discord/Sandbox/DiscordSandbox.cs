@@ -129,7 +129,7 @@ namespace Server.Discord.Sandbox {
                         await message.Author.SendMessageAsync("", false, new EmbedBuilder() {
                             Title = ":white_check_mark: Single-Sign-On Key",
 
-                            Description = "https://sandbox.project-cortex.net/" + key + "/\r\nMake sure to not share this key with anyone as it will easily be compromised!",
+                            Description = "https://sandbox.project-cortex.net/" + key + "\r\nMake sure to not share this key with anyone as it will easily be compromised!",
 
                             Color = Color.DarkRed
                         }.Build());
