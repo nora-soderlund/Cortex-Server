@@ -25,9 +25,7 @@ namespace Server.Game.Rooms.Settings {
                     return 0;
 
                 if(data["map"] != null) {
-                    client.User.Room.Map = new Map.GameRoomMap(client.User.Room, data["map"]["floor"].ToString(), client.User.Room.Map.Door);
-
-                    client.Send(new SocketMessage("OnRoomSettingsUpdate", true).Compose());
+                    client.User.Room.Map = new Map.GameRoomMap(client.User.Room, data["map"]["floor"].ToString(), client.User.Room.Map.Door);   
 
                     client.User.Room.Send(new SocketMessage("OnRoomSettingsUpdate", new { map = client.User.Room.Map }).Compose());
                 }
