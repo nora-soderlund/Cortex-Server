@@ -20,16 +20,34 @@ namespace Server.Game.Rooms.Settings {
             public int Execute(SocketClient client, JToken data) {
                 if(client.User.Room == null)
                     return 0;
+                    
+                if(client.User.Id != client.User.Room.User)
+                    return 0;
 
                 if(data["map"] != null) {
-                    if(client.User.Id != client.User.Room.User)
-                        return 0;
-
                     client.User.Room.Map = new Map.GameRoomMap(client.User.Room, data["map"]["floor"].ToString(), client.User.Room.Map.Door);
 
                     client.Send(new SocketMessage("OnRoomSettingsUpdate", true).Compose());
 
-                    client.User.Room.Send(new SocketMessage("OnRoomMapUpdate", client.User.Room.Map).Compose());
+                    client.User.Room.Send(new SocketMessage("OnRoomSettingsUpdate", new { map = client.User.Room.Map }).Compose());
+                }
+
+                if(data["title"] != null) {
+                    string title = data["title"].ToString();
+
+                    if(title.Length == 0)
+                        title = "No room title...";
+
+                    client.User.Room.SetTitle(title);
+                }
+
+                if(data["description"] != null) {
+                    string description = data["description"].ToString();
+
+                    if(description.Length == 0)
+                        description = "No room description...";
+
+                    client.User.Room.SetDescription(description);
                 }
 
                 return 1;

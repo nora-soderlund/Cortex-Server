@@ -116,5 +116,41 @@ namespace Server.Game.Rooms {
                 roomUser.User.Client.Send(message);
             }
         }
+
+        public void SetTitle(string title) {
+            Title = title;
+
+            Send(new SocketMessage("OnRoomSettingsUpdate", new { title }).Compose());
+
+            Navigator.Title = Title;
+
+            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                connection.Open();
+
+                using(MySqlCommand command = new MySqlCommand("UPDATE rooms SET title = @title WHERE id = @id", connection)) {
+                    command.Parameters.AddWithValue("@id", Id);
+                    command.Parameters.AddWithValue("@title", Title);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void SetDescription(string description) {
+            Description = description;
+
+            Send(new SocketMessage("OnRoomSettingsUpdate", new { description }).Compose());
+
+            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                connection.Open();
+
+                using(MySqlCommand command = new MySqlCommand("UPDATE rooms SET description = @description WHERE id = @id", connection)) {
+                    command.Parameters.AddWithValue("@id", Id);
+                    command.Parameters.AddWithValue("@description", Description);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
