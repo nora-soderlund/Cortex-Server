@@ -13,7 +13,6 @@ using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Actions;
 using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Navigator;
-using Server.Game.Rooms.Navigator.Messages;
 
 using Server.Socket.Messages;
 
@@ -25,14 +24,14 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public int User;
         
+        [JsonIgnore]
+        public int Access;
+        
         [JsonProperty("title")]
         public string Title;
         
         [JsonProperty("description")]
         public string Description;
-
-        [JsonIgnore]
-        public GameRoomNavigatorMessage Navigator;
 
         [JsonIgnore]
         public List<GameRoomUser> Users = new List<GameRoomUser>();
@@ -46,17 +45,30 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public GameRoomActions Actions;
 
+        [JsonIgnore]
+        public GameRoomNavigator Navigator;
+
         public GameRoom(MySqlDataReader room) {
             Id = room.GetInt32("id");
             
             User = room.GetInt32("user");
+
+            Access = room.GetInt32("access");
             
             Title = room.GetString("title");
 
+            Navigator = GameRoomManager.Navigator.Find(x => x.Id == Id);
+
+            if(Navigator == null) {
+                Navigator = new GameRoomNavigator(this);
+
+                GameRoomManager.Navigator.Add(Navigator);
+            }
+
+            Navigator.Room = this;
+
             if(room["description"] != DBNull.Value)
                 Description = room.GetString("description");
-
-            Navigator = GameRoomNavigator.Rooms.FirstOrDefault(x => x.Id == Id);
 
             Map = new GameRoomMap(this, room.GetString("map"), new GameRoomPoint(room.GetInt32("door_row"), room.GetInt32("door_column"), 0, room.GetInt32("door_direction")));
 
@@ -122,7 +134,7 @@ namespace Server.Game.Rooms {
 
             Send(new SocketMessage("OnRoomSettingsUpdate", new { title }).Compose());
 
-            Navigator.Title = Title;
+            Navigator.Title = title;
 
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();

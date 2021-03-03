@@ -14,7 +14,6 @@ using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Furnitures;
 using Server.Game.Rooms.Navigator;
-using Server.Game.Rooms.Navigator.Messages;
 
 using Server.Socket.Messages;
 

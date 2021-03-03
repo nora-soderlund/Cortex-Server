@@ -13,7 +13,6 @@ using Server.Socket.Messages;
 using Server.Socket.Events;
 
 using Server.Game.Rooms.Navigator;
-using Server.Game.Rooms.Navigator.Messages;
 
 namespace Server.Game.Rooms.Navigator.Events {
     class OnRoomNavigatorEnter : ISocketEvent {
@@ -22,12 +21,12 @@ namespace Server.Game.Rooms.Navigator.Events {
         public int Execute(SocketClient client, JToken data) {
             int id = Int32.Parse(data.ToString());
 
-            GameRoomNavigatorMessage roomNavigatorMessage = GameRoomNavigator.Rooms.FirstOrDefault(x => x.Id == id);
+            GameRoomNavigator roomNavigator = GameRoomManager.Navigator.FirstOrDefault(x => x.Id == id);
 
-            if(roomNavigatorMessage == null)
+            if(roomNavigator == null)
                 return 0;
 
-            switch((NavigatorRoomAccess)roomNavigatorMessage.Access) {
+            switch((NavigatorRoomAccess)roomNavigator.Access) {
                 case NavigatorRoomAccess.Public: {
                     GameRoomManager.AddUser(id, client.User);
 

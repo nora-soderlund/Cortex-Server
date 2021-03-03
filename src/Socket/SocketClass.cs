@@ -121,10 +121,16 @@ namespace Server.Socket {
                 
                 client.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
 
-                Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
+                if(Program.Discord != null)
+                    Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
-                Program.Discord.Exception(exception);
+                if(Program.Discord != null)
+                    Program.Discord.Exception(exception);
+
+                Console.WriteLine(exception.Message);
+
+                Console.WriteLine(exception.StackTrace);
             }
         }
 
@@ -165,7 +171,12 @@ namespace Server.Socket {
                 }
             }
             catch(Exception exception) {
-                Program.Discord.Exception(exception);
+                if(Program.Discord != null)
+                    Program.Discord.Exception(exception);
+
+                Console.WriteLine(exception.Message);
+
+                Console.WriteLine(exception.StackTrace);
             }
         }
 
@@ -186,10 +197,16 @@ namespace Server.Socket {
 
                 clients.Remove(client);
 
-                Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
+                if(Program.Discord != null)
+                    Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
-                Program.Discord.Exception(exception);
+                if(Program.Discord != null)
+                    Program.Discord.Exception(exception);
+
+                Console.WriteLine(exception.Message);
+
+                Console.WriteLine(exception.StackTrace);
             }
         }
     }

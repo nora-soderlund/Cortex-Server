@@ -6,61 +6,117 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
+using Newtonsoft.Json;
+
 using Server.Events;
 
 using Server.Socket.Clients;
 using Server.Socket.Messages;
 using Server.Socket.Events;
 
-using Server.Game.Rooms.Navigator.Messages;
-
 namespace Server.Game.Rooms.Navigator {
-    class GameRoomNavigator : IInitializationEvent {
-        public static List<GameRoomNavigatorMessage> Rooms = new List<GameRoomNavigatorMessage>();
+    class GameRoomNavigator {
+        [JsonProperty("id")]
+        public int Id;
 
-        public void OnInitialization() {
-            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+        [JsonProperty("title")]
+        public string Title;
 
-            connection.Open();
+        [JsonIgnore]
+        public int Access;
 
-            using MySqlCommand command = new MySqlCommand("SELECT * FROM rooms", connection);
+        [JsonIgnore]
+        public long User;
 
-            using MySqlDataReader reader = command.ExecuteReader();
+        [JsonIgnore]
+        public GameRoom Room;
 
-            while(reader.Read())
-                Rooms.Add(new GameRoomNavigatorMessage(reader));
+        public GameRoomNavigator(MySqlDataReader reader) {
+            Id = reader.GetInt32("id");
 
-            Program.WriteLine("Read " + Rooms.Count + " rooms to the navigator memory...");
+            Title = reader.GetString("title");
+
+            User = reader.GetInt64("user");
+
+            Access = reader.GetInt32("access");
         }
 
-        public static void UpdateRooms() {
-            Rooms = Rooms.OrderByDescending(x => x.Users).ToList();
+        public GameRoomNavigator(GameRoom room) {
+            Room = room;
+            
+            Id = room.Id;
+
+            Title = room.Title;
+
+            User = room.User;
+
+            Access = room.Access;
         }
+    }
 
-        class OnRoomNavigatorUpdate : ISocketEvent {
-            public string Event => "OnRoomNavigatorUpdate";
+    class OnRoomNavigatorUpdate : ISocketEvent {
+        public string Event => "OnRoomNavigatorUpdate";
 
-            public int Execute(SocketClient client, JToken data) {
-                switch(data.ToString()) {
-                    case "all_rooms": {
-                        client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
-                            popular = Rooms.OrderByDescending(x => x.Users).Take(20)
-                        }).Compose());
+        public int Execute(SocketClient client, JToken data) {
+            switch(data.ToString()) {
+                case "all_rooms": {
+                    List<object> popular = new List<object>();
 
-                        return 1;
+                    foreach(GameRoomNavigator navigator in GameRoomManager.Navigator.FindAll(x => x.Room != null && x.Room.Users.Count != 0)) {
+                        if(navigator.Room == null) {
+                            popular.Add(new {
+                                id = navigator.Id,
+                                title = navigator.Title
+                            });
+
+                            continue;
+                        }
+
+                        popular.Add(new {
+                            id = navigator.Id,
+                            title = navigator.Title,
+                            
+                            users = navigator.Room.Users.Count
+                        });
                     }
 
-                    case "my_rooms": {
-                        client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
-                            owned = Rooms.Where(x => x.User == client.User.Id).ToList()
-                        }).Compose());
+                    client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
+                        popular
+                    }).Compose());
 
-                        return 1;
-                    }
+                    return 1;
                 }
 
-                return 0;
+                case "my_rooms": {
+                    List<object> owned = new List<object>();
+
+                    foreach(GameRoomNavigator navigator in GameRoomManager.Navigator.FindAll(x => x.User == client.User.Id)) {
+                        if(navigator.Room == null) {
+                            owned.Add(new {
+                                id = navigator.Id,
+                                title = navigator.Title
+                            });
+
+                            continue;
+                        }
+
+                        owned.Add(new {
+                            id = navigator.Id,
+                            title = navigator.Title,
+                            
+                            users = navigator.Room.Users.Count
+                        });
+                    }
+
+                    client.Send(new SocketMessage("OnRoomNavigatorUpdate", new {
+                        owned
+                    }).Compose());
+
+                    return 1;
+                }
             }
+
+            return 0;
         }
     }
 }
