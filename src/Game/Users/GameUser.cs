@@ -19,6 +19,9 @@ namespace Server.Game.Users {
 
         [JsonIgnore]
         public SocketClient Client;
+        
+        [JsonIgnore]
+        public string Name;
 
         [JsonProperty("home")]
         public int? Home;
@@ -36,6 +39,8 @@ namespace Server.Game.Users {
             Id = reader.GetInt32("id");
 
             Figure = reader.GetString("figure");
+
+            Name = reader.GetString("name");
 
             if((Home = reader.GetInt32("home")) == 0)
                 Home = null;

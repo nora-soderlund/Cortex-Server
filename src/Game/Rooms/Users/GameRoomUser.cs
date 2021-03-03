@@ -14,6 +14,9 @@ namespace Server.Game.Rooms.Users {
         [JsonIgnore]
         public GameUser User;
 
+        [JsonProperty("name")]
+        public string Name;
+
         [JsonProperty("position")]
         public GameRoomPoint Position;
 
@@ -36,6 +39,8 @@ namespace Server.Game.Rooms.Users {
             Id = user.Id;
             
             User = user;
+
+            Name = user.Name;
 
             Position = new GameRoomPoint();
 
