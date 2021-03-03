@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 
 using MySql.Data.MySqlClient;
+
+using Newtonsoft.Json.Linq;
 
 using Server.Socket;
 using Server.Events;
@@ -14,8 +18,10 @@ using Server.Discord;
 namespace Server {
     class Program {
         static private SocketClass socket;
+
+        public static JObject Config = JObject.Parse(File.ReadAllText(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/Server.json"));
         
-        public static string Connection = "server=127.0.0.1;uid=root;database=cortex";
+        public static string Connection = "server=" + Config["database"]["host"].ToString() + ";uid=" + Config["database"]["user"].ToString() + ";database=" + Config["database"]["database"].ToString() + "";
 
         public static DiscordClient Discord;
 
@@ -54,10 +60,12 @@ namespace Server {
             socket.Open();
 
 
-            Discord = new DiscordClient();
+            if(Config["discord"]["enabled"].ToObject<bool>()) {
+                Discord = new DiscordClient();
 
-            Thread discord = new Thread(Discord.Start);
-            discord.Start();
+                Thread discord = new Thread(Discord.Start);
+                discord.Start();
+            }
 
             while(true) {
                 string input = Console.ReadLine();

@@ -17,7 +17,7 @@ using Server.Game.Users;
 
 namespace Server.Socket {
     class SocketClass {
-        public readonly WebSocketServer server = new WebSocketServer("ws://0.0.0.0:81");
+        public readonly WebSocketServer server = new WebSocketServer("ws://" + Program.Config["socket"]["address"].ToString() + ":" + Program.Config["socket"]["port"].ToString());
 
         public List<SocketClient> clients = new List<SocketClient>();
 
