@@ -16,11 +16,14 @@ using Server.Game.Rooms.Navigator;
 
 using Server.Socket.Messages;
 using Server.Socket;
+using Server.Socket.Clients;
 
 namespace Server.Game {
     class Game {
         public static GameUser GetUser(long id) {
-            return Program.Socket.clients.Find(x => x.User != null && x.User.Id == id).User;
+            SocketClient client = Program.Socket.clients.FindAll(x => x.User != null).Find(x => x.User.Id == id);
+
+            return client.User;
         }
     }
 }
