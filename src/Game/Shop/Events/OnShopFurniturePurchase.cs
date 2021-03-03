@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 using Newtonsoft.Json.Linq;
 
@@ -42,6 +44,8 @@ namespace Server.Game.Shop.Events {
             client.User.Furnitures.Add(GameFurnitureManager.GetGameUserFurniture((int)command.LastInsertedId));
 
             client.Send(new SocketMessage("OnShopFurniturePurchase", true).Compose());
+
+            client.Send(new SocketMessage("OnUserFurnitureUpdate", client.User.GetFurnitureMessages()).Compose());
 
             return 1;
         }

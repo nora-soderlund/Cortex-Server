@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
@@ -55,6 +56,30 @@ namespace Server.Game.Users {
             while(reader.Read()) {
                 Furnitures.Add(GameFurnitureManager.GetGameUserFurniture(reader.GetInt32("id")));
             }
+        }
+
+        public Dictionary<string, Dictionary<string, int>> GetFurnitureMessages() {
+            Dictionary<string, Dictionary<string, int>> furnitures = new Dictionary<string, Dictionary<string, int>>();
+
+            foreach(GameUserFurniture furniture in Furnitures) {
+                if(!furnitures.ContainsKey(furniture.Furniture.Id))
+                    furnitures.Add(furniture.Furniture.Id, new Dictionary<string, int>());
+
+                if(furniture.Room != 0) {
+                    if(!furnitures[furniture.Furniture.Id].ContainsKey("room"))
+                        furnitures[furniture.Furniture.Id].Add("room", 0);
+
+                    furnitures[furniture.Furniture.Id]["room"]++;
+                }
+                else {
+                    if(!furnitures[furniture.Furniture.Id].ContainsKey("inventory"))
+                        furnitures[furniture.Furniture.Id].Add("inventory", 0);
+
+                    furnitures[furniture.Furniture.Id]["inventory"]++;
+                }
+            }
+
+            return furnitures;
         }
     }
 }
