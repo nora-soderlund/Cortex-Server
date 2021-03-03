@@ -27,6 +27,20 @@ namespace Server.Discord {
             MainAsync().GetAwaiter().GetResult();
         }
 
+        public Task Exception(Exception exception) {
+            SocketTextChannel channel = Client.GetGuild(713415610264191006).GetTextChannel(816508223611076628);
+
+            channel.SendMessageAsync("", false, new EmbedBuilder() {
+                Title = ":x: " + exception.Message,
+
+                Description = exception.StackTrace,
+
+                Color = Color.DarkRed
+            }.Build());
+
+            return Task.CompletedTask;
+        }
+
         public async Task MainAsync()
         {
             // Tokens should be considered secret data, and never hard-coded.
