@@ -77,6 +77,8 @@ namespace Server.Game.Rooms {
             if(roomUser == null)
                 return;
 
+            user.Room.Send(new SocketMessage("OnRoomEntityRemove", new { users = roomUser.Id }).Compose());
+
             user.Room.Users.Remove(roomUser);
 
             user.Room = null;
