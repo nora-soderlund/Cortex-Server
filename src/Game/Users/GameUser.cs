@@ -58,10 +58,10 @@ namespace Server.Game.Users {
             }
         }
 
-        public Dictionary<string, Dictionary<string, int>> GetFurnitureMessages() {
+        public Dictionary<string, Dictionary<string, int>> GetFurnitureMessages(string id = "") {
             Dictionary<string, Dictionary<string, int>> furnitures = new Dictionary<string, Dictionary<string, int>>();
 
-            foreach(GameUserFurniture furniture in Furnitures) {
+            foreach(GameUserFurniture furniture in (id.Length == 0)?(Furnitures):(Furnitures.Where(x => x.Furniture.Id == id))) {
                 if(!furnitures.ContainsKey(furniture.Furniture.Id))
                     furnitures.Add(furniture.Furniture.Id, new Dictionary<string, int>());
 

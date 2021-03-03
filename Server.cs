@@ -17,7 +17,7 @@ using Server.Discord;
 
 namespace Server {
     class Program {
-        static private SocketClass socket;
+        static public SocketClass Socket;
 
         public static JObject Config = JObject.Parse(File.ReadAllText(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/Server.json"));
         
@@ -45,19 +45,19 @@ namespace Server {
                 instance.OnInitialization();
             }
 
-            socket = new SocketClass();
+            Socket = new SocketClass();
 
             foreach (var instance in System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(a => a.GetConstructor(Type.EmptyTypes) != null).Select(Activator.CreateInstance).OfType<ISocketEvent>()) {
                 if(instance.Event.Length == 0)
                     continue;
                 
-                if(!socket.events.ContainsKey(instance.Event))
-                    socket.events[instance.Event] = new List<ISocketEvent>();
+                if(!Socket.events.ContainsKey(instance.Event))
+                    Socket.events[instance.Event] = new List<ISocketEvent>();
 
-                socket.events[instance.Event].Add(instance);
+                Socket.events[instance.Event].Add(instance);
             }
 
-            socket.Open();
+            Socket.Open();
 
 
             if(Config["discord"]["enabled"].ToObject<bool>()) {

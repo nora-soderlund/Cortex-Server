@@ -45,7 +45,7 @@ namespace Server.Game.Shop.Events {
 
             client.Send(new SocketMessage("OnShopFurniturePurchase", true).Compose());
 
-            client.Send(new SocketMessage("OnUserFurnitureUpdate", client.User.GetFurnitureMessages()).Compose());
+            client.Send(new SocketMessage("OnUserFurnitureUpdate", client.User.GetFurnitureMessages(shopFurniture.Furniture.Id)).Compose());
 
             return 1;
         }

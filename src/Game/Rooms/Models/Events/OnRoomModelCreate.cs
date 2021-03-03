@@ -45,7 +45,7 @@ namespace Server.Game.Rooms.Models.Events {
 
                     client.Send(new SocketMessage("OnRoomModelCreate", command.LastInsertedId).Compose());
 
-                    Game.Rooms.GameRoomManager.AddUser(command.LastInsertedId, client.User);
+                    GameRoomManager.AddUser(command.LastInsertedId, client.User);
                 }
             }
 

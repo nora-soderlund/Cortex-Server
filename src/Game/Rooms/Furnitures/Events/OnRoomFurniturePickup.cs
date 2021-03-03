@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
+using Server.Game;
 using Server.Game.Users;
 using Server.Game.Users.Furnitures;
 
@@ -56,6 +57,11 @@ namespace Server.Game.Rooms.Furnitures.Events {
                     command.ExecuteNonQuery();
                 }
             }
+
+            GameUser owner = Game.GetUser(roomFurniture.UserFurniture.User);
+
+            if(owner != null)
+                owner.Client.Send(new SocketMessage("OnUserFurnitureUpdate", owner.GetFurnitureMessages(roomFurniture.UserFurniture.Furniture.Id)).Compose());
 
             return 1;
         }
