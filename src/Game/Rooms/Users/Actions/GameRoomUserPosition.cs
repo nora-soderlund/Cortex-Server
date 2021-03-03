@@ -58,7 +58,7 @@ namespace Server.Game.Rooms.Users.Actions {
 
             RoomUser.Position.Row = path[1].X;
             RoomUser.Position.Column = path[1].Y;
-            RoomUser.Position.Depth = depth;
+            RoomUser.Position.Depth = depth + 0.2;
 
             Result = new {
                 row = RoomUser.Position.Row,
