@@ -42,7 +42,7 @@ namespace Server.Game.Rooms.Users.Actions {
                 Result = new {
                     row = RoomUser.Position.Row,
                     column = RoomUser.Position.Column,
-                    depth = RoomUser.Position.Depth - .5,
+                    depth = RoomUser.Position.Depth + .5,
                     speed = 0,
 
                     direction = roomFurniture.Position.Direction,
@@ -62,8 +62,14 @@ namespace Server.Game.Rooms.Users.Actions {
 
             GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
 
-            if(furniture != null)
-                depth = furniture.Position.Depth + furniture.GetDimension().Depth;
+            if(furniture != null) {
+                depth = furniture.Position.Depth;
+
+                if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
+                    depth += furniture.GetDimension().Depth;
+                else
+                    depth += .5;
+            }
 
             if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
                 RoomUser.Position.Direction = 0;
