@@ -8,6 +8,8 @@ using RoyT.AStar;
 
 using MySql.Data.MySqlClient;
 
+using Server.Game.Furnitures;
+
 using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Actions;
@@ -24,8 +26,32 @@ namespace Server.Game.Rooms.Users.Actions {
         public object Result  { get; set; }
 
         public int Execute() {
-            if(RoomUser.Position.Row == Row && RoomUser.Position.Column == Column)
-                return 0;
+            if(RoomUser.Position.Row == Row && RoomUser.Position.Column == Column) {
+                GameRoomFurniture roomFurniture = RoomUser.User.Room.Map.GetFloorFurniture(Row, Column);
+
+                if(roomFurniture == null)
+                    return 0;
+
+                if(!roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
+                    return 0;
+
+                
+                if(!RoomUser.Actions.Contains("Sit"))
+                    RoomUser.Actions.Add("Sit");
+
+                Result = new {
+                    row = RoomUser.Position.Row,
+                    column = RoomUser.Position.Column,
+                    depth = RoomUser.Position.Depth - .5,
+                    speed = 0,
+
+                    direction = roomFurniture.Position.Direction,
+
+                    actions = RoomUser.Actions
+                };
+
+                return -1;
+            }
 
             Position[] path = RoomUser.User.Room.Map.GetFloorPath(RoomUser.Position, new GameRoomPoint(Row, Column));
 
@@ -60,13 +86,21 @@ namespace Server.Game.Rooms.Users.Actions {
             RoomUser.Position.Column = path[1].Y;
             RoomUser.Position.Depth = depth;
 
-            Result = new {
-                row = RoomUser.Position.Row,
-                column = RoomUser.Position.Column,
-                depth = RoomUser.Position.Depth,
-                direction = RoomUser.Position.Direction,
-                speed = Speed
-            };
+            Dictionary<string, object> result = new Dictionary<string, object>();
+
+            result.Add("row", RoomUser.Position.Row);
+            result.Add("column", RoomUser.Position.Column);
+            result.Add("depth", RoomUser.Position.Depth);
+            result.Add("direction", RoomUser.Position.Direction);
+            result.Add("speed", Speed);
+
+            if(RoomUser.Actions.Contains("Sit")) {
+                RoomUser.Actions.Remove("Sit");
+
+                result.Add("actions", RoomUser.Actions);
+            }
+
+            Result = result;
 
             return 1;
         }

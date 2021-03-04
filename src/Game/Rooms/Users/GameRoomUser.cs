@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 using Server.Game.Users;
+using Server.Game.Rooms.Users.Actions;
 using Server.Game.Rooms.Actions;
+
+using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Users {
     class GameRoomUser {
@@ -25,15 +28,6 @@ namespace Server.Game.Rooms.Users {
 
         [JsonProperty("actions")]
         public List<string> Actions = new List<string>();
-
-        public int AddAction(string action) {
-            if(Actions.Contains(action))
-                return 0;
-
-            //User.Room.Events.AddUser(this, new GameRoomUserAction(this, action, GameRoomUserActionType.Add));
-
-            return 1;
-        }
 
         public GameRoomUser(GameUser user) {
             Id = user.Id;
