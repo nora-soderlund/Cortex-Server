@@ -42,7 +42,7 @@ namespace Server.Game.Rooms.Users.Actions {
                 Result = new {
                     row = RoomUser.Position.Row,
                     column = RoomUser.Position.Column,
-                    depth = RoomUser.Position.Depth + .5,
+                    depth = RoomUser.Position.Depth,
                     speed = 0,
 
                     direction = roomFurniture.Position.Direction,
