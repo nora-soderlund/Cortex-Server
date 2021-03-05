@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using Server.Game.Users;
 using Server.Game.Users.Furnitures;
 using Server.Game.Rooms;
+using Server.Game.Shop;
 using Server.Game.Furnitures;
 using Server.Game.Rooms.Users;
 
@@ -44,6 +45,40 @@ namespace Server.Game.Users.Events {
             }
 
             client.Send(new SocketMessage("Temp_DevFurniUpdate", true).Compose());
+
+            return 1;
+        }
+    }
+
+    class Temp_DevShopUpdate : ISocketEvent {
+        public string Event => "Temp_DevShopUpdate";
+
+        public int Execute(SocketClient client, JToken data) {
+            int id = data["id"].ToObject<int>();
+            int icon = data["icon"].ToObject<int>();
+
+            GameShopPage page = GameShop.Pages.Find(x => x.Id == id);
+
+            if(page == null)
+                return 0;
+
+            if(Program.Discord != null)
+                Program.Discord.Shop(client.User, page, icon);
+
+            page.Icon = icon;
+
+            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                connection.Open();
+
+                using(MySqlCommand command = new MySqlCommand("UPDATE shop SET icon = @icon WHERE id = @id", connection)) {
+                    command.Parameters.AddWithValue("@id", page.Id);
+                    command.Parameters.AddWithValue("@icon", page.Icon);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            client.Send(new SocketMessage("Temp_DevShopUpdate", true).Compose());
 
             return 1;
         }
