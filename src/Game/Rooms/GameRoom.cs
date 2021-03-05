@@ -46,6 +46,9 @@ namespace Server.Game.Rooms {
         public GameRoomActions Actions;
 
         [JsonIgnore]
+        public List<int> Rights;
+
+        [JsonIgnore]
         public GameRoomNavigator Navigator;
 
         public GameRoom(MySqlDataReader room) {
@@ -87,6 +90,14 @@ namespace Server.Game.Rooms {
                     }
                 }
             }
+
+            using(MySqlCommand command = new MySqlCommand("SELECT * FROM room_rights WHERE room = @room", connection)) {
+                command.Parameters.AddWithValue("@room", Id);
+
+                using(MySqlDataReader reader = command.ExecuteReader())
+                    while(reader.Read())
+                        Rights.Add(reader.GetInt32("user"));
+            }
         }
 
         public void AddUser(GameUser user) {
@@ -108,7 +119,12 @@ namespace Server.Game.Rooms {
 
             message = new SocketMessage();
 
-            message.Add("OnRoomEnter", this);
+            message.Add("OnRoomEnter", new {
+                room = this,
+                user = new {
+                    rights = roomUser.HasRights()
+                }
+            });
 
             Dictionary<string, object> properties = new Dictionary<string, object>();
 
@@ -121,6 +137,10 @@ namespace Server.Game.Rooms {
             message.Add("OnRoomEntityAdd", properties);
 
             user.Client.Send(message.Compose());
+        }
+
+        public GameRoomUser GetUser(int id) {
+            return Users.Find(x => x.Id == id);
         }
 
         public void Send(string message) {

@@ -26,6 +26,11 @@ namespace Server.Game.Rooms.Furnitures.Events {
         public int Execute(SocketClient client, JToken data) {
             if(client.User.Room == null)
                 return 0;
+
+            GameRoomUser roomUser = client.User.Room.GetUser(client.User.Id);
+
+            if(!roomUser.HasRights())
+                return 0;
             
             int id = data["id"].ToObject<int>();
             

@@ -42,5 +42,15 @@ namespace Server.Game.Rooms.Users {
 
             //User.Room.Events.AddUser(this, new GameRoomUserAction(this, "GestureAngry", GameRoomUserActionType.Add));
         }
+
+        public bool HasRights() {
+            if(Id == User.Room.User)
+                return true;
+
+            if(User.Room.Rights.Contains(Id))
+                return true;
+
+            return false;
+        }
     }
 }
