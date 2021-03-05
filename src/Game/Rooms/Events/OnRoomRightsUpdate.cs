@@ -20,7 +20,7 @@ namespace Server.Game.Rooms.Events {
             if(client.User.Room == null)
                 return 0;
 
-            if(data == null) {
+            if(data["user"] == null) {
                 client.Send(new SocketMessage("OnRoomRightsUpdate", client.User.Room.Rights).Compose());
 
                 return 1;
