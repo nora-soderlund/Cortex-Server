@@ -66,7 +66,8 @@ namespace Server.Game.Rooms.Navigator {
                         if(navigator.Room == null) {
                             popular.Add(new {
                                 id = navigator.Id,
-                                title = navigator.Title
+                                title = navigator.Title,
+                                user = navigator.User
                             });
 
                             continue;
@@ -75,6 +76,7 @@ namespace Server.Game.Rooms.Navigator {
                         popular.Add(new {
                             id = navigator.Id,
                             title = navigator.Title,
+                            user = navigator.User,
                             
                             users = navigator.Room.Users.Count
                         });
@@ -94,7 +96,8 @@ namespace Server.Game.Rooms.Navigator {
                         if(navigator.Room == null) {
                             owned.Add(new {
                                 id = navigator.Id,
-                                title = navigator.Title
+                                title = navigator.Title,
+                                user = navigator.User
                             });
 
                             continue;
@@ -103,6 +106,7 @@ namespace Server.Game.Rooms.Navigator {
                         owned.Add(new {
                             id = navigator.Id,
                             title = navigator.Title,
+                            user = navigator.User,
                             
                             users = navigator.Room.Users.Count
                         });
