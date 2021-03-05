@@ -22,9 +22,14 @@ using Server.Socket.Clients;
 namespace Server.Game {
     class Game {
         public static GameUser GetUser(long id) {
-            SocketClient client = Program.Socket.clients.FindAll(x => x.User != null).Find(x => x.User.Id == id);
+            List<SocketClient> clients = Program.Socket.clients.FindAll(x => x.User != null);
 
-            return client.User;
+            SocketClient client = clients.Find(x => x.User.Id == id);
+
+            if(client != null)
+                return client.User;
+
+            return null;
         }
 
         class OnUserRequest : ISocketEvent {
