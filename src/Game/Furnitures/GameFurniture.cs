@@ -28,7 +28,7 @@ namespace Server.Game.Furnitures {
         [JsonProperty("flags")]
         public GameFurnitureFlags Flags;
 
-        [JsonIgnore]
+        [JsonProperty("dimensions")]
         public GameRoomPoint Dimension;
 
         [JsonIgnore]
