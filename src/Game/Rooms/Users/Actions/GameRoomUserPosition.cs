@@ -63,12 +63,10 @@ namespace Server.Game.Rooms.Users.Actions {
             GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
 
             if(furniture != null) {
-                depth = furniture.Position.Depth;
+                depth = furniture.Position.Depth + furniture.GetDimension().Depth;
 
-                if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
-                    depth += furniture.GetDimension().Depth;
-                else
-                    depth += .5;
+                if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
+                    depth -= .5;
             }
 
             if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
