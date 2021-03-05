@@ -20,7 +20,7 @@ namespace Server.Game.Rooms.Events {
             if(client.User.Room == null)
                 return 0;
 
-            if(data == null || data["user"] == null) {
+            if(data.SelectToken("user") == null) {
                 client.Send(new SocketMessage("OnRoomRightsUpdate", client.User.Room.Rights).Compose());
 
                 return 1;
@@ -35,7 +35,7 @@ namespace Server.Game.Rooms.Events {
 
             if(roomUser == null)
                 return 0;
-
+ 
             if(roomUser.HasRights()) {
                 client.User.Room.Rights.Remove(roomUser.Id);
 
