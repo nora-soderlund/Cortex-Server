@@ -119,7 +119,7 @@ namespace Server.Socket {
 
                 clients.Add(client);
                 
-                client.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
+                client.Send(new SocketMessage("OnSocketAuthenticate", true).Compose());
 
                 if(Program.Discord != null)
                     Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");

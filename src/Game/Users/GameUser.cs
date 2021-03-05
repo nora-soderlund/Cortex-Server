@@ -26,7 +26,7 @@ namespace Server.Game.Users {
         [JsonProperty("home")]
         public int? Home;
 
-        [JsonIgnore]
+        [JsonProperty("figure")]
         public string Figure;
 
         [JsonIgnore]
