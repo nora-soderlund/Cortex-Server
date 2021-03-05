@@ -38,6 +38,8 @@ namespace Server.Game.Users.Events {
             }
 
             client.Send(new SocketMessage("OnUserUpdate", new {
+                id = client.User.Id,
+                
                 home = client.User.Home,
 
                 furnitures = furnitures,

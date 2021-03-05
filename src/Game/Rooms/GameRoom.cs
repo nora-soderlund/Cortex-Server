@@ -21,7 +21,7 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public int Id;
         
-        [JsonIgnore]
+        [JsonProperty("user")]
         public int User;
         
         [JsonIgnore]
@@ -45,8 +45,8 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public GameRoomActions Actions;
 
-        [JsonIgnore]
-        public List<int> Rights;
+        [JsonProperty("rights")]
+        public List<int> Rights = new List<int>();
 
         [JsonIgnore]
         public GameRoomNavigator Navigator;
@@ -97,6 +97,8 @@ namespace Server.Game.Rooms {
                 using(MySqlDataReader reader = command.ExecuteReader())
                     while(reader.Read())
                         Rights.Add(reader.GetInt32("user"));
+
+                Rights.Add(User);
             }
         }
 
@@ -119,12 +121,7 @@ namespace Server.Game.Rooms {
 
             message = new SocketMessage();
 
-            message.Add("OnRoomEnter", new {
-                room = this,
-                user = new {
-                    rights = roomUser.HasRights()
-                }
-            });
+            message.Add("OnRoomEnter", this);
 
             Dictionary<string, object> properties = new Dictionary<string, object>();
 
