@@ -11,7 +11,7 @@ using Server.Socket.Messages;
 
 namespace Server.Game.Furnitures.Events {
     class OnFurnitureDepthRequest : ISocketEvent {
-        public string Event => " ";
+        public string Event => "OnFurnitureDepthRequest";
 
         public int Execute(SocketClient client, JToken data) {
             string id = data.ToString();
