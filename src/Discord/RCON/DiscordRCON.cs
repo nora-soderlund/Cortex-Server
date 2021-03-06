@@ -52,7 +52,7 @@ namespace Server.Discord.Sandbox {
                         embed.Description += "\r\n**" + client.User.Name + "**";
 
                         if(client.User.Room != null)
-                            embed.Description += "in " + client.User.Room.Title;
+                            embed.Description += "  in " + client.User.Room.Title;
                     }
 
                     await message.Channel.SendMessageAsync("", false, embed.Build());
