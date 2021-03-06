@@ -50,6 +50,8 @@ namespace Server.Game.Rooms.Users.Actions {
                     actions = RoomUser.Actions
                 };
 
+                RoomUser.Position.Direction = roomFurniture.Position.Direction;
+
                 return -1;
             }
 
