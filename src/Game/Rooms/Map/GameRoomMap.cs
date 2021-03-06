@@ -107,7 +107,7 @@ namespace Server.Game.Rooms.Map {
             if(row < 0 || row > Floor.Count)
                 return false;
 
-            if(column < || column > Floor[row].Length)
+            if(column < 0 || column > Floor[row].Length)
                 return false;
 
             if(Floor[row][column] == 'X')
