@@ -24,6 +24,7 @@ namespace Server.Discord {
             Client.Ready += ReadyAsync;
 
             Sandbox = new DiscordSandbox(Client);
+            new DiscordRCON(Client);
         }
 
         public void Start() {
