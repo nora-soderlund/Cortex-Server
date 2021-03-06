@@ -15,7 +15,7 @@ namespace Server.Game.Rooms.Map {
         public GameRoom Room;
 
         [JsonProperty("floor")]
-        public List<string> Floor = new List<string>();
+        public string[] Floor;
 
         [JsonProperty("door")]
         public GameRoomPoint Door;
@@ -29,9 +29,9 @@ namespace Server.Game.Rooms.Map {
         public GameRoomMap(GameRoom room, string floor, GameRoomPoint door) {
             Room = room;
 
-            Floor = floor.ToUpper().Split('|').ToList();
+            Floor = floor.ToUpper().Split('|');
 
-            Rows = Floor.Count;
+            Rows = Floor.Length;
 
             for(int row = 0; row < Rows; row++)
                 if(Floor[row].Length > Columns)
@@ -104,7 +104,7 @@ namespace Server.Game.Rooms.Map {
         }
 
         public bool IsValidFloor(int row, int column) {
-            if(row < 0 || row >= Floor.Count)
+            if(row < 0 || row >= Floor.Length)
                 return false;
 
             if(column < 0 || column >= Floor[row].Length)
