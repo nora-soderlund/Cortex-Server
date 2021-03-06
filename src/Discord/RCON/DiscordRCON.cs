@@ -44,19 +44,15 @@ namespace Server.Discord.Sandbox {
                     EmbedBuilder embed = new EmbedBuilder() {
                         Color = Color.DarkRed,
 
-                        Title = Program.Socket.clients.Count + " users online!"
+                        Title = "There is " + Program.Socket.clients.Count + " user" + ((Program.Socket.clients.Count != 1)?("s"):("")) + " online!"
                     };
 
                     foreach(SocketClient client in Program.Socket.clients) {
-                        EmbedFieldBuilder field = new EmbedFieldBuilder();
 
-                        field.WithName(client.User.Name + " (" + client.User.Id + ")");
+                        embed.Description += "\r\n**" + client.User.Name + "**";
 
                         if(client.User.Room != null)
-                            field.WithValue(client.User.Room.Title);
-
-                        embed.AddField(field);
-                        //embed.Description += "\r\n" + client.GetPort() + "\t" + client.User.Name + "\t" + ((client.User.Room != null)?());
+                            embed.Description += "in " + client.User.Room.Title;
                     }
 
                     await message.Channel.SendMessageAsync("", false, embed.Build());
