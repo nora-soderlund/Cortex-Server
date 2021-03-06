@@ -47,6 +47,8 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             client.User.Room.Actions.AddEntity(roomFurniture.Id, 500, new GameRoomFurnitureAnimation(roomFurniture, animation));
 
+            roomFurniture.SetAnimation(animation);
+
             return 1;
         }
     }

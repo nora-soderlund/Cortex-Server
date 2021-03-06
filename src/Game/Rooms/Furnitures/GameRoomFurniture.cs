@@ -78,5 +78,20 @@ namespace Server.Game.Rooms.Furnitures {
 
             return dimension;
         }
+
+        public void SetAnimation(int animation) {
+            Animation = animation;
+
+            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                connection.Open();
+
+                using(MySqlCommand command = new MySqlCommand("UPDATE room_furnitures SET animation = @animation WHERE id = @id", connection)) {
+                    command.Parameters.AddWithValue("@id", Id);
+                    command.Parameters.AddWithValue("@animation", Animation);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
