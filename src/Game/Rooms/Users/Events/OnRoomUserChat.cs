@@ -23,6 +23,9 @@ namespace Server.Game.Rooms.Users.Events {
 
             string message = data.ToString();
 
+            if(message.Length == 0)
+                return 0;
+
             client.User.Room.Send(new SocketMessage("OnRoomUserChat", new {
                 id = client.User.Id,
 
