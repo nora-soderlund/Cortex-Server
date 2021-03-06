@@ -51,11 +51,13 @@ namespace Server.Game.Rooms.Actions {
                 return;
             }
 
-            Timers[interval] = new Timer(interval) { Enabled = true };
+            if(interval != 0) {
+                Timers[interval] = new Timer(interval) { Enabled = true };
 
-            Timers[interval].Elapsed += (source, args) => {
-                Elapse(interval);
-            };
+                Timers[interval].Elapsed += (source, args) => {
+                    Elapse(interval);
+                };
+            }
 
             Elapse(interval);
         }
@@ -63,7 +65,9 @@ namespace Server.Game.Rooms.Actions {
         public void Elapse(int interval) {
             Dictionary<string, Dictionary<int, Dictionary<string, object>>> entities = new Dictionary<string, Dictionary<int, Dictionary<string, object>>>();
 
-            foreach(KeyValuePair<int, Dictionary<string, IGameRoomEntityAction>> entityAction in EntityActions[interval]) {
+            for(int entityActionIndex = 0; entityActionIndex < EntityActions[interval].Count; entityActionIndex++) {
+                KeyValuePair<int, Dictionary<string, IGameRoomEntityAction>> entityAction = EntityActions[interval].ElementAt(entityActionIndex);
+
                 for(int index = 0; index < entityAction.Value.Count; index++) {
                     KeyValuePair<string, IGameRoomEntityAction> property = entityAction.Value.ElementAt(index);
 
@@ -98,9 +102,11 @@ namespace Server.Game.Rooms.Actions {
             if(EntityActions[interval].Count == 0) {
                 EntityActions.Remove(interval);
                 
-                Timers[interval].Stop();
+                if(Timers.ContainsKey(interval)) {
+                    Timers[interval].Stop();
 
-                Timers.Remove(interval);
+                    Timers.Remove(interval);
+                }
             }
         }
     }

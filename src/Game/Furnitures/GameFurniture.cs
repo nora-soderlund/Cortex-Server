@@ -25,6 +25,9 @@ namespace Server.Game.Furnitures {
         [JsonProperty("description")]
         public string Description;
 
+        [JsonIgnore]
+        public string Logic;
+
         [JsonProperty("flags")]
         public GameFurnitureFlags Flags;
 
@@ -40,6 +43,8 @@ namespace Server.Game.Furnitures {
             
             Title = reader.GetString("title");
             Description = reader.GetString("description");
+
+            Logic = reader.GetString("logic");
 
             Flags = (GameFurnitureFlags)reader.GetInt32("flags");
             

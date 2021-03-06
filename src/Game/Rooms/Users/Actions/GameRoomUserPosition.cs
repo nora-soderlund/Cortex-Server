@@ -70,6 +70,11 @@ namespace Server.Game.Rooms.Users.Actions {
                 if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
                     depth -= .5;
             }
+            
+            GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
+
+            if(logicLeaveFurniture != null && logicLeaveFurniture.Logic != null)
+                logicLeaveFurniture.Logic.OnUserLeave(RoomUser);
 
             if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
                 RoomUser.Position.Direction = 0;
@@ -91,6 +96,11 @@ namespace Server.Game.Rooms.Users.Actions {
             RoomUser.Position.Row = path[1].X;
             RoomUser.Position.Column = path[1].Y;
             RoomUser.Position.Depth = depth;
+            
+            GameRoomFurniture logicEnterFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
+
+            if(logicEnterFurniture != null && logicEnterFurniture.Logic != null)
+                logicEnterFurniture.Logic.OnUserEnter(RoomUser);
 
             Dictionary<string, object> result = new Dictionary<string, object>();
 

@@ -80,7 +80,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
                 furniture = command.LastInsertedId;
             }
 
-            GameRoomFurniture roomFurniture = new GameRoomFurniture((int)furniture, userFurniture.Id, new GameRoomPoint(row, column, depth, direction));
+            GameRoomFurniture roomFurniture = new GameRoomFurniture(client.User.Room, (int)furniture, userFurniture.Id, new GameRoomPoint(row, column, depth, direction));
 
             client.User.Room.Send(new SocketMessage("OnRoomEntityAdd", new { furnitures = roomFurniture }).Compose());
 

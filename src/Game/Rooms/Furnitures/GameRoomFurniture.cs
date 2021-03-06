@@ -8,6 +8,8 @@ using MySql.Data.MySqlClient;
 using Server.Game.Users;
 using Server.Game.Rooms.Actions;
 
+using Server.Game.Rooms.Furnitures.Logics;
+
 using Server.Game.Furnitures;
 using Server.Game.Users.Furnitures;
 
@@ -26,9 +28,17 @@ namespace Server.Game.Rooms.Furnitures {
         public int? Animation = null;
 
         [JsonIgnore]
+        public GameRoom Room;
+
+        [JsonIgnore]
         public GameUserFurniture UserFurniture;
 
-        public GameRoomFurniture(MySqlDataReader furniture) {
+        [JsonIgnore]
+        public IGameRoomFurnitureLogic Logic;
+
+        public GameRoomFurniture(GameRoom room, MySqlDataReader furniture) {
+            Room = room;
+
             Id = furniture.GetInt32("id");
 
             UserFurniture = GameFurnitureManager.GetGameUserFurniture(furniture.GetInt32("furniture"));
@@ -38,9 +48,13 @@ namespace Server.Game.Rooms.Furnitures {
             Position = new GameRoomPoint(furniture.GetInt32("row"), furniture.GetInt32("column"), furniture.GetDouble("depth"), furniture.GetInt32("direction"));
             
             Animation = (furniture.GetInt32("animation") != 0)?(furniture.GetInt32("animation")):(null);
+
+            Logic = GameRoomFurnitureLogics.CreateLogic(this);
         }
 
-        public GameRoomFurniture(int id, int userFurniture, GameRoomPoint position) {
+        public GameRoomFurniture(GameRoom room, int id, int userFurniture, GameRoomPoint position) {
+            Room = room;
+            
             Id = id;
 
             UserFurniture = GameFurnitureManager.GetGameUserFurniture(userFurniture);
@@ -48,6 +62,8 @@ namespace Server.Game.Rooms.Furnitures {
             Furniture = UserFurniture.Furniture.Id;
 
             Position = position;
+
+            Logic = GameRoomFurnitureLogics.CreateLogic(this);
         }
 
         public GameRoomPoint GetDimension() {

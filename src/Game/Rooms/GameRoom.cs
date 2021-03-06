@@ -86,7 +86,7 @@ namespace Server.Game.Rooms {
 
                 using(MySqlDataReader reader = command.ExecuteReader()) {
                     while(reader.Read()) {
-                        Furnitures.Add(new GameRoomFurniture(reader));
+                        Furnitures.Add(new GameRoomFurniture(this, reader));
                     }
                 }
             }
