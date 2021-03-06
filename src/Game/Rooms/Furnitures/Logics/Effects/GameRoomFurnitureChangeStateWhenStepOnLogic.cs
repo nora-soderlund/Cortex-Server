@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
@@ -17,12 +17,15 @@ using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Furnitures.Actions;
 
 using Server.Events;
+using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Furnitures.Logics {
-    class GameRoomFurnitureHaloLogic : IGameRoomFurnitureLogic {
-        public string Logic => "furniture_halo";
-
+    class GameRoomFurnitureChangeStateWhenStepOnLogic : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
+
+        public void OnUserUse(GameRoomUser user, JToken data) {
+            
+        }
 
         public void OnUserEnter(GameRoomUser user) {
             Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 101));

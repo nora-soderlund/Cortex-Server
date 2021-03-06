@@ -38,16 +38,11 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             if(roomFurniture == null)
                 return 0;
-                
-            int animation = data["animation"].ToObject<int>();
 
-            roomFurniture.Animation = animation;
-            
-            client.Send(new SocketMessage("OnRoomFurnitureUse", roomFurniture.Id).Compose());
+            if(roomFurniture.Logic == null)
+                return 1;
 
-            client.User.Room.Actions.AddEntity(roomFurniture.Id, 500, new GameRoomFurnitureAnimation(roomFurniture, animation));
-
-            roomFurniture.SetAnimation(animation);
+            roomFurniture.Logic.OnUserUse(roomUser, data);
 
             return 1;
         }
