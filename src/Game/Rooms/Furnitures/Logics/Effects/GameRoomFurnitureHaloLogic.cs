@@ -25,11 +25,15 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public GameRoomFurniture Furniture { get; set; }
 
         public void OnUserEnter(GameRoomUser user) {
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 101));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 101, false));
+
+            Furniture.Animation = 1;
         }
 
         public void OnUserLeave(GameRoomUser user) {
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 100));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 100, false));
+
+            Furniture.Animation = 0;
         }
     }
 }

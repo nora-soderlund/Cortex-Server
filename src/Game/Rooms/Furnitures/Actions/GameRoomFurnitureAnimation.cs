@@ -29,10 +29,11 @@ namespace Server.Game.Rooms.Furnitures.Actions {
             return -1;
         }
 
-        public GameRoomFurnitureAnimation(GameRoomFurniture furniture, int animation) {
+        public GameRoomFurnitureAnimation(GameRoomFurniture furniture, int animation, bool change = true) {
             RoomFurniture = furniture;
 
-            RoomFurniture.Animation = animation;
+            if(change)
+                RoomFurniture.Animation = animation;
 
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();
