@@ -104,10 +104,10 @@ namespace Server.Game.Rooms.Map {
         }
 
         public bool IsValidFloor(int row, int column) {
-            if(row < 0 || row > Floor.Count)
+            if(row < 0 || row >= Floor.Count)
                 return false;
 
-            if(column < 0 || column > Floor[row].Length)
+            if(column < 0 || column >= Floor[row].Length)
                 return false;
 
             if(Floor[row][column] == 'X')
