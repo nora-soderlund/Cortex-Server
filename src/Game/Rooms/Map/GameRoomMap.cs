@@ -41,6 +41,9 @@ namespace Server.Game.Rooms.Map {
         }
 
         public double GetFloorDepth(int row, int column) {
+            if(!IsValidFloor(row, column))
+                return 'X';
+
             if(Char.ToUpper(Floor[row][column]) != Char.ToLower(Floor[row][column]))
                 return (double)((Floor[row][column] - 97) - '0');
 
