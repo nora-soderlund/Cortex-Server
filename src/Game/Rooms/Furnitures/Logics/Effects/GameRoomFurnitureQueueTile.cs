@@ -49,6 +49,9 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             newPoint.FromDirection(Furniture.Position.Direction);
 
+            if(Furniture.Room.Users.Find(x => x.Position.Row == newPoint.Row && x.Position.Column == newPoint.Column) != null)
+                return;
+
             GameRoomFurniture nextRoller = Furniture.Room.Furnitures.Find(x => (x.Logic is GameRoomFurnitureQueueTile) && (x.Position.Row == newPoint.Row) && (x.Position.Column == newPoint.Column) && (x.Id != Furniture.Id));
 
             newPoint.Depth = (nextRoller == null)?(Furniture.GetDimension().Depth):(0);
