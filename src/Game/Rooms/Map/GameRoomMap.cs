@@ -60,6 +60,10 @@ namespace Server.Game.Rooms.Map {
                     continue;
                 }
 
+                if(Room.Furnitures.Find(x => x.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && x.Position.Row == row && x.Position.Column == column) != null) {
+                    continue;
+                }
+
                 GameRoomFurniture furniture = GetFloorFurniture(row, column);
 
                 if(furniture != null) {
@@ -75,8 +79,6 @@ namespace Server.Game.Rooms.Map {
         }
 
         public GameRoomFurniture GetFloorFurniture(int row, int column) {
-
-
             GameRoomFurniture result = null;
 
             foreach(GameRoomFurniture furniture in Room.Furnitures) {

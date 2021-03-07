@@ -32,8 +32,12 @@ namespace Server.Game.Rooms.Users.Actions {
                 if(roomFurniture == null)
                     return 0;
 
-                if(!roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
-                    return 0;
+                if(!roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable)) {
+                    roomFurniture = RoomUser.User.Room.Furnitures.Find(x => x.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && x.Position.Row == Row && x.Position.Column == Column);
+
+                    if(roomFurniture == null)
+                        return 0;
+                }
 
                 
                 if(!RoomUser.Actions.Contains("Sit"))
@@ -69,6 +73,14 @@ namespace Server.Game.Rooms.Users.Actions {
 
                 if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
                     depth -= .5;
+                else {
+                    if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable)) {
+                        furniture = RoomUser.User.Room.Furnitures.Find(x => x.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && x.Position.Row == Row && x.Position.Column == Column);
+
+                        if(furniture != null)
+                            depth = furniture.Position.Depth + furniture.GetDimension().Depth - .5;
+                    }
+                }
             }
             
             GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
