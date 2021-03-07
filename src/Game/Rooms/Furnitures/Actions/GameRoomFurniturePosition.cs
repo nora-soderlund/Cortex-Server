@@ -33,6 +33,16 @@ namespace Server.Game.Rooms.Furnitures.Actions {
                 speed = Speed
             };
 
+            foreach(GameRoomFurniture stacked in RoomFurniture.Room.Furnitures.FindAll(x => x.Position.Row == RoomFurniture.Position.Row && x.Position.Column == RoomFurniture.Position.Column)) {
+                if(stacked.Id == RoomFurniture.Id)
+                    continue;
+
+                if(stacked.Logic == null)
+                    continue;
+
+                stacked.Logic.OnFurnitureEnter(RoomFurniture);
+            }
+
             return -1;
         }
 
@@ -52,16 +62,6 @@ namespace Server.Game.Rooms.Furnitures.Actions {
             RoomFurniture.Position = position;
 
             Speed = speed;
-
-            foreach(GameRoomFurniture stacked in RoomFurniture.Room.Furnitures.FindAll(x => x.Position.Row == RoomFurniture.Position.Row && x.Position.Column == RoomFurniture.Position.Column)) {
-                if(stacked.Id == RoomFurniture.Id)
-                    continue;
-
-                if(stacked.Logic == null)
-                    continue;
-
-                stacked.Logic.OnFurnitureEnter(RoomFurniture);
-            }
 
             using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
                 connection.Open();

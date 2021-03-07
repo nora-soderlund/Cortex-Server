@@ -40,7 +40,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 Users[index].User.Room.Actions.AddEntity(Users[index].User.Id, 500, new GameRoomUserPosition(Users[index], newPoint.Row, newPoint.Column));
 
             for(int index = 0; index < Furnitures.Count; index++)
-                Furnitures[index].Room.Actions.AddEntity(Furnitures[index].Id, 500, new GameRoomFurniturePosition(Furnitures[index], new GameRoomPoint(newPoint.Row, newPoint.Column, Furnitures[index].Position.Depth - Furniture.GetDimension().Depth, Furnitures[index].Position.Direction), 500));
+                Furnitures[index].Room.Actions.AddEntity(Furnitures[index].Id, 500, new GameRoomFurniturePosition(Furnitures[index], new GameRoomPoint(newPoint.Row, newPoint.Column, Furnitures[index].Position.Depth, Furnitures[index].Position.Direction), 500));
         }
 
         public void OnUserUse(GameRoomUser user, JToken data) {
