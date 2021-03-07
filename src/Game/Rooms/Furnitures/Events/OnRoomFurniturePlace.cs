@@ -97,6 +97,16 @@ namespace Server.Game.Rooms.Furnitures.Events {
                 command.ExecuteNonQuery();
             }
 
+            foreach(GameRoomFurniture stacked in roomFurniture.Room.Furnitures.FindAll(x => x.Position.Row == roomFurniture.Position.Row && x.Position.Column == roomFurniture.Position.Column)) {
+                if(stacked.Id == roomFurniture.Id)
+                    continue;
+
+                if(stacked.Logic == null)
+                    continue;
+
+                stacked.Logic.OnFurnitureEnter(roomFurniture);
+            }
+
             return 1;
         }
     }

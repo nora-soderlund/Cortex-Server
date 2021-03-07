@@ -45,5 +45,13 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public void OnUserLeave(GameRoomUser user) {
             
         }
+
+        public void OnFurnitureEnter(GameRoomFurniture furniture) {
+            
+        }
+
+        public void OnFurnitureLeave(GameRoomFurniture furniture) {
+            
+        }
     }
 }

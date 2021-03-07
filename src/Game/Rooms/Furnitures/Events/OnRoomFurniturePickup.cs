@@ -68,6 +68,16 @@ namespace Server.Game.Rooms.Furnitures.Events {
             if(owner != null)
                 owner.Client.Send(new SocketMessage("OnUserFurnitureUpdate", owner.GetFurnitureMessages(roomFurniture.UserFurniture.Furniture.Id)).Compose());
 
+            foreach(GameRoomFurniture stacked in roomFurniture.Room.Furnitures.FindAll(x => x.Position.Row == roomFurniture.Position.Row && x.Position.Column == roomFurniture.Position.Column)) {
+                if(stacked.Id == roomFurniture.Id)
+                    continue;
+
+                if(stacked.Logic == null)
+                    continue;
+
+                stacked.Logic.OnFurnitureLeave(roomFurniture);
+            }
+
             return 1;
         }
     }

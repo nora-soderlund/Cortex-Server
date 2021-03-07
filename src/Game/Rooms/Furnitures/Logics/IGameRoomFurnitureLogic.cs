@@ -20,5 +20,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         void OnUserUse(GameRoomUser user, JToken data);
         void OnUserEnter(GameRoomUser user);
         void OnUserLeave(GameRoomUser user);
+        
+        void OnFurnitureEnter(GameRoomFurniture furniture);
+        void OnFurnitureLeave(GameRoomFurniture furniture);
     }
 }
