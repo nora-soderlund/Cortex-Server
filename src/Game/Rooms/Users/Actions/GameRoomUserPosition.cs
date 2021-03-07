@@ -55,41 +55,33 @@ namespace Server.Game.Rooms.Users.Actions {
                 return -1;
             }
             
-            if(Path) {
-                Position[] path = RoomUser.User.Room.Map.GetFloorPath(RoomUser.Position, new GameRoomPoint(Row, Column));
+            Position[] path = RoomUser.User.Room.Map.GetFloorPath(RoomUser.Position, new GameRoomPoint(Row, Column));
 
-                if(path.Length < 2)
-                    return 0;
+            if(path.Length < 2)
+                return 0;
 
-                double depth = RoomUser.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
+            double depth = RoomUser.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
 
-                GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
+            GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
 
-                if(furniture != null) {
-                    depth = furniture.Position.Depth + furniture.GetDimension().Depth;
+            if(furniture != null) {
+                depth = furniture.Position.Depth + furniture.GetDimension().Depth;
 
-                    if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
-                        depth -= .5;
-                }
-                
-                GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
+                if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
+                    depth -= .5;
+            }
+            
+            GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
 
-                if(logicLeaveFurniture != null && logicLeaveFurniture.Logic != null)
-                    logicLeaveFurniture.Logic.OnUserLeave(RoomUser);
-                
+            if(logicLeaveFurniture != null && logicLeaveFurniture.Logic != null)
+                logicLeaveFurniture.Logic.OnUserLeave(RoomUser);
+            
+            if(Walk)
                 RoomUser.Position.Direction = GameRoomDirection.FromPosition(RoomUser.Position, new GameRoomPoint(path[1].X, path[1].Y));
 
-                RoomUser.Position.Row = path[1].X;
-                RoomUser.Position.Column = path[1].Y;
-                RoomUser.Position.Depth = depth;
-            }
-            else {
-                RoomUser.Position.Direction = GameRoomDirection.FromPosition(RoomUser.Position, new GameRoomPoint(Row, Column));
-
-                RoomUser.Position.Row = Row;
-                RoomUser.Position.Column = Column;
-                RoomUser.Position.Depth = Depth;
-            }
+            RoomUser.Position.Row = path[1].X;
+            RoomUser.Position.Column = path[1].Y;
+            RoomUser.Position.Depth = depth;
             
             GameRoomFurniture logicEnterFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
 
@@ -103,6 +95,9 @@ namespace Server.Game.Rooms.Users.Actions {
             result.Add("depth", RoomUser.Position.Depth);
             result.Add("direction", RoomUser.Position.Direction);
             result.Add("speed", Speed);
+
+            if(Walk)
+                result.Add("walk", Walk);
 
             if(RoomUser.Actions.Contains("Sit")) {
                 RoomUser.Actions.Remove("Sit");
@@ -118,13 +113,12 @@ namespace Server.Game.Rooms.Users.Actions {
         public GameRoomUser RoomUser { get; set; }
 
         public int Speed;
-        public bool Path;
+        public bool Walk;
 
         public int Row;
         public int Column;
-        public double Depth;
 
-        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, int speed = 500) {
+        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, int speed) {
             RoomUser = roomUser;
 
             Speed = speed;
@@ -132,19 +126,18 @@ namespace Server.Game.Rooms.Users.Actions {
             Row = row;
             Column = column;
 
-            Path = true;
+            Walk = true;
         }
 
-        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, double depth, int speed = 500, bool path = false) {
+        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, int speed, bool walk = false) {
             RoomUser = roomUser;
 
             Speed = speed;
 
             Row = row;
             Column = column;
-            Depth = depth;
 
-            Path = path;
+            Walk = walk;
         }
     }
 }

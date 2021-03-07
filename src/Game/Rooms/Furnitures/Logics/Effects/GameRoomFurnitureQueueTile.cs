@@ -51,7 +51,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             newPoint.FromDirection(Furniture.Position.Direction);
 
             foreach(GameRoomUser user in Users)
-                user.User.Room.Actions.AddEntity(user.User.Id, 500, new GameRoomUserPosition(user, newPoint.Row, newPoint.Column));
+                user.User.Room.Actions.AddEntity(user.User.Id, 500, new GameRoomUserPosition(user, newPoint.Row, newPoint.Column, 500, false));
 
             foreach(GameRoomFurniture furniture in Furnitures)
                 furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurniturePosition(furniture, new GameRoomPoint(newPoint.Row, newPoint.Column, furniture.Position.Depth, furniture.Position.Direction), 500));
