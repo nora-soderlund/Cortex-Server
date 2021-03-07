@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
+using System.Timers;
 using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using Discord;
 using Discord.WebSocket;
@@ -25,7 +28,7 @@ namespace Server.Discord.Sandbox {
         }
 
         public async Task OnMessageReceived(SocketMessage message) {
-            if(message.Channel.Id != 816275048595718153)
+            if(message.Channel.Id != 816275048595718153 && message.Author.Id != 614863575126638641)
                 return;
                 
             if(message.Author.Id == Client.CurrentUser.Id)
@@ -56,6 +59,65 @@ namespace Server.Discord.Sandbox {
                     }
 
                     await message.Channel.SendMessageAsync("", false, embed.Build());
+                }
+                else if(parameters[0] == "!remindme") {
+                    if(parameters.Length < 2) {
+                        await message.Channel.SendMessageAsync("", false, new EmbedBuilder() {
+                            Title = "Missing command parameters!",
+                            Description = "You must use !remindme [time] (message)",
+
+                            Color = Color.DarkRed
+                        }.Build());
+                        
+                        return;
+                    }
+
+                    int seconds = 0;
+
+                    string time = parameters[1];
+
+                    for(int character = 0, length = time.Length; character < length; character++) {
+                        if(Char.ToUpper(time[character]) == 'S') {
+                            seconds += Int32.Parse(time.Substring(0, character));
+
+                            time = time.Substring(character + 1, length);
+                            
+                            character = 0;
+                            length = time.Length;
+                        }
+                        else if(Char.ToUpper(time[character]) == 'M') {
+                            seconds += Int32.Parse(time.Substring(0, character)) * 60;
+
+                            time = time.Substring(character + 1, length);
+                            
+                            character = 0;
+                            length = time.Length;
+                        }
+                        else if(Char.ToUpper(time[character]) == 'H') {
+                            seconds += Int32.Parse(time.Substring(0, character)) * 60 * 60;
+
+                            time = time.Substring(character + 1, length);
+                            
+                            character = 0;
+                            length = time.Length;
+                        }
+                    }
+
+                    List<string> reminder = parameters.ToList();
+
+                    reminder.RemoveRange(0, 2);
+
+                    System.Timers.Timer timer = new System.Timers.Timer(seconds);
+
+                    timer.Elapsed += (a, b) => {
+                        message.Channel.SendMessageAsync("Hey " + message.Author.Mention + "!\r\n> " + reminder.ToString());
+
+                        timer.Stop();
+                    };
+
+                    timer.Start();
+                    
+                    await message.Channel.SendMessageAsync("Okay! I'll remind you in " + seconds + " seconds!");
                 }
             }
             catch(Exception exception) {
