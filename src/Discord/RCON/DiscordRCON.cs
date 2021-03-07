@@ -80,7 +80,7 @@ namespace Server.Discord.Sandbox {
                         if(Char.ToUpper(time[character]) == 'S') {
                             seconds += Int32.Parse(time.Substring(0, character));
 
-                            time = time.Substring(character + 1, length);
+                            time = time.Substring(character, length);
                             
                             character = 0;
                             length = time.Length;
@@ -88,7 +88,7 @@ namespace Server.Discord.Sandbox {
                         else if(Char.ToUpper(time[character]) == 'M') {
                             seconds += Int32.Parse(time.Substring(0, character)) * 60;
 
-                            time = time.Substring(character + 1, length);
+                            time = time.Substring(character, length);
                             
                             character = 0;
                             length = time.Length;
@@ -96,7 +96,7 @@ namespace Server.Discord.Sandbox {
                         else if(Char.ToUpper(time[character]) == 'H') {
                             seconds += Int32.Parse(time.Substring(0, character)) * 60 * 60;
 
-                            time = time.Substring(character + 1, length);
+                            time = time.Substring(character, length);
                             
                             character = 0;
                             length = time.Length;
