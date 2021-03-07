@@ -28,12 +28,18 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         }
 
         public void OnUserEnter(GameRoomUser user) {
+            if(Furniture.Animation == 1)
+                return;
+
             Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 101));
 
             Furniture.Animation = 1;
         }
 
         public void OnUserLeave(GameRoomUser user) {
+            if(Furniture.Animation == 0)
+                return;
+
             Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 100));
 
             Furniture.Animation = 0;
