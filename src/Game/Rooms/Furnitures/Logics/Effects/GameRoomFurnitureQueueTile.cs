@@ -26,21 +26,35 @@ namespace Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureQueueTile : IGameRoomFurnitureIntervalLogic {
         public GameRoomFurniture Furniture { get; set; }
 
+        public List<GameRoomUser> PendingUsers = new List<GameRoomUser>();
+        public List<GameRoomFurniture> PendingFurnitures = new List<GameRoomFurniture>();
+
         public List<GameRoomUser> Users = new List<GameRoomUser>();
         public List<GameRoomFurniture> Furnitures = new List<GameRoomFurniture>();
 
         public int Interval => 3000;
         public int IntervalCount { get; set; }
 
+        public void OnTimerPrepare() {
+            Users.Clear();
+            Furnitures.Clear();
+
+            Users = new List<GameRoomUser>(PendingUsers);
+            Furnitures = new List<GameRoomFurniture>(PendingFurnitures);
+
+            PendingUsers.Clear();
+            PendingFurnitures.Clear();
+        }
+
         public void OnTimerElapsed() {
             GameRoomPoint newPoint = new GameRoomPoint(Furniture.Position);
             newPoint.FromDirection(Furniture.Position.Direction);
 
-            for(int index = 0; index < Users.Count; index++)
-                Users[index].User.Room.Actions.AddEntity(Users[index].User.Id, 500, new GameRoomUserPosition(Users[index], newPoint.Row, newPoint.Column));
+            foreach(GameRoomUser user in Users)
+                user.User.Room.Actions.AddEntity(user.User.Id, 500, new GameRoomUserPosition(user, newPoint.Row, newPoint.Column));
 
-            for(int index = 0; index < Furnitures.Count; index++)
-                Furnitures[index].Room.Actions.AddEntity(Furnitures[index].Id, 500, new GameRoomFurniturePosition(Furnitures[index], new GameRoomPoint(newPoint.Row, newPoint.Column, Furnitures[index].Position.Depth, Furnitures[index].Position.Direction), 500));
+            foreach(GameRoomFurniture furniture in Furnitures)
+                furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurniturePosition(furniture, new GameRoomPoint(newPoint.Row, newPoint.Column, furniture.Position.Depth, furniture.Position.Direction), 500));
         }
 
         public void OnUserUse(GameRoomUser user, JToken data) {
@@ -48,19 +62,19 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         }
 
         public void OnUserEnter(GameRoomUser user) {
-            Users.Add(user);
+            PendingUsers.Add(user);
         }
 
         public void OnUserLeave(GameRoomUser user) {
-            Users.Remove(user);
+            PendingUsers.Remove(user);
         }
 
         public void OnFurnitureEnter(GameRoomFurniture furniture) {
-            Furnitures.Add(furniture);
+            PendingFurnitures.Add(furniture);
         }
 
         public void OnFurnitureLeave(GameRoomFurniture furniture) {
-            Furnitures.Remove(furniture);
+            PendingFurnitures.Remove(furniture);
         }
     }
 }

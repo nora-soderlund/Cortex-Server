@@ -17,7 +17,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
     interface IGameRoomFurnitureIntervalLogic : IGameRoomFurnitureLogic {
         int Interval { get; }
         int IntervalCount { get; set; }
-        
+
+        void OnTimerPrepare();
         void OnTimerElapsed();
     }
 }

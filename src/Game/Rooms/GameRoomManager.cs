@@ -72,16 +72,7 @@ namespace Server.Game.Rooms {
             if(user.Room == null)
                 return;
 
-            GameRoomUser roomUser = user.Room.Users.FirstOrDefault(x => x.User == user);
-
-            if(roomUser == null)
-                return;
-
-            user.Room.Send(new SocketMessage("OnRoomEntityRemove", new { users = roomUser.Id }).Compose());
-
-            user.Room.Users.Remove(roomUser);
-
-            user.Room = null;
+            user.Room.RemoveUser(user);
         }
     }
 }

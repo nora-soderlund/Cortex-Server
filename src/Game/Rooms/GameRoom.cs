@@ -142,6 +142,26 @@ namespace Server.Game.Rooms {
             user.Client.Send(message.Compose());
         }
 
+        public void RemoveUser(GameUser user) {
+            GameRoomUser roomUser = Users.FirstOrDefault(x => x.User == user);
+
+            if(roomUser == null)
+                return;
+
+            user.Room.Send(new SocketMessage("OnRoomEntityRemove", new { users = roomUser.Id }).Compose());
+
+            foreach(GameRoomFurniture stacked in user.Room.Furnitures.FindAll(x => x.Position.Row == roomUser.Position.Row && x.Position.Column == roomUser.Position.Column)) {
+                if(stacked.Logic == null)
+                    continue;
+
+                stacked.Logic.OnUserLeave(roomUser);
+            }
+
+            user.Room.Users.Remove(roomUser);
+
+            user.Room = null;
+        }
+
         public GameRoomUser GetUser(int id) {
             return Users.Find(x => x.Id == id);
         }
@@ -149,6 +169,8 @@ namespace Server.Game.Rooms {
         public Timer Timer = new Timer(500);
 
         public void OnTimerElapsed(Object source, System.Timers.ElapsedEventArgs e) {
+            List<IGameRoomFurnitureIntervalLogic> logics = new List<IGameRoomFurnitureIntervalLogic>();
+
             foreach(GameRoomFurniture furniture in Furnitures) {
                 if(furniture.Logic == null || !(furniture.Logic is IGameRoomFurnitureIntervalLogic))
                     continue;
@@ -158,11 +180,16 @@ namespace Server.Game.Rooms {
                 logic.IntervalCount += (int)Timer.Interval;
 
                 if(logic.IntervalCount >= logic.Interval) {
-                    logic.OnTimerElapsed();
+                    logic.OnTimerPrepare();
 
                     logic.IntervalCount = 0;
+
+                    logics.Add(logic);
                 }
             }
+
+            foreach(IGameRoomFurnitureIntervalLogic logic in logics)
+                logic.OnTimerElapsed();
         }
 
         public void Send(string message) {
