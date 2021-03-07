@@ -26,9 +26,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureQueueTile : IGameRoomFurnitureIntervalLogic {
         public GameRoomFurniture Furniture { get; set; }
 
-        public List<GameRoomUser> PendingUsers = new List<GameRoomUser>();
-        public List<GameRoomFurniture> PendingFurnitures = new List<GameRoomFurniture>();
-
         public List<GameRoomUser> Users = new List<GameRoomUser>();
         public List<GameRoomFurniture> Furnitures = new List<GameRoomFurniture>();
 
@@ -37,13 +34,14 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
         public void OnTimerPrepare() {
             Users.Clear();
+            
+            foreach(GameRoomUser user in Furniture.Room.Users.Where(x => (x.Position.Row == Furniture.Position.Row) && (x.Position.Column == Furniture.Position.Column)))
+                Users.Add(user);
+                
             Furnitures.Clear();
-
-            Users = new List<GameRoomUser>(PendingUsers);
-            Furnitures = new List<GameRoomFurniture>(PendingFurnitures);
-
-            PendingUsers.Clear();
-            PendingFurnitures.Clear();
+            
+            foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => (x.Position.Row == Furniture.Position.Row) && (x.Position.Column == Furniture.Position.Column) && (x.Id != Furniture.Id)))
+                Furnitures.Add(furniture);
         }
 
         public void OnTimerElapsed() {
@@ -68,19 +66,19 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         }
 
         public void OnUserEnter(GameRoomUser user) {
-            PendingUsers.Add(user);
+            
         }
 
         public void OnUserLeave(GameRoomUser user) {
-            PendingUsers.Remove(user);
+            
         }
 
         public void OnFurnitureEnter(GameRoomFurniture furniture) {
-            PendingFurnitures.Add(furniture);
+            
         }
 
         public void OnFurnitureLeave(GameRoomFurniture furniture) {
-            PendingFurnitures.Remove(furniture);
+            
         }
     }
 }
