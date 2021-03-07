@@ -54,48 +54,42 @@ namespace Server.Game.Rooms.Users.Actions {
 
                 return -1;
             }
-
-            Position[] path = RoomUser.User.Room.Map.GetFloorPath(RoomUser.Position, new GameRoomPoint(Row, Column));
-
-            if(path.Length < 2)
-                return 0;
-
-            double depth = RoomUser.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
-
-            GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
-
-            if(furniture != null) {
-                depth = furniture.Position.Depth + furniture.GetDimension().Depth;
-
-                if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
-                    depth -= .5;
-            }
             
-            GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
+            if(Path) {
+                Position[] path = RoomUser.User.Room.Map.GetFloorPath(RoomUser.Position, new GameRoomPoint(Row, Column));
 
-            if(logicLeaveFurniture != null && logicLeaveFurniture.Logic != null)
-                logicLeaveFurniture.Logic.OnUserLeave(RoomUser);
+                if(path.Length < 2)
+                    return 0;
 
-            if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
-                RoomUser.Position.Direction = 0;
-            else if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column + 1 == path[1].Y))
-                RoomUser.Position.Direction = 1;
-            else if((RoomUser.Position.Row == path[1].X) && (RoomUser.Position.Column + 1 == path[1].Y))
-                RoomUser.Position.Direction = 2;
-            else if((RoomUser.Position.Row + 1 == path[1].X) && (RoomUser.Position.Column + 1 == path[1].Y))
-                RoomUser.Position.Direction = 3;
-            else if((RoomUser.Position.Row + 1 == path[1].X) && (RoomUser.Position.Column == path[1].Y))
-                RoomUser.Position.Direction = 4;
-            else if((RoomUser.Position.Row + 1 == path[1].X) && (RoomUser.Position.Column - 1 == path[1].Y))
-                RoomUser.Position.Direction = 5;
-            else if((RoomUser.Position.Row == path[1].X) && (RoomUser.Position.Column - 1 == path[1].Y))
-                RoomUser.Position.Direction = 6;
-            else if((RoomUser.Position.Row - 1 == path[1].X) && (RoomUser.Position.Column - 1 == path[1].Y))
-                RoomUser.Position.Direction = 7;
+                double depth = RoomUser.User.Room.Map.GetFloorDepth(path[1].X, path[1].Y);
 
-            RoomUser.Position.Row = path[1].X;
-            RoomUser.Position.Column = path[1].Y;
-            RoomUser.Position.Depth = depth;
+                GameRoomFurniture furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y);
+
+                if(furniture != null) {
+                    depth = furniture.Position.Depth + furniture.GetDimension().Depth;
+
+                    if(furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable))
+                        depth -= .5;
+                }
+                
+                GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
+
+                if(logicLeaveFurniture != null && logicLeaveFurniture.Logic != null)
+                    logicLeaveFurniture.Logic.OnUserLeave(RoomUser);
+                
+                RoomUser.Position.Direction = GameRoomDirection.FromPosition(RoomUser.Position, new GameRoomPoint(path[1].X, path[1].Y));
+
+                RoomUser.Position.Row = path[1].X;
+                RoomUser.Position.Column = path[1].Y;
+                RoomUser.Position.Depth = depth;
+            }
+            else {
+                RoomUser.Position.Direction = GameRoomDirection.FromPosition(RoomUser.Position, new GameRoomPoint(Row, Column));
+
+                RoomUser.Position.Row = Row;
+                RoomUser.Position.Column = Column;
+                RoomUser.Position.Depth = Depth;
+            }
             
             GameRoomFurniture logicEnterFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
 
@@ -124,9 +118,11 @@ namespace Server.Game.Rooms.Users.Actions {
         public GameRoomUser RoomUser { get; set; }
 
         public int Speed;
+        public bool Path;
 
         public int Row;
         public int Column;
+        public double Depth;
 
         public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, int speed = 500) {
             RoomUser = roomUser;
@@ -134,8 +130,21 @@ namespace Server.Game.Rooms.Users.Actions {
             Speed = speed;
 
             Row = row;
-
             Column = column;
+
+            Path = true;
+        }
+
+        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, double depth, int speed = 500, bool path = false) {
+            RoomUser = roomUser;
+
+            Speed = speed;
+
+            Row = row;
+            Column = column;
+            Depth = depth;
+
+            Path = path;
         }
     }
 }
