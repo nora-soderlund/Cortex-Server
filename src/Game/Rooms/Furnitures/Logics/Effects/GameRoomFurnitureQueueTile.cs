@@ -46,7 +46,12 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
         public void OnTimerElapsed() {
             GameRoomPoint newPoint = new GameRoomPoint(Furniture.Position);
+
             newPoint.FromDirection(Furniture.Position.Direction);
+
+            GameRoomFurniture nextRoller = Furniture.Room.Furnitures.Find(x => (x.Logic is GameRoomFurnitureQueueTile) && (x.Position.Row == newPoint.Row) && (x.Position.Column == newPoint.Column) && (x.Id != Furniture.Id));
+
+            newPoint.Depth = (nextRoller == null)?(Furniture.GetDimension().Depth):(0);
 
             foreach(GameRoomFurniture furniture in Furnitures) {
                 if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && !furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Standable)) {
@@ -54,7 +59,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                         continue;
                 }
 
-                furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurniturePosition(furniture, new GameRoomPoint(newPoint.Row, newPoint.Column, furniture.Position.Depth, furniture.Position.Direction), 500));
+                furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurniturePosition(furniture, new GameRoomPoint(newPoint.Row, newPoint.Column, furniture.Position.Depth - newPoint.Depth, furniture.Position.Direction), 500));
             }
 
             foreach(GameRoomUser user in Users)
