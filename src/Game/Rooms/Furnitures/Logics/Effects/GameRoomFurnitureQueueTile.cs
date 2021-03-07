@@ -40,7 +40,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 
             Furnitures.Clear();
             
-            foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => (x.Position.Row == Furniture.Position.Row) && (x.Position.Column == Furniture.Position.Column) && (x.Id != Furniture.Id)))
+            foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => (x.Position.Row == Furniture.Position.Row) && (x.Position.Column == Furniture.Position.Column) && (x.Position.Depth >= Furniture.Position.Depth) && (x.Id != Furniture.Id)))
                 Furnitures.Add(furniture);
         }
 
