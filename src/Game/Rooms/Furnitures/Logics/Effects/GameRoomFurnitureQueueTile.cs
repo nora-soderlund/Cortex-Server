@@ -33,10 +33,13 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         }
 
         public void OnTimerElapsed(Object source, ElapsedEventArgs e) {
-            Console.WriteLine("elapsed");
+            for(int index = 0; index < Users.Count; index++) {
+                GameRoomPoint newPoint = new GameRoomPoint(Furniture.Position);
+                newPoint.FromDirection(Furniture.Position.Direction);
+                newPoint.Depth = Users[index].Position.Depth;
 
-            foreach(GameRoomUser user in Users)
-                user.User.Room.Actions.AddEntity(user.User.Id, 500, new GameRoomUserPosition(user, Furniture.Position.Row - 1, Furniture.Position.Column, user.Position.Depth - Furniture.GetDimension().Depth, 500));
+                Users[index].User.Room.Actions.AddEntity(Users[index].User.Id, 500, new GameRoomUserPosition(Users[index], newPoint.Row, newPoint.Column));
+            }
 
             Timer.Stop();
         }
