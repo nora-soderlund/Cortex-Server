@@ -30,6 +30,10 @@ namespace Server.Game.Rooms {
             Direction = point.Direction;
         }
 
+        public int GetDistance(GameRoomPoint point) {
+            return (int)Math.Sqrt(Math.Pow(((double)point.Row - (double)Row), 2) + Math.Pow(((double)point.Column - (double)Column), 2));
+        }
+
         public void FromDirection(int direction) {
             switch(direction) {
                 case 0: {
