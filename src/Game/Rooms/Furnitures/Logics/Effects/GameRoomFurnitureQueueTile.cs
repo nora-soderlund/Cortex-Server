@@ -50,11 +50,17 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             GameRoomPoint newPoint = new GameRoomPoint(Furniture.Position);
             newPoint.FromDirection(Furniture.Position.Direction);
 
+            foreach(GameRoomFurniture furniture in Furnitures) {
+                if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && !furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Standable)) {
+                    if(furniture.Room.Users.Find(x => x.Position.Row == newPoint.Row && x.Position.Column == newPoint.Column) != null)
+                        continue;
+                }
+
+                furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurniturePosition(furniture, new GameRoomPoint(newPoint.Row, newPoint.Column, furniture.Position.Depth, furniture.Position.Direction), 500));
+            }
+
             foreach(GameRoomUser user in Users)
                 user.User.Room.Actions.AddEntity(user.User.Id, 500, new GameRoomUserPosition(user, newPoint.Row, newPoint.Column, 500, false));
-
-            foreach(GameRoomFurniture furniture in Furnitures)
-                furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurniturePosition(furniture, new GameRoomPoint(newPoint.Row, newPoint.Column, furniture.Position.Depth, furniture.Position.Direction), 500));
         }
 
         public void OnUserUse(GameRoomUser user, JToken data) {
