@@ -35,6 +35,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public void OnTimerElapsed(Object source, ElapsedEventArgs e) {
             for(int index = 0; index < Users.Count; index++) {
                 GameRoomPoint newPoint = new GameRoomPoint(Furniture.Position);
+                
                 newPoint.FromDirection(Furniture.Position.Direction);
                 newPoint.Depth = Users[index].Position.Depth;
 
