@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Timers;
 using System.Collections.Generic;
 
 using MySql.Data.MySqlClient;
@@ -12,6 +13,7 @@ using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Actions;
 using Server.Game.Rooms.Furnitures;
+using Server.Game.Rooms.Furnitures.Logics;
 using Server.Game.Rooms.Navigator;
 
 using Server.Socket.Messages;
@@ -100,6 +102,10 @@ namespace Server.Game.Rooms {
 
                 Rights.Add(User);
             }
+
+            Timer.Elapsed += OnTimerElapsed;
+
+            Timer.Start();
         }
 
         public void AddUser(GameUser user) {
@@ -138,6 +144,25 @@ namespace Server.Game.Rooms {
 
         public GameRoomUser GetUser(int id) {
             return Users.Find(x => x.Id == id);
+        }
+
+        public Timer Timer = new Timer(500);
+
+        public void OnTimerElapsed(Object source, System.Timers.ElapsedEventArgs e) {
+            foreach(GameRoomFurniture furniture in Furnitures) {
+                if(furniture.Logic == null || !(furniture.Logic is IGameRoomFurnitureIntervalLogic))
+                    continue;
+
+                IGameRoomFurnitureIntervalLogic logic = furniture.Logic as IGameRoomFurnitureIntervalLogic;
+
+                logic.IntervalCount += (int)Timer.Interval;
+
+                if(logic.IntervalCount >= logic.Interval) {
+                    logic.OnTimerElapsed();
+
+                    logic.IntervalCount = 0;
+                }
+            }
         }
 
         public void Send(string message) {

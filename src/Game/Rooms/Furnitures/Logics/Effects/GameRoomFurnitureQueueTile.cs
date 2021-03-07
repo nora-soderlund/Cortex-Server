@@ -23,16 +23,15 @@ using Server.Events;
 using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Furnitures.Logics {
-    class GameRoomFurnitureQueueTile : IGameRoomFurnitureLogic {
-        public Timer Timer = new Timer(1000);
+    class GameRoomFurnitureQueueTile : IGameRoomFurnitureIntervalLogic {
+        public GameRoomFurniture Furniture { get; set; }
 
         public List<GameRoomUser> Users = new List<GameRoomUser>();
 
-        public GameRoomFurnitureQueueTile() {
-            Timer.Elapsed += OnTimerElapsed;
-        }
+        public int Interval => 3000;
+        public int IntervalCount { get; set; }
 
-        public void OnTimerElapsed(Object source, ElapsedEventArgs e) {
+        public void OnTimerElapsed() {
             for(int index = 0; index < Users.Count; index++) {
                 GameRoomPoint newPoint = new GameRoomPoint(Furniture.Position);
                 
@@ -41,11 +40,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
                 Users[index].User.Room.Actions.AddEntity(Users[index].User.Id, 500, new GameRoomUserPosition(Users[index], newPoint.Row, newPoint.Column));
             }
-
-            Timer.Stop();
         }
-
-        public GameRoomFurniture Furniture { get; set; }
 
         public void OnUserUse(GameRoomUser user, JToken data) {
             
@@ -53,9 +48,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
         public void OnUserEnter(GameRoomUser user) {
             Users.Add(user);
-
-            if(Timer.Enabled != true)
-                Timer.Start();
         }
 
         public void OnUserLeave(GameRoomUser user) {
