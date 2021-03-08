@@ -20,7 +20,7 @@ using Server.Events;
 using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Furnitures.Logics {
-    class GameRoomFurnitureMultistateLogic : IGameRoomFurnitureLogic {
+    class GameRoomFurnitureMultistate : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
 
         public void OnUserUse(GameRoomUser user, JToken data) {

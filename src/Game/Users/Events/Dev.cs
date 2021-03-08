@@ -10,6 +10,8 @@ using Server.Game.Rooms;
 using Server.Game.Shop;
 using Server.Game.Furnitures;
 using Server.Game.Rooms.Users;
+using Server.Game.Rooms.Furnitures;
+using Server.Game.Rooms.Furnitures.Logics;
 
 using Server.Socket.Clients;
 using Server.Socket.Events;
@@ -21,26 +23,55 @@ namespace Server.Game.Users.Events {
 
         public int Execute(SocketClient client, JToken data) {
             string id = data["id"].ToString();
-            double depth = data["depth"].ToObject<double>();
 
             GameFurniture furniture = GameFurnitureManager.GetGameFurniture(id);
 
             if(furniture == null)
                 return 0;
 
-            if(Program.Discord != null)
-                Program.Discord.Furniture(client.User, furniture, depth);
+            if(data.SelectToken("depth") != null) {
+                double depth = data["depth"].ToObject<double>();
 
-            furniture.Dimension.Depth = depth;
+                if(Program.Discord != null)
+                    Program.Discord.Furniture(client.User, furniture, depth);
 
-            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
-                connection.Open();
+                furniture.Dimension.Depth = depth;
 
-                using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET depth = @depth WHERE id = @id", connection)) {
-                    command.Parameters.AddWithValue("@id", furniture.Id);
-                    command.Parameters.AddWithValue("@depth", furniture.Dimension.Depth);
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
 
-                    command.ExecuteNonQuery();
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET depth = @depth WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@depth", furniture.Dimension.Depth);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            if(data.SelectToken("logic") != null) {
+                string logic = data["logic"].ToString();
+
+                furniture.Logic = logic;
+
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
+
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET logic = @logic WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@logic", furniture.Logic);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                foreach(GameRoom room in GameRoomManager.Rooms) {
+                    foreach(GameRoomFurniture roomFurniture in room.Furnitures) {
+                        if(roomFurniture.UserFurniture.Furniture.Id != furniture.Id)
+                            continue;
+
+                        roomFurniture.Logic = GameRoomFurnitureLogics.CreateLogic(roomFurniture);
+                    }
                 }
             }
 

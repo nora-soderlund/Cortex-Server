@@ -20,7 +20,7 @@ using Server.Events;
 using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Furnitures.Logics {
-    class GameRoomFurnitureChangeStateWhenStepOnLogic : IGameRoomFurnitureLogic {
+    class GameRoomFurnitureChangeStateWhenStepOn : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
 
         public void OnUserUse(GameRoomUser user, JToken data) {

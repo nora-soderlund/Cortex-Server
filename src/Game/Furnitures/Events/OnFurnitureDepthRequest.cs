@@ -21,4 +21,16 @@ namespace Server.Game.Furnitures.Events {
             return 1;
         }
     }
+    
+    class OnFurnitureLogicRequest : ISocketEvent {
+        public string Event => "OnFurnitureLogicRequest";
+
+        public int Execute(SocketClient client, JToken data) {
+            string id = data.ToString();
+
+            client.Send(new SocketMessage("OnFurnitureLogicRequest", GameFurnitureManager.Furnitures.Find(x => x.Id == id).Logic).Compose());
+
+            return 1;
+        }
+    }
 }
