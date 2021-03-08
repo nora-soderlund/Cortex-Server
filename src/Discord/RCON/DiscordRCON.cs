@@ -80,7 +80,7 @@ namespace Server.Discord.Sandbox {
                         if(Char.ToUpper(time[character]) == 'S') {
                             seconds += Int32.Parse(time.Substring(0, character));
 
-                            time = time.Substring(character, length);
+                            time = time.Substring(character, length - 1);
                             
                             character = 0;
                             length = time.Length;
@@ -88,7 +88,7 @@ namespace Server.Discord.Sandbox {
                         else if(Char.ToUpper(time[character]) == 'M') {
                             seconds += Int32.Parse(time.Substring(0, character)) * 60;
 
-                            time = time.Substring(character, length);
+                            time = time.Substring(character, length - 1);
                             
                             character = 0;
                             length = time.Length;
@@ -96,7 +96,7 @@ namespace Server.Discord.Sandbox {
                         else if(Char.ToUpper(time[character]) == 'H') {
                             seconds += Int32.Parse(time.Substring(0, character)) * 60 * 60;
 
-                            time = time.Substring(character, length);
+                            time = time.Substring(character, length - 1);
                             
                             character = 0;
                             length = time.Length;
@@ -110,7 +110,12 @@ namespace Server.Discord.Sandbox {
                     System.Timers.Timer timer = new System.Timers.Timer(seconds);
 
                     timer.Elapsed += (a, b) => {
-                        message.Channel.SendMessageAsync("Hey " + message.Author.Mention + "!\r\n> " + reminder.ToString());
+                        string content = "";
+
+                        foreach(string msg in reminder)
+                            content += msg + " ";
+
+                        message.Channel.SendMessageAsync("Hey " + message.Author.Mention + "!\r\n> " + content);
 
                         timer.Stop();
                     };

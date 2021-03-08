@@ -67,7 +67,7 @@ namespace Server.Game.Rooms.Map {
                 GameRoomFurniture furniture = GetFloorFurniture(row, column);
 
                 if(furniture != null) {
-                    if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Walkable)) {
+                    if(furniture.Logic != null && !furniture.Logic.IsWalkable()) {
                         grid.BlockCell(new Position(row, column));
 
                         continue;
