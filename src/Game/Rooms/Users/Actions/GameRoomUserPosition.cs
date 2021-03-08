@@ -38,7 +38,7 @@ namespace Server.Game.Rooms.Users.Actions {
 
                     Result = results;
 
-                    return 1;
+                    return -1;
                 }
 
                 GameRoomFurniture roomFurniture = RoomUser.User.Room.Map.GetFloorFurniture(Row, Column);
