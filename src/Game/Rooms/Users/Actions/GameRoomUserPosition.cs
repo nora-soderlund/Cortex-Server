@@ -47,7 +47,7 @@ namespace Server.Game.Rooms.Users.Actions {
                     return 0;
 
                 if(!roomFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable)) {
-                    roomFurniture = RoomUser.User.Room.Furnitures.Find(x => x.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && x.Position.Row == Row && x.Position.Column == Column);
+                    roomFurniture = RoomUser.User.Room.Map.GetFloorFurniture(Row, Column, null, GameFurnitureFlags.Sitable);
 
                     if(roomFurniture == null)
                         return 0;
@@ -89,7 +89,7 @@ namespace Server.Game.Rooms.Users.Actions {
                     depth -= .5;
                 else {
                     if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable)) {
-                        furniture = RoomUser.User.Room.Furnitures.Find(x => x.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && x.Position.Row == Row && x.Position.Column == Column);
+                        furniture = RoomUser.User.Room.Map.GetFloorFurniture(path[1].X, path[1].Y, null, GameFurnitureFlags.Sitable);
 
                         if(furniture != null)
                             depth = furniture.Position.Depth + furniture.GetDimension().Depth - .5;

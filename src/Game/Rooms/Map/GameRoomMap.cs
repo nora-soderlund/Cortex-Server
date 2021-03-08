@@ -8,6 +8,7 @@ using RoyT.AStar;
 
 using Server.Game.Furnitures;
 using Server.Game.Rooms.Furnitures;
+using Server.Game.Rooms.Furnitures.Logics;
 
 namespace Server.Game.Rooms.Map {
     class GameRoomMap {
@@ -60,7 +61,7 @@ namespace Server.Game.Rooms.Map {
                     continue;
                 }
 
-                if(Room.Furnitures.Find(x => x.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Sitable) && x.Position.Row == row && x.Position.Column == column) != null) {
+                if(GetFloorFurniture(row, column, null, GameFurnitureFlags.Sitable) != null) {
                     continue;
                 }
 
@@ -78,10 +79,18 @@ namespace Server.Game.Rooms.Map {
             return grid.GetPath(new Position(start.Row, start.Column), new Position(end.Row, end.Column));
         }
 
-        public GameRoomFurniture GetFloorFurniture(int row, int column) {
+        public GameRoomFurniture GetFloorFurniture(int row, int column, Type logic = null, Enum flag = null) {
             GameRoomFurniture result = null;
 
-            foreach(GameRoomFurniture furniture in Room.Furnitures) {
+            List<GameRoomFurniture> furnitures = new List<GameRoomFurniture>(Room.Furnitures);
+
+            if(logic != null)
+                furnitures.RemoveAll(x => (x.Logic == null) || (x.Logic.GetType() != logic));
+
+            if(flag != null)
+                furnitures.RemoveAll(x => !x.UserFurniture.Furniture.Flags.HasFlag(flag));
+
+            foreach(GameRoomFurniture furniture in furnitures) {
                 if(furniture.Position.Row > row)
                     continue;
                     
