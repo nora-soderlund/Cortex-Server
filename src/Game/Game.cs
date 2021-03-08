@@ -44,7 +44,8 @@ namespace Server.Game {
                     client.Send(new SocketMessage("OnUserRequest", new {
                         id = id,
 
-                        name = user.Name
+                        name = user.Name,
+                        figure = user.Figure
                     }).Compose());
 
                     return 1;
@@ -64,7 +65,8 @@ namespace Server.Game {
                         client.Send(new SocketMessage("OnUserRequest", new {
                             id = id,
 
-                            name = reader.GetString("name")
+                            name = reader.GetString("name"),
+                            figure = reader.GetString("figure")
                         }).Compose());
                     }
                 }
