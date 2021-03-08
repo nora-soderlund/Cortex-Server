@@ -27,6 +27,20 @@ namespace Server.Game.Rooms.Users.Actions {
 
         public int Execute() {
             if(RoomUser.Position.Row == Row && RoomUser.Position.Column == Column) {
+                if(Depth != -1) {
+                    Dictionary<string, object> results = new Dictionary<string, object>();
+
+                    results.Add("row", RoomUser.Position.Row);
+                    results.Add("column", RoomUser.Position.Column);
+                    results.Add("depth", Depth);
+                    results.Add("direction", RoomUser.Position.Direction);
+                    results.Add("speed", Speed);
+
+                    Result = results;
+
+                    return 1;
+                }
+
                 GameRoomFurniture roomFurniture = RoomUser.User.Room.Map.GetFloorFurniture(Row, Column);
 
                 if(roomFurniture == null)
@@ -129,6 +143,7 @@ namespace Server.Game.Rooms.Users.Actions {
 
         public int Row;
         public int Column;
+        public double Depth = -1;
 
         public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, int speed) {
             RoomUser = roomUser;
@@ -148,6 +163,18 @@ namespace Server.Game.Rooms.Users.Actions {
 
             Row = row;
             Column = column;
+
+            Walk = walk;
+        }
+
+        public GameRoomUserPosition(GameRoomUser roomUser, int row, int column, double depth, int speed, bool walk = false) {
+            RoomUser = roomUser;
+
+            Speed = speed;
+
+            Row = row;
+            Column = column;
+            Depth = depth;
 
             Walk = walk;
         }
