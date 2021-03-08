@@ -6,10 +6,11 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Rooms;
 using Server.Socket.Clients;
 
+using Server.Game.Rooms;
 using Server.Game.Furnitures;
+using Server.Game.Users.Friends;
 using Server.Game.Users.Furnitures;
 
 namespace Server.Game.Users {
@@ -35,6 +36,9 @@ namespace Server.Game.Users {
         [JsonIgnore]
         public List<GameUserFurniture> Furnitures = new List<GameUserFurniture>();
 
+        [JsonProperty("friends")]
+        public List<GameUserFriend> Friends = new List<GameUserFriend>();
+
         public GameUser(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
 
@@ -46,6 +50,27 @@ namespace Server.Game.Users {
                 Home = null;
 
             GetFurnitures();
+
+            Friends = GetFriends();
+        }
+
+        public List<GameUserFriend> GetFriends() {
+            List<GameUserFriend> friends = new List<GameUserFriend>();
+
+            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                connection.Open();
+
+                using(MySqlCommand command = new MySqlCommand("SELECT * FROM user_friends WHERE user = @user", connection)) {
+                    command.Parameters.AddWithValue("@user", Id);
+
+                    MySqlDataReader reader = command.ExecuteReader();
+
+                    while(reader.Read())
+                        friends.Add(new GameUserFriend(reader));
+                }
+            }
+
+            return friends;
         }
 
         public void GetFurnitures() {

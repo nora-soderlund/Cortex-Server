@@ -44,7 +44,9 @@ namespace Server.Game.Users.Events {
 
                 furnitures = furnitures,
 
-                figure = client.User.Figure
+                figure = client.User.Figure,
+
+                friends = client.User.Friends
             }).Compose());
 
             if(client.User.Room == null && client.User.Home != null)
