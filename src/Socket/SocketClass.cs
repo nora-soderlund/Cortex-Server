@@ -193,6 +193,9 @@ namespace Server.Socket {
                 foreach(ISocketEvent socketEvent in events["OnSocketClose"])
                     socketEvent.Execute(client, null);
 
+                foreach(ISocketEvent socketEvent in events["OnUserDisconnect"])
+                    socketEvent.Execute(client, null);
+
                 Program.WriteLine("Lost connection with client at " + client.GetAddressPort() + "!");
 
                 clients.Remove(client);

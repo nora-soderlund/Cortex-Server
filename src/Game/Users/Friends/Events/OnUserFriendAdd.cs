@@ -48,10 +48,18 @@ namespace Server.Game.Users.Friends.Events {
 
                     existingUserFriend.SetStatus(GameUserFriendStatus.Regular);
 
-                    existingUser.Client.Send(new SocketMessage("OnUserFriendAdd", existingUserFriend).Compose());
+                    existingUser.Client.Send(new SocketMessage("OnUserFriendUpdate", new {
+                        id = client.User.Id,
+
+                        status = existingUserFriend.Status
+                    }).Compose());
                 }
 
-                client.Send(new SocketMessage("OnUserFriendAdd", existingFriend).Compose());
+                client.Send(new SocketMessage("OnUserFriendUpdate", new {
+                    id = existingFriend.Friend,
+
+                    status = existingFriend.Status
+                }).Compose());
 
                 return 1;
             }
@@ -84,7 +92,11 @@ namespace Server.Game.Users.Friends.Events {
 
             client.User.Friends.Add(friend);
 
-            client.Send(new SocketMessage("OnUserFriendAdd", friend).Compose());
+            client.Send(new SocketMessage("OnUserFriendUpdate", new {
+                id = friend.Friend,
+
+                status = friend.Status
+            }).Compose());
 
             GameUser friendUser = Game.GetUser(friend.Friend);
 
@@ -97,7 +109,11 @@ namespace Server.Game.Users.Friends.Events {
 
                 friendUser.Friends.Add(friendFriend);
 
-                friendUser.Client.Send(new SocketMessage("OnUserFriendAdd", friendFriend).Compose());
+                friendUser.Client.Send(new SocketMessage("OnUserFriendUpdate", new {
+                    id = friendFriend.Friend,
+
+                    status = friendFriend.Status
+                }).Compose());
             }
 
             return 1;
