@@ -39,6 +39,8 @@ namespace Server.Game.Users.Events {
 
                     return 1;
                 }
+
+                reader.Close();
             }
 
             YouTubeVideo video = YouTube.Default.GetVideo("https://www.youtube.com/watch?v=" + id);
