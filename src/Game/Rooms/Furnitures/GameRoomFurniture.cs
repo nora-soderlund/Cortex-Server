@@ -39,6 +39,9 @@ namespace Server.Game.Rooms.Furnitures {
         [JsonIgnore]
         public IGameRoomFurnitureLogic Logic;
 
+        [JsonIgnore]
+        public string Extra;
+
         public GameRoomFurniture(GameRoom room, MySqlDataReader furniture) {
             Room = room;
 
@@ -55,6 +58,8 @@ namespace Server.Game.Rooms.Furnitures {
             Animation = (furniture.GetInt32("animation") != 0)?(furniture.GetInt32("animation")):(null);
 
             Logic = GameRoomFurnitureLogics.CreateLogic(this);
+
+            Extra = furniture.GetString("extra");
         }
 
         public GameRoomFurniture(GameRoom room, int id, int userFurniture, GameRoomPoint position) {

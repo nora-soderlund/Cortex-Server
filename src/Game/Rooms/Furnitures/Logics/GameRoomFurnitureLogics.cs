@@ -27,6 +27,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 case "furniture_dice": return new GameRoomFurnitureDice() { Furniture = furniture };
 
                 case "furniture_gate": return new GameRoomFurnitureGate() { Furniture = furniture };
+
+                case "furniture_video": return new GameRoomFurnitureVideo() { Furniture = furniture };
             }
 
             return null;
