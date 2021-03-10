@@ -23,21 +23,20 @@ namespace Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureVideo : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
 
+        public bool Enabled = false;
+
         public void OnUserUse(GameRoomUser user, JToken data) {
-            if(Furniture.Animation == 0) {
+            if(!Enabled) {
                 Furniture.Room.Send(new SocketMessage("OnRoomFurnitureVideoStart", new {
                     id = Furniture.Id,
 
                     link = "http://api.project-cortex.net/YouTube/" + Furniture.Extra + ".mp4"
                 }).Compose());
-
-                Furniture.Animation = 1;
             }
-            else {
-                Furniture.Room.Send(new SocketMessage("OnRoomFurnitureVideoStop", Furniture.Id).Compose()); 
-
-                Furniture.Animation = 0;
-            }
+            else
+                Furniture.Room.Send(new SocketMessage("OnRoomFurnitureVideoStop", Furniture.Id).Compose());
+        
+            Enabled = !Enabled;
         }
 
         public void OnUserEnter(GameRoomUser user) {
