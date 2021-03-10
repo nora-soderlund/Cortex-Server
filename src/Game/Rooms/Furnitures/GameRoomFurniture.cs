@@ -57,9 +57,9 @@ namespace Server.Game.Rooms.Furnitures {
             
             Animation = (furniture.GetInt32("animation") != 0)?(furniture.GetInt32("animation")):(null);
 
-            Logic = GameRoomFurnitureLogics.CreateLogic(this);
-
             Extra = furniture.GetString("extra");
+
+            Logic = GameRoomFurnitureLogics.CreateLogic(this);
         }
 
         public GameRoomFurniture(GameRoom room, int id, int userFurniture, GameRoomPoint position) {
