@@ -14,6 +14,7 @@
           "MySql.Data": "8.0.23",
           "Newtonsoft.Json": "12.0.3",
           "RoyT.AStar": "2.1.0",
+          "VideoLibrary": "3.1.0",
           "runtimepack.Microsoft.NETCore.App.Runtime.win-x64": "5.0.2"
         },
         "runtime": {
@@ -1969,6 +1970,18 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
+      },
+      "VideoLibrary/3.1.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "runtime": {
+          "lib/netstandard1.1/libvideo.dll": {
+            "assemblyVersion": "3.1.0.0",
+            "fileVersion": "3.1.0.0"
+          }
+        }
       }
     }
   },
@@ -2892,6 +2905,13 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
+    },
+    "VideoLibrary/3.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VtJIsAiNnhNG9FPJKA8qvsqn6Gj8hdV+Bb+V0hdDDALahagBrkbTgOD1LI5ZJxs+kNaf6oWjTVDa98004jq+Zw==",
+      "path": "videolibrary/3.1.0",
+      "hashPath": "videolibrary.3.1.0.nupkg.sha512"
     }
   },
   "runtimes": {

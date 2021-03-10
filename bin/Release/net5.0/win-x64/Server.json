@@ -12,5 +12,9 @@
 
     "discord": {
         "enabled": true
+    },
+
+    "youtube": {
+        "path": "C:/Cortex/api/YouTube/"
     }
 }
