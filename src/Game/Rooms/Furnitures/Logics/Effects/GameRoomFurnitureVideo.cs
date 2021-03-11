@@ -37,6 +37,9 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public GameRoomFurnitureVideo(GameRoomFurniture furniture) {
             Furniture = furniture;
 
+            if(Furniture.Extra == null || Furniture.Extra.Length == 0)
+                return;
+
             string[] videos = Furniture.Extra.Split(',');
 
             
@@ -77,7 +80,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             if(Videos.Count == 0)
                 return;
-                
+
             user.User.Client.Send(new SocketMessage("OnRoomFurnitureVideoStart", new {
                 id = Furniture.Id,
 
