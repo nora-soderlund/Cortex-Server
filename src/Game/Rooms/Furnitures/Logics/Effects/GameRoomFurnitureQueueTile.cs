@@ -30,7 +30,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public List<GameRoomFurniture> Furnitures = new List<GameRoomFurniture>();
 
         public int Interval => 3000;
-        public int IntervalCount { get; set; }
 
         public void OnTimerPrepare() {
             Users.Clear();
@@ -67,26 +66,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             foreach(GameRoomUser user in Users)
                 user.User.Room.Actions.AddEntity(user.User.Id, 500, new GameRoomUserPosition(user, newPoint.Row, newPoint.Column, 500, false));
-        }
-
-        public void OnUserUse(GameRoomUser user, JToken data) {
-            
-        }
-
-        public void OnUserEnter(GameRoomUser user) {
-            
-        }
-
-        public void OnUserLeave(GameRoomUser user) {
-            
-        }
-
-        public void OnFurnitureEnter(GameRoomFurniture furniture) {
-            
-        }
-
-        public void OnFurnitureLeave(GameRoomFurniture furniture) {
-            
         }
     }
 }

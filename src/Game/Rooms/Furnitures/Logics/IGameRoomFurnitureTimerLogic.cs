@@ -15,10 +15,10 @@ using Server.Game.Users.Furnitures;
 
 namespace Server.Game.Rooms.Furnitures.Logics {
     interface IGameRoomFurnitureIntervalLogic : IGameRoomFurnitureLogic {
-        int Interval { get; }
-        int IntervalCount { get; set; }
+        int Interval => 1000;
+        int IntervalCount { get { return 0; } set { } }
 
-        void OnTimerPrepare();
-        void OnTimerElapsed();
+        void OnTimerPrepare() { }
+        void OnTimerElapsed() { }
     }
 }

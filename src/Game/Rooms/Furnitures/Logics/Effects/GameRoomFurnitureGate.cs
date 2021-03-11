@@ -55,21 +55,5 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 Furniture.SetAnimation(0);
             }
         }
-
-        public void OnUserEnter(GameRoomUser user) {
-            
-        }
-
-        public void OnUserLeave(GameRoomUser user) {
-            
-        }
-
-        public void OnFurnitureEnter(GameRoomFurniture furniture) {
-            
-        }
-
-        public void OnFurnitureLeave(GameRoomFurniture furniture) {
-            
-        }
     }
 }

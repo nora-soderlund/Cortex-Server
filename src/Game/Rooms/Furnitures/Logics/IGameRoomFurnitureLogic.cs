@@ -23,11 +23,11 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         bool IsStandable() =>
             Furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Standable);
 
-        void OnUserUse(GameRoomUser user, JToken data);
-        void OnUserEnter(GameRoomUser user);
-        void OnUserLeave(GameRoomUser user);
+        void OnUserUse(GameRoomUser user, JToken data) { }
+        void OnUserEnter(GameRoomUser user) { }
+        void OnUserLeave(GameRoomUser user) { }
         
-        void OnFurnitureEnter(GameRoomFurniture furniture);
-        void OnFurnitureLeave(GameRoomFurniture furniture);
+        void OnFurnitureEnter(GameRoomFurniture furniture) { }
+        void OnFurnitureLeave(GameRoomFurniture furniture) { }
     }
 }

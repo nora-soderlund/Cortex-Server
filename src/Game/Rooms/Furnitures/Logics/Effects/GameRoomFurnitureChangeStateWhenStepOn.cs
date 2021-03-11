@@ -23,10 +23,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureChangeStateWhenStepOn : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
 
-        public void OnUserUse(GameRoomUser user, JToken data) {
-            
-        }
-
         public void OnUserEnter(GameRoomUser user) {
             if(Furniture.Animation == 1)
                 return;
@@ -43,14 +39,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 100));
 
             Furniture.Animation = 0;
-        }
-
-        public void OnFurnitureEnter(GameRoomFurniture furniture) {
-            
-        }
-
-        public void OnFurnitureLeave(GameRoomFurniture furniture) {
-            
         }
     }
 }

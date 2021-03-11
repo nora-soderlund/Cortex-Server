@@ -26,7 +26,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureVideo : IGameRoomFurnitureIntervalLogic {
         public GameRoomFurniture Furniture { get; set; }
         public int Interval => 1000;
-        public int IntervalCount { get; set; }
 
         public bool Enabled = true;
 
@@ -44,10 +43,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 foreach(string video in videos)
                     Videos.Add(GameFurnitureManager.GetVideo(video));
             });
-        }
-
-        public void OnTimerPrepare() {
-            
         }
 
         public void OnTimerElapsed() {
@@ -97,22 +92,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 Furniture.Room.Send(new SocketMessage("OnRoomFurnitureVideoStop", Furniture.Id).Compose());
         
             Enabled = !Enabled;*/
-        }
-
-        public void OnUserEnter(GameRoomUser user) {
-            
-        }
-
-        public void OnUserLeave(GameRoomUser user) {
-            
-        }
-
-        public void OnFurnitureEnter(GameRoomFurniture furniture) {
-            
-        }
-
-        public void OnFurnitureLeave(GameRoomFurniture furniture) {
-            
         }
     }
 }
