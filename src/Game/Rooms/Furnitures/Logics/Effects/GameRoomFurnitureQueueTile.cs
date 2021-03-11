@@ -30,6 +30,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public List<GameRoomFurniture> Furnitures = new List<GameRoomFurniture>();
 
         public int Interval => 3000;
+        public int IntervalCount { get; set; }
 
         public void OnTimerPrepare() {
             Users.Clear();

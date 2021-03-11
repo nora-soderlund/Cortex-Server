@@ -140,6 +140,9 @@ namespace Server.Game.Rooms {
             message.Add("OnRoomEntityAdd", properties);
 
             user.Client.Send(message.Compose());
+
+            foreach(GameRoomFurniture furniture in Furnitures.Where(x => x.Logic != null))
+                furniture.Logic.OnUserStreamIn(roomUser);
         }
 
         public void RemoveUser(GameUser user) {
@@ -147,6 +150,9 @@ namespace Server.Game.Rooms {
 
             if(roomUser == null)
                 return;
+
+            foreach(GameRoomFurniture furniture in Furnitures.Where(x => x.Logic != null))
+                furniture.Logic.OnUserStreamOut(roomUser);
 
             user.Room.Send(new SocketMessage("OnRoomEntityRemove", new { users = roomUser.Id }).Compose());
 
