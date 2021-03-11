@@ -80,20 +80,26 @@ namespace Server.Game.Furnitures {
             if(video != null)
                 return video;
 
-            using MySqlConnection connection = new MySqlConnection(Program.Connection);
-            connection.Open();
+            try {
+                using MySqlConnection connection = new MySqlConnection(Program.Connection);
+                connection.Open();
 
-            using MySqlCommand command = new MySqlCommand("SELECT * FROM furniture_videos WHERE id = @id", connection);
-            command.Parameters.AddWithValue("@id", id);
+                using MySqlCommand command = new MySqlCommand("SELECT * FROM furniture_videos WHERE id = @id", connection);
+                command.Parameters.AddWithValue("@id", id);
 
-            using MySqlDataReader reader = command.ExecuteReader();
+                using MySqlDataReader reader = command.ExecuteReader();
 
-            if(!reader.Read())
-                return DownloadVideo(id);
+                if(!reader.Read())
+                    return DownloadVideo(id);
 
-            video = new GameFurnitureVideo(reader);
+                video = new GameFurnitureVideo(reader);
 
-            Videos.Add(video);
+                Videos.Add(video);
+            }
+            catch(Exception exception) {
+                if(Program.Discord != null)
+                    Program.Discord.Exception(exception);
+            }
 
             return video;
         }

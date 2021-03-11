@@ -72,6 +72,12 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         }
 
         public void OnUserStreamIn(GameRoomUser user) {
+            if(!Enabled)
+                return;
+
+            if(Videos.Count == 0)
+                return;
+                
             user.User.Client.Send(new SocketMessage("OnRoomFurnitureVideoStart", new {
                 id = Furniture.Id,
 
