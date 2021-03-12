@@ -13,7 +13,7 @@ using Server.Socket.Clients;
 using Server.Socket.Messages;
 using Server.Socket.Events;
 
-namespace Server.Game.Rooms.Users.Events {
+namespace Server.Game.Rooms.Chat.Events {
     class OnRoomUserChat : ISocketEvent {
         public string Event => "OnRoomUserChat";
 
@@ -26,11 +26,7 @@ namespace Server.Game.Rooms.Users.Events {
             if(message.Length == 0)
                 return 0;
 
-            client.User.Room.Send(new SocketMessage("OnRoomUserChat", new {
-                id = client.User.Id,
-
-                message = message
-            }).Compose());
+            GameRoomChat.Call(client.User.Room.GetUser(client.User.Id), message);
 
             return 1;
         }
