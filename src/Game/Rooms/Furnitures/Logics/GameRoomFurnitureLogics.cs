@@ -33,6 +33,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 case "furniture_banzai_tile": return new GameRoomFurnitureBanzaiTile() { Furniture = furniture };
 
                 case "furniture_banzai_portal": return new GameRoomFurnitureBanzaiPortal(furniture) { Furniture = furniture };
+
+                case "furniture_banzai_score": return new GameRoomFurnitureBanzaiScore(furniture) { Furniture = furniture };
             }
 
             return null;

@@ -44,8 +44,10 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 return;
 
             Furniture.Animation = (team * 3) + Step;
-
             Furniture.Room.Actions.AddEntityDelay(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+
+            foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Logic is GameRoomFurnitureBanzaiScore))
+                (furniture.Logic as GameRoomFurnitureBanzaiScore).UpdateScore();
         }
     }
 }

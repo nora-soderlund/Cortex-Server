@@ -86,6 +86,9 @@ namespace Server.Game.Rooms.Actions {
         }
 
         public void Elapse(int interval) {
+            if(!EntityActions.ContainsKey(interval))
+                return;
+
             Dictionary<string, Dictionary<int, Dictionary<string, object>>> entities = new Dictionary<string, Dictionary<int, Dictionary<string, object>>>();
 
             for(int entityActionIndex = 0; entityActionIndex < EntityActions[interval].Count; entityActionIndex++) {
@@ -122,7 +125,7 @@ namespace Server.Game.Rooms.Actions {
             if(entities.Count != 0)
                 Room.Send(new SocketMessage("OnRoomEntityUpdate", entities).Compose());
 
-            if(EntityActions[interval].Count == 0) {
+            if(EntityActions.ContainsKey(interval) && EntityActions[interval].Count == 0) {
                 EntityActions.Remove(interval);
                 
                 if(Timers.ContainsKey(interval)) {
