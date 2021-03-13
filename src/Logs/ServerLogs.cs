@@ -19,30 +19,42 @@ namespace Server {
         }
 
         public static void WriteLine(object input) {
-            string prefix = "[" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "." + DateTime.Now.Second + "] ";
+            try {
+                string prefix = "[" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "." + DateTime.Now.Second + "] ";
 
-            string[] inputs = input.ToString().Split('\n');
+                string[] inputs = input.ToString().Split('\n');
 
-            using StreamWriter writer = File.AppendText(file);
+                using(StreamWriter writer = File.AppendText(file)) {
+                    foreach(string line in inputs) {
+                        System.Console.WriteLine(prefix + line);
 
-            foreach(string line in inputs) {
-                System.Console.WriteLine(prefix + line);
+                        writer.WriteLine(prefix + line);
+                    }
 
-                writer.WriteLine(prefix + line);
+                    writer.Close();
+                }
+            }
+            catch(IOException) {
+                WriteLine(input);
             }
         }
 
         public static void WriteLog(object input) {
-            string prefix = "[" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "." + DateTime.Now.Second + "] ";
+            try {
+                string prefix = "[" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "." + DateTime.Now.Second + "] ";
+                
+                string[] inputs = input.ToString().Split('\n');
 
-            using StreamWriter writer = File.AppendText(file);
-
-            string[] inputs = input.ToString().Split('\n');
-
-            writer.WriteLine(prefix + input + "\n");
-
-            foreach(string line in inputs)
-                writer.WriteLine(prefix + line);
+                using(StreamWriter writer = File.AppendText(file)) {
+                    foreach(string line in inputs)
+                        writer.WriteLine(prefix + line);
+                
+                    writer.Close();
+                }
+            }
+            catch(IOException) {
+                WriteLog(input);
+            }
         }
 
         public static string ReadLine() {
