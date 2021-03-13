@@ -50,6 +50,81 @@ namespace Server.Game.Users.Events {
                 }
             }
 
+            if(data.SelectToken("stackable") != null) {
+                furniture.Flags ^= GameFurnitureFlags.Stackable;
+
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
+
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET flags = @flags WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@flags", furniture.Flags);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            if(data.SelectToken("sitable") != null) {
+                furniture.Flags ^= GameFurnitureFlags.Sitable;
+
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
+
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET flags = @flags WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@flags", furniture.Flags);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            if(data.SelectToken("standable") != null) {
+                furniture.Flags ^= GameFurnitureFlags.Standable;
+
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
+
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET flags = @flags WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@flags", furniture.Flags);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            if(data.SelectToken("walkable") != null) {
+                furniture.Flags ^= GameFurnitureFlags.Walkable;
+
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
+
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET flags = @flags WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@flags", furniture.Flags);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            if(data.SelectToken("sleepable") != null) {
+                furniture.Flags ^= GameFurnitureFlags.Sleepable;
+
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    connection.Open();
+
+                    using(MySqlCommand command = new MySqlCommand("UPDATE furnitures SET flags = @flags WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", furniture.Id);
+                        command.Parameters.AddWithValue("@flags", furniture.Flags);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
             if(data.SelectToken("logic") != null) {
                 string logic = data["logic"].ToString();
 

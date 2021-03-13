@@ -33,4 +33,16 @@ namespace Server.Game.Furnitures.Events {
             return 1;
         }
     }
+    
+    class OnFurnitureFlagsRequest : ISocketEvent {
+        public string Event => "OnFurnitureFlagsRequest";
+
+        public int Execute(SocketClient client, JToken data) {
+            string id = data.ToString();
+
+            client.Send(new SocketMessage("OnFurnitureFlagsRequest", GameFurnitureManager.Furnitures.Find(x => x.Id == id).Flags).Compose());
+
+            return 1;
+        }
+    }
 }
