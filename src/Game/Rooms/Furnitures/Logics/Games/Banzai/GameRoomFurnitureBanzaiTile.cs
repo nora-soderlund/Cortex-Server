@@ -32,6 +32,9 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             if(team == 0)
                 return;
+                
+            if(Step == 2)
+                return;
 
             if(Team != team) {
                 Team = team;
@@ -40,8 +43,6 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             }
             else if(Step < 2)
                 Step++;
-            else
-                return;
 
             Furniture.Animation = (team * 3) + Step;
             Furniture.Room.Actions.AddEntityDelay(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
