@@ -23,6 +23,8 @@ namespace Server.Game.Rooms.Chat {
         public void OnInitialization() {
             foreach (var instance in System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(a => a.GetConstructor(Type.EmptyTypes) != null).Select(Activator.CreateInstance).OfType<IGameRoomChatCommand>())
                 Commands.Add(instance);
+
+            Console.WriteLine("Loaded " + Commands.Count + " room chat commands...");
         }
 
         public static void Call(GameRoomUser user, string input) {
