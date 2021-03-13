@@ -25,6 +25,8 @@ namespace Server.Game.Rooms.Chat.Commands.User {
 
             int effect = Int32.Parse(parameters[1]);
 
+            user.Effect = effect;
+
             user.User.Room.Send(new SocketMessage("OnRoomUserEffect", new {
                 id = user.Id,
 

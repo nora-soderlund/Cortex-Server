@@ -20,6 +20,9 @@ namespace Server.Game.Rooms.Users {
         [JsonProperty("name")]
         public string Name;
 
+        [JsonProperty("effect")]
+        public int Effect;
+
         [JsonProperty("position")]
         public GameRoomPoint Position;
 
