@@ -26,8 +26,8 @@ namespace Server {
         public static DiscordClient Discord;
 
         static void Main(string[] args) {
-            Console.Title = "Project Cortex Server";
-
+            Console.Start();
+            
             Console.WriteLine(  @"  _____           _           _      _____           _            " + Environment.NewLine +
                                 @" |  __ \         (_)         | |    / ____|         | |           " + Environment.NewLine +
                                 @" | |__) | __ ___  _  ___  ___| |_  | |     ___  _ __| |_ _____  __" + Environment.NewLine +
@@ -38,8 +38,6 @@ namespace Server {
                                 @"               |__/                                               " + Environment.NewLine);
             
             Console.WriteLine("Project Cortex Server by Cake\t\thttps://project-cortex.net/" + Environment.NewLine);
-
-            Console.ResetColor();
 
             foreach (var instance in System.Reflection.Assembly.GetExecutingAssembly().GetTypes().Where(a => a.GetConstructor(Type.EmptyTypes) != null).Select(Activator.CreateInstance).OfType<IInitializationEvent>()) {
                 instance.OnInitialization();
@@ -92,17 +90,6 @@ namespace Server {
                     Console.WriteLine("Query executed and affected " + affected + " rows!");
                 }
             }
-        }
-    
-        public static void Exception(Exception exception) {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-
-            Console.WriteLine("An unhandled but handled exception has occurred: " + exception.Message + Environment.NewLine + "Please review your server logs for a stack trace!");
-
-            Console.ResetColor();
-
-            if(Discord != null)
-                Discord.Exception(exception);
         }
     }
 }

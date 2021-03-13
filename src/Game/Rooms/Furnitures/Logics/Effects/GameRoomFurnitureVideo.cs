@@ -213,7 +213,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                             user.User.Client.Send(new SocketMessage("OnRoomFurnitureUse", true).Compose());
                         }
                         catch(Exception exception) {
-                            Program.Exception(exception);
+                            Console.Exception(exception);
 
                             user.User.Client.Send(new SocketMessage("OnRoomFurnitureUse", false).Compose());
                         }

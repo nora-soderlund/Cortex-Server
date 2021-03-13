@@ -126,7 +126,7 @@ namespace Server.Discord.Sandbox {
                 }
             }
             catch(Exception exception) {
-                Program.Exception(exception);
+                Console.Exception(exception);
             }
         }
     }

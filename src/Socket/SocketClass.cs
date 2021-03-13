@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
@@ -41,10 +43,8 @@ namespace Server.Socket {
                     ThreadPool.QueueUserWorkItem(state => onMessage(socket, message));
                 };
             });
-
-            Console.Write(Environment.NewLine);
             
-            Console.WriteLine("Listening to connections to port 81..." + Environment.NewLine);
+            Console.WriteLine(Environment.NewLine + "Listening to connections to port 81..." + Environment.NewLine);
         }
     
         private void onOpen(IWebSocketConnection socket) {
@@ -125,7 +125,7 @@ namespace Server.Socket {
                     Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
-                Program.Exception(exception);
+                Console.Exception(exception);
             }
         }
 
@@ -134,16 +134,14 @@ namespace Server.Socket {
                 SocketClient client = clients.Find(x => x.Connection == socket);
 
                 if(client == null) {
-                    Console.WriteLine("Received message from unrecognized client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + "...");
-                    Console.WriteLine(message);
+                    Console.WriteLog("Received message from unrecognized client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + ": " + message);
 
                     return;
                 }
 
                 client.Received++;
 
-                Console.WriteLine("Received message from " + client.GetAddressPort() + ":");
-                Console.WriteLine(message);
+                Console.WriteLog("Received message from " + client.GetAddressPort() + ": " + message);
 
                 JObject items = JObject.Parse(message);
 
@@ -166,7 +164,7 @@ namespace Server.Socket {
                 }
             }
             catch(Exception exception) {
-                Program.Exception(exception);
+                Console.Exception(exception);
             }
         }
 
@@ -194,7 +192,7 @@ namespace Server.Socket {
                     Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
-                Program.Exception(exception);
+                Console.Exception(exception);
             }
         }
     }
