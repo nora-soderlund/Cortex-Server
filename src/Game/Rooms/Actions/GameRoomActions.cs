@@ -41,6 +41,29 @@ namespace Server.Game.Rooms.Actions {
             Start(interval);
         }
 
+        public void AddEntityDelay(int id, int interval, IGameRoomEntityAction action) {
+            Timer timer = new Timer(interval);
+
+            timer.Elapsed += (a, b) => {
+                if(!EntityActions.ContainsKey(0))
+                    EntityActions.Add(0, new Dictionary<int, Dictionary<string, IGameRoomEntityAction>>());
+
+                if(!EntityActions[0].ContainsKey(id))
+                    EntityActions[0].Add(id, new Dictionary<string, IGameRoomEntityAction>());
+
+                if(EntityActions[0][id].ContainsKey(action.Property))
+                    EntityActions[0][id].Remove(action.Property);
+
+                EntityActions[0][id].Add(action.Property, action);
+
+                Start(0);
+
+                timer.Stop();
+            };
+
+            timer.Start();
+        }
+
         public void Start(int interval) {
             if(Timers.ContainsKey(interval)) {
                 if(Timers[interval].Enabled == true)

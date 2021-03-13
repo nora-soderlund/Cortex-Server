@@ -37,6 +37,9 @@ namespace Server.Game.Furnitures {
         [JsonIgnore]
         public int Direction;
 
+        [JsonIgnore]
+        public string Parameters;
+
         public GameFurniture(MySqlDataReader reader) {
             Id = reader.GetString("id");
             Line = reader.GetString("line");
@@ -51,6 +54,8 @@ namespace Server.Game.Furnitures {
             Direction = reader.GetInt32("direction");
 
             Dimension = new GameRoomPoint(reader.GetInt32("breadth"), reader.GetInt32("height"), reader.GetDouble("depth"));
+
+            Parameters = reader.GetString("parameters");
         }
     }
 }

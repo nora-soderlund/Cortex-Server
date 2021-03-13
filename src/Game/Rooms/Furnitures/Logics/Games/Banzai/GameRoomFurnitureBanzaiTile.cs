@@ -21,14 +21,14 @@ using Server.Events;
 using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Furnitures.Logics {
-    class GameRoomFurnitureBanzai : IGameRoomFurnitureLogic {
+    class GameRoomFurnitureBanzaiTile : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
 
         public int Team = 0;
         public int Step = 0;
 
-        public void OnUserLeave(GameRoomUser user) {
-            int team = GetUserTeam(user);
+        public void OnUserEnter(GameRoomUser user) {
+            int team = GameRoomFurnitureBanzai.GetUserTeam(user);
 
             if(team == 0)
                 return;
@@ -45,18 +45,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             Furniture.Animation = (team * 3) + Step;
 
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
-        }
-
-        public int GetUserTeam(GameRoomUser user) {
-            switch(user.Effect) {
-                case 33: return 1; // purple
-                case 34: return 2; // green
-                case 35: return 3; // blue
-                case 36: return 4; // yellow
-            }
-
-            return 0;
+            Furniture.Room.Actions.AddEntityDelay(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
         }
     }
 }

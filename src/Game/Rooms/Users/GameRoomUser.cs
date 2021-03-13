@@ -55,5 +55,15 @@ namespace Server.Game.Rooms.Users {
 
             return false;
         }
+
+        public void SetEffect(int effect) {
+            Effect = effect;
+
+            User.Room.Send(new SocketMessage("OnRoomUserEffect", new {
+                id = Id,
+
+                effect = effect
+            }).Compose());
+        }
     }
 }
