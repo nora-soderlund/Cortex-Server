@@ -30,7 +30,7 @@ namespace Server.Game.Rooms {
             while(reader.Read())
                 Navigator.Add(new GameRoomNavigator(reader));
 
-            Program.WriteLine("Read " + Rooms.Count + " rooms to the navigator memory...");
+            Console.WriteLine("Read " + Rooms.Count + " rooms to the navigator memory...");
         }
 
         public static GameRoom Load(long id) {

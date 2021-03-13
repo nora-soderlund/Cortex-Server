@@ -126,15 +126,7 @@ namespace Server.Discord.Sandbox {
                 }
             }
             catch(Exception exception) {
-                await message.Channel.SendMessageAsync("", false, new EmbedBuilder() {
-                    Title = ":x: " + exception.Message,
-
-                    Description = exception.StackTrace,
-
-                    Color = Color.DarkRed
-                }.Build());
-
-                await message.Channel.SendMessageAsync("Check it out, <@!614863575126638641>!");
+                Program.Exception(exception);
             }
         }
     }

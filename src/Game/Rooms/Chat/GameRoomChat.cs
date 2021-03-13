@@ -44,8 +44,7 @@ namespace Server.Game.Rooms.Chat {
                 }).Compose());
             }
             catch(Exception exception) {
-                if(Program.Discord != null)
-                    Program.Discord.Exception(exception);
+                Program.Exception(exception);
 
                 user.User.Room.Send(new SocketMessage("OnRoomUserChat", new {
                     id = user.Id,

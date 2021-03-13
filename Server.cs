@@ -93,23 +93,16 @@ namespace Server {
                 }
             }
         }
+    
+        public static void Exception(Exception exception) {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
 
-        public static void Write(string value, ConsoleColor color = ConsoleColor.Gray) {
-            Console.ForegroundColor = color;
-
-            Console.Write(value);
-
-            Console.ResetColor();
-        }
-
-        public static void WriteLine(string value, ConsoleColor color = ConsoleColor.Gray, bool skipLine = false) {
-            Console.Write("[00:00.00] ");
-
-            Console.ForegroundColor = color;
-
-            Console.Write(value + ((skipLine)?(""):(Environment.NewLine)));
+            Console.WriteLine("An unhandled but handled exception has occurred: " + exception.Message + Environment.NewLine + "Please review your server logs for a stack trace!");
 
             Console.ResetColor();
+
+            if(Discord != null)
+                Discord.Exception(exception);
         }
     }
 }
