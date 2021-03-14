@@ -41,7 +41,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 case "furniture_pushable": return new GameRoomFurniturePushable(furniture) { Furniture = furniture };
             }
 
-            return null;
+            return new GameRoomFurnitureBasic() { Furniture = furniture };
         }
     }
 }
