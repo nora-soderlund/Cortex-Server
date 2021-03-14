@@ -50,5 +50,9 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             Furniture.Animation = Score;
             Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
         }
+
+        public void OnGameStart() {
+            UpdateScore();
+        }
     }
 }

@@ -47,7 +47,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 teams.Add(new KeyValuePair<int, int>(furnitureScore.Team, furnitureScore.Score));
             }
 
-            teams.OrderBy(x => x.Value);
+            teams = teams.OrderByDescending(x => x.Value).ToList();
 
             List<int> winners = new List<int>();
 
@@ -61,10 +61,10 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                     counter.Room.Actions.AddEntity(user.Id, 500, new GameRoomUserAction(user, "Wave", 5000));
             }
 
-            int animation = (winners.Count == 1)?((winners[0] * 3) + 2):(1);
-
             foreach(GameRoomFurniture furniture in counter.Room.Furnitures.Where(x => x.Logic is GameRoomFurnitureBanzaiTile))
-                furniture.Animation = animation;
+                furniture.Animation = 0;
+
+            int animation = (winners.Count == 1)?((winners[0] * 3) + 2):(1);
             
             counter.Room.Send(new SocketMessage("OnRoomFurnitureFlash", new { id = "bb_patch1", animation }).Compose());
         }
