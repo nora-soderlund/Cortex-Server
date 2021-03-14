@@ -49,8 +49,25 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             else if(Step < 2) {
                 Step++;
 
-                if(Step == 2)
+                if(Step == 2) {
                     Locked = true;
+
+                    int unlocked = 0;
+
+                    foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Logic is GameRoomFurnitureBanzaiTile)) {
+                        GameRoomFurnitureBanzaiTile tile = furniture.Logic as GameRoomFurnitureBanzaiTile;
+
+                        if(!tile.Locked)
+                            unlocked++;
+                    }
+
+                    if(unlocked == 0) {
+                        foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures)
+                            furniture.Logic.OnGameStop();
+
+                        GameRoomFurnitureBanzai.OnGameStop(Furniture);
+                    }
+                }
             }
 
             Furniture.Animation = (team * 3) + Step;

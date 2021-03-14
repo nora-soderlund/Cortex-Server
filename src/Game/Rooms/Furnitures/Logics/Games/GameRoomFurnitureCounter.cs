@@ -72,14 +72,14 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 if(Enabled) {
                     if(Time == 0)
                         Time = Times[TimeIndex];
-                        
-                    foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures)
+
+                    foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Id != Furniture.Id))
                         furniture.Logic.OnGameStart();
 
                     GameRoomFurnitureBanzai.OnGameStart(Furniture);
                 }
                 else {
-                    foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures)
+                    foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Id != Furniture.Id))
                         furniture.Logic.OnGameStop();
 
                     GameRoomFurnitureBanzai.OnGameStop(Furniture);
@@ -100,11 +100,15 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
 
             if(Time == 0) {
-                foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures)
+                foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Id != Furniture.Id))
                     furniture.Logic.OnGameStop();
 
                 GameRoomFurnitureBanzai.OnGameStop(Furniture);
             }
+        }
+
+        public void OnGameStop() {
+            Enabled = false;
         }
     }
 }
