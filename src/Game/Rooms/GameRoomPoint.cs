@@ -90,4 +90,8 @@ namespace Server.Game.Rooms {
             }
         }
     }
+
+    enum GameRoomPointDirections {
+        North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest
+    }
 }
