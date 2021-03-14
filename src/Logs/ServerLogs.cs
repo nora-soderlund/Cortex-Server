@@ -7,6 +7,9 @@ using Server.Events;
 namespace Server {
     class Console  {
         private static string file = "logs/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "-" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + ".log";
+        
+        private static string pendingLine = "";
+        private static string pendingLog = "";
 
         public static void Start() {
             if(!Directory.Exists("logs"))
@@ -31,14 +34,20 @@ namespace Server {
 
                         writer.WriteLine(prefix + line);
                     }
+                    
+                    if(pendingLine.Length != 0) {
+                        foreach(string line in pendingLine.Split('\n')) {
+                            System.Console.WriteLine(prefix + line);
 
-                    writer.Close();
+                            writer.WriteLine(prefix + line);
+                        }
+
+                        pendingLine = "";
+                    }
                 }
             }
             catch(IOException) {
-                ThreadPool.QueueUserWorkItem((a) => {
-                    WriteLine(input);
-                });
+                pendingLine += input;
             }
         }
 
@@ -52,13 +61,16 @@ namespace Server {
                     foreach(string line in inputs)
                         writer.WriteLine(prefix + line);
                 
-                    writer.Close();
+                    if(pendingLog.Length != 0) {                
+                        foreach(string line in pendingLog.Split('\n'))
+                            writer.WriteLine(prefix + line);
+
+                        pendingLog = "";
+                    }
                 }
             }
             catch(IOException) {
-                ThreadPool.QueueUserWorkItem((a) => {
-                    WriteLog(input);
-                });
+                pendingLog += input;
             }
         }
 

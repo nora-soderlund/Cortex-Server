@@ -75,6 +75,12 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
                     GameRoomFurnitureBanzai.OnGameStart(Furniture);
                 }
+                else {
+                    foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures)
+                        furniture.Logic.OnGameStop();
+
+                    GameRoomFurnitureBanzai.OnGameStop(Furniture);
+                }
             }
         }
         
