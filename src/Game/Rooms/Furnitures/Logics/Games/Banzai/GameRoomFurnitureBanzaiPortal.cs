@@ -50,8 +50,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                         if(portal.Users.Contains(user)) {
                             portal.Users.Remove(user);
 
-                            Furniture.Animation = Users.Count;
-                            Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+                            furniture.Animation = Users.Count;
+                            furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurnitureAnimation(furniture, furniture.Animation));
                         }
                     }
                 }
