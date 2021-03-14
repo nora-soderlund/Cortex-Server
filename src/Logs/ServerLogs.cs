@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 
 using Server.Events;
 
@@ -35,7 +36,9 @@ namespace Server {
                 }
             }
             catch(IOException) {
-                WriteLine(input);
+                ThreadPool.QueueUserWorkItem((a) => {
+                    WriteLine(input);
+                });
             }
         }
 
@@ -53,7 +56,9 @@ namespace Server {
                 }
             }
             catch(IOException) {
-                WriteLog(input);
+                ThreadPool.QueueUserWorkItem((a) => {
+                    WriteLog(input);
+                });
             }
         }
 
