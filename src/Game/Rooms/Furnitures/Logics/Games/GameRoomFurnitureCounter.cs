@@ -70,6 +70,9 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 Enabled = !Enabled;
             
                 if(Enabled) {
+                    if(Time == 0)
+                        Time = Times[TimeIndex];
+                        
                     foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures)
                         furniture.Logic.OnGameStart();
 
