@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Timers;
 
@@ -96,11 +97,12 @@ namespace Server.Game.Rooms.Users.Actions {
                     }
                 }
             }
+
+            foreach(GameRoomFurniture logicFurniture in RoomUser.User.Room.Furnitures.Where(x => x.Position.Row == RoomUser.Position.Row && x.Position.Column == RoomUser.Position.Column))
+                logicFurniture.Logic.OnUserLeave(RoomUser);
             
             GameRoomFurniture logicLeaveFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
 
-            if(logicLeaveFurniture != null && logicLeaveFurniture.Logic != null)
-                logicLeaveFurniture.Logic.OnUserLeave(RoomUser);
             
             if(Walk)
                 RoomUser.Position.Direction = GameRoomDirection.FromPosition(RoomUser.Position, new GameRoomPoint(path[1].X, path[1].Y));
@@ -109,10 +111,8 @@ namespace Server.Game.Rooms.Users.Actions {
             RoomUser.Position.Column = path[1].Y;
             RoomUser.Position.Depth = depth;
             
-            GameRoomFurniture logicEnterFurniture = RoomUser.User.Room.Map.GetFloorFurniture(RoomUser.Position.Row, RoomUser.Position.Column);
-
-            if(logicEnterFurniture != null && logicEnterFurniture.Logic != null)
-                logicEnterFurniture.Logic.OnUserEnter(RoomUser);
+            foreach(GameRoomFurniture logicFurniture in RoomUser.User.Room.Furnitures.Where(x => x.Position.Row == RoomUser.Position.Row && x.Position.Column == RoomUser.Position.Column))
+                logicFurniture.Logic.OnUserEnter(RoomUser);
 
             Dictionary<string, object> result = new Dictionary<string, object>();
 

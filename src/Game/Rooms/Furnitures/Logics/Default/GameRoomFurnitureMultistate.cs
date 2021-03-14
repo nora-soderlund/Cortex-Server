@@ -28,14 +28,10 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 return;
                 
             int animation = data["animation"].ToObject<int>();
-
-            Furniture.Animation = animation;
             
             user.User.Client.Send(new SocketMessage("OnRoomFurnitureUse", Furniture.Id).Compose());
 
-            user.User.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, animation));
-
-            Furniture.SetAnimation(animation);
+            Furniture.SetAnimation(animation, 500, true);
         }
     }
 }

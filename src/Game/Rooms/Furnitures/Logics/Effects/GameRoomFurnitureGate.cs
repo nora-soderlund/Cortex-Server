@@ -42,17 +42,17 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 return;
 
             if(Furniture.Animation == 0) {
-                Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 101));
+                Furniture.SetAnimation(101, 0, false);
 
-                Furniture.SetAnimation(1);
+                Furniture.SetAnimation(1, -1, true);
             }
             else {
                 if(Furniture.Room.Users.Find(x => x.Position.Row == Furniture.Position.Row && x.Position.Column == Furniture.Position.Column) != null)
                     return;
 
-                Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 100));
+                Furniture.SetAnimation(100, 0, false);
 
-                Furniture.SetAnimation(0);
+                Furniture.SetAnimation(0, -1, true);
             }
         }
     }

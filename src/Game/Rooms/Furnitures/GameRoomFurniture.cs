@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
@@ -8,6 +10,7 @@ using MySql.Data.MySqlClient;
 using Server.Game.Users;
 using Server.Game.Rooms.Actions;
 
+using Server.Game.Rooms.Furnitures.Actions;
 using Server.Game.Rooms.Furnitures.Logics;
 
 using Server.Game.Furnitures;
@@ -91,17 +94,22 @@ namespace Server.Game.Rooms.Furnitures {
             return dimension;
         }
 
-        public void SetAnimation(int animation) {
+        public async void SetAnimation(int animation, int interval = 500, bool save = true) {
             Animation = animation;
 
-            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
-                connection.Open();
+            if(interval != -1)
+                Room.Actions.AddEntity(Id, interval, new GameRoomFurnitureAnimation(this, animation));
 
-                using(MySqlCommand command = new MySqlCommand("UPDATE room_furnitures SET animation = @animation WHERE id = @id", connection)) {
-                    command.Parameters.AddWithValue("@id", Id);
-                    command.Parameters.AddWithValue("@animation", Animation);
+            if(save == true) {
+                using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                    await connection.OpenAsync();
 
-                    command.ExecuteNonQuery();
+                    using(MySqlCommand command = new MySqlCommand("UPDATE room_furnitures SET animation = @animation WHERE id = @id", connection)) {
+                        command.Parameters.AddWithValue("@id", Id);
+                        command.Parameters.AddWithValue("@animation", Animation);
+
+                        await command.ExecuteNonQueryAsync();
+                    }
                 }
             }
         }
