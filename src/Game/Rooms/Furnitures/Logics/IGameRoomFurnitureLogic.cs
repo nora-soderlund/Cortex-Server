@@ -31,5 +31,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         
         void OnFurnitureEnter(GameRoomFurniture furniture) { }
         void OnFurnitureLeave(GameRoomFurniture furniture) { }
+        
+        void OnGameStart() { }
+        void OnGameStop() { }
     }
 }

@@ -27,7 +27,12 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public int Team = 0;
         public int Step = 0;
 
+        public bool Locked = true;
+
         public void OnUserEnter(GameRoomUser user) {
+            if(Locked)
+                return;
+                
             int team = GameRoomFurnitureBanzai.GetUserTeam(user);
 
             if(team == 0)
@@ -41,14 +46,34 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
                 Step = 0;
             }
-            else if(Step < 2)
+            else if(Step < 2) {
                 Step++;
+
+                if(Step == 2)
+                    Locked = true;
+            }
 
             Furniture.Animation = (team * 3) + Step;
             Furniture.Room.Actions.AddEntityDelay(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
 
             foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Logic is GameRoomFurnitureBanzaiScore))
                 (furniture.Logic as GameRoomFurnitureBanzaiScore).UpdateScore();
+        }
+
+        public void OnGameStart() {
+            Locked = false;
+
+            Team = 0;
+            Step = 1;
+
+            if(Furniture.Animation != 1) {
+                Furniture.Animation = 1;
+                Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+            }
+        }
+
+        public void OnGameStop() {
+            Locked = true;
         }
     }
 }

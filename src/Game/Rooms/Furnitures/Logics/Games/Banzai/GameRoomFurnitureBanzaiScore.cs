@@ -48,8 +48,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             }
 
             Furniture.Animation = Score;
-
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
         }
     }
 }
