@@ -33,7 +33,7 @@ namespace Server.Game.Rooms.Users.Events {
 
             client.Send(new SocketMessage("OnRoomUserAction", true).Compose());
 
-            client.User.Room.Actions.AddEntity(roomUser.Id, 500, new GameRoomUserAction(roomUser, action, 2000));
+            client.User.Room.Actions.AddEntity(roomUser.Id, new GameRoomUserAction(roomUser, action, 2000));
 
             return 1;
         }

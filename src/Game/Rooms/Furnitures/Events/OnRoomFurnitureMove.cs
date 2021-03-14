@@ -63,7 +63,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             client.Send(new SocketMessage("OnRoomFurnitureMove", roomFurniture.Id).Compose());
 
-            client.User.Room.Actions.AddEntity(roomFurniture.Id, 500, new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
+            client.User.Room.Actions.AddEntity(roomFurniture.Id, new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
 
             return 1;
         }

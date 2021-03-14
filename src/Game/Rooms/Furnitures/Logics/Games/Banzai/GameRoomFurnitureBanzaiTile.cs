@@ -71,7 +71,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             }
 
             Furniture.Animation = (team * 3) + Step;
-            Furniture.Room.Actions.AddEntityDelay(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
 
             foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Logic is GameRoomFurnitureBanzaiScore))
                 (furniture.Logic as GameRoomFurnitureBanzaiScore).UpdateScore();
@@ -85,7 +85,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             if(Furniture.Animation != 1) {
                 Furniture.Animation = 1;
-                Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+                Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
             }
         }
 

@@ -64,7 +64,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 }
 
                 Furniture.Animation = Time;
-                Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+                Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
             }
             else if(tag == "start_stop") {
                 Enabled = !Enabled;
@@ -97,7 +97,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 return;
 
             Furniture.Animation = Time;
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
 
             if(Time == 0) {
                 foreach(GameRoomFurniture furniture in Furniture.Room.Furnitures.Where(x => x.Id != Furniture.Id))

@@ -58,7 +58,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
             foreach(int team in winners) {
                 foreach(GameRoomUser user in counter.Room.Users.Where(x => GetUserTeam(x) == team))
-                    counter.Room.Actions.AddEntity(user.Id, 500, new GameRoomUserAction(user, "Wave", 5000));
+                    counter.Room.Actions.AddEntity(user.Id, new GameRoomUserAction(user, "Wave", 5000));
             }
 
             foreach(GameRoomFurniture furniture in counter.Room.Furnitures.Where(x => x.Logic is GameRoomFurnitureBanzaiTile))

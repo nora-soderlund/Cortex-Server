@@ -34,14 +34,14 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 if(Furniture.Animation == -1)
                     return;
 
-                Furniture.SetAnimation(-1, 0, false);
+                Furniture.SetAnimation(-1, false);
 
                 Timer timer = new Timer(1000);
 
                 timer.Elapsed += (a, b) => {
                     int dice = new Random().Next(1, 7);
 
-                    Furniture.SetAnimation(dice, 500, true);
+                    Furniture.SetAnimation(dice, true);
 
                     timer.Stop();
                 };
@@ -52,7 +52,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                 if(Furniture.Animation == 0)
                     return;
 
-                Furniture.SetAnimation(0, 500, true);
+                Furniture.SetAnimation(0, true);
             }
         }
     }

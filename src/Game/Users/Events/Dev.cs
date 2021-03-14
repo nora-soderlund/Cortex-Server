@@ -190,23 +190,4 @@ namespace Server.Game.Users.Events {
             return 1;
         }
     }
-
-    class Temp_Slap : ISocketEvent {
-        public string Event => "Temp_DevSlap";
-
-        public int Execute(SocketClient client, JToken data) {
-            int id = data.ToObject<int>();
-            
-
-            GameRoomUser targetUser = client.User.Room.Users.Find(x => x.Id == id);
-
-            double depth = targetUser.Position.Depth;
-
-            client.User.Room.Actions.AddEntity(targetUser.User.Id, 0, new GameRoomUserPosition(targetUser, targetUser.Position.Row, targetUser.Position.Column, depth + 10, 0, false));
-
-            client.User.Room.Actions.AddEntity(targetUser.User.Id, 1000, new GameRoomUserPosition(targetUser, targetUser.Position.Row, targetUser.Position.Column, depth, 500, false));
-
-            return 1;
-        }
-    }
 }

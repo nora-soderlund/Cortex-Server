@@ -31,7 +31,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             
             user.User.Client.Send(new SocketMessage("OnRoomFurnitureUse", Furniture.Id).Compose());
 
-            Furniture.SetAnimation(animation, 500, true);
+            Furniture.SetAnimation(animation, true);
         }
     }
 }

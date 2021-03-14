@@ -94,11 +94,13 @@ namespace Server.Game.Rooms.Furnitures {
             return dimension;
         }
 
-        public async void SetAnimation(int animation, int interval = 500, bool save = true) {
-            Animation = animation;
+        public async void SetAnimation(int animation, bool save = true) {
+            Room.Actions.AddEntity(Id, new GameRoomFurnitureAnimation(this, animation));
+            
+            if(animation >= 100)
+                animation = animation - 100;
 
-            if(interval != -1)
-                Room.Actions.AddEntity(Id, interval, new GameRoomFurnitureAnimation(this, animation));
+            Animation = animation;
 
             if(save == true) {
                 using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {

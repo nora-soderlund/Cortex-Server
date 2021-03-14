@@ -27,7 +27,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             if(Furniture.Animation == 1)
                 return;
 
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 101));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, 101));
 
             Furniture.Animation = 1;
         }
@@ -36,7 +36,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             if(Furniture.Animation == 0)
                 return;
 
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 0, new GameRoomFurnitureAnimation(Furniture, 100));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, 100));
 
             Furniture.Animation = 0;
         }

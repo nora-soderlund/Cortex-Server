@@ -46,7 +46,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                     return;
             }
 
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurniturePosition(Furniture, position, 500));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurniturePosition(Furniture, position, 500));
         }
 
         public GameRoomPoint GetNextPoint(GameRoomPoint _position, int direction) {

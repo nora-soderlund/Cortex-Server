@@ -44,7 +44,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             client.Send(new SocketMessage("OnRoomFurnitureRotate", roomFurniture.Id).Compose());
 
-            client.User.Room.Actions.AddEntity(roomFurniture.Id, 500, new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(roomFurniture.Position.Row, roomFurniture.Position.Column, roomFurniture.Position.Depth, direction)));
+            client.User.Room.Actions.AddEntity(roomFurniture.Id, new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(roomFurniture.Position.Row, roomFurniture.Position.Column, roomFurniture.Position.Depth, direction)));
 
             return 1;
         }

@@ -51,7 +51,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                             portal.Users.Remove(user);
 
                             furniture.Animation = Users.Count;
-                            furniture.Room.Actions.AddEntity(furniture.Id, 500, new GameRoomFurnitureAnimation(furniture, furniture.Animation));
+                            furniture.Room.Actions.AddEntity(furniture.Id, new GameRoomFurnitureAnimation(furniture, furniture.Animation));
                         }
                     }
                 }
@@ -59,7 +59,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
                     Users.Remove(user);
                     
                     Furniture.Animation = Users.Count;
-                    Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+                    Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
                 }
                     
                 user.SetEffect(0);
@@ -77,7 +77,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             user.SetEffect(Effect);
 
             Furniture.Animation = Users.Count;
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
         }
 
         public void OnUserStreamOut(GameRoomUser user) {
@@ -87,7 +87,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             Users.Remove(user);
 
             Furniture.Animation = Users.Count;
-            Furniture.Room.Actions.AddEntity(Furniture.Id, 500, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
+            Furniture.Room.Actions.AddEntity(Furniture.Id, new GameRoomFurnitureAnimation(Furniture, Furniture.Animation));
         }
     }
 }
