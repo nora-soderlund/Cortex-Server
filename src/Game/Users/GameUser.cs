@@ -12,6 +12,7 @@ using Server.Game.Rooms;
 using Server.Game.Furnitures;
 using Server.Game.Users.Friends;
 using Server.Game.Users.Furnitures;
+using Server.Game.Users.Badges;
 
 namespace Server.Game.Users {
     class GameUser {
@@ -39,6 +40,9 @@ namespace Server.Game.Users {
         [JsonProperty("friends")]
         public List<GameUserFriend> Friends = new List<GameUserFriend>();
 
+        [JsonIgnore]
+        public List<GameUserBadge> Badges = new List<GameUserBadge>();
+
         public GameUser(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
 
@@ -52,6 +56,8 @@ namespace Server.Game.Users {
             GetFurnitures();
 
             Friends = GetFriends();
+
+            Badges = GetBadges();
         }
 
         public List<GameUserFriend> GetFriends() {
@@ -110,6 +116,24 @@ namespace Server.Game.Users {
             }
 
             return furnitures;
+        }
+    
+        public List<GameUserBadge> GetBadges() {
+            List<GameUserBadge> badges = new List<GameUserBadge>();
+
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using MySqlCommand command = new MySqlCommand("SELECT * FROM user_badges WHERE user = @user", connection);
+            command.Parameters.AddWithValue("@user", Id);
+
+            using MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+                badges.Add(new GameUserBadge(reader));
+
+            return badges;
         }
     }
 }
