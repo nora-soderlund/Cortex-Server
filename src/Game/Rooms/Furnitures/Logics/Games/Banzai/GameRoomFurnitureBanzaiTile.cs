@@ -20,6 +20,8 @@ using Server.Game.Rooms.Furnitures.Actions;
 using Server.Events;
 using Server.Socket.Messages;
 
+using Server.Game.Achievements;
+
 namespace Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureBanzaiTile : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
@@ -51,6 +53,8 @@ namespace Server.Game.Rooms.Furnitures.Logics {
 
                 if(Step == 2) {
                     Locked = true;
+
+                    GameAchievementManager.AddScore(user.User,  GameAchievements.BattleBallTilesLocked, 1);
 
                     int unlocked = 0;
 

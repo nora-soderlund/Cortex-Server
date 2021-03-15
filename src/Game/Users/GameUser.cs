@@ -13,6 +13,7 @@ using Server.Game.Furnitures;
 using Server.Game.Users.Friends;
 using Server.Game.Users.Furnitures;
 using Server.Game.Users.Badges;
+using Server.Game.Users.Achievements;
 
 namespace Server.Game.Users {
     class GameUser {
@@ -43,6 +44,9 @@ namespace Server.Game.Users {
         [JsonIgnore]
         public List<GameUserBadge> Badges = new List<GameUserBadge>();
 
+        [JsonIgnore]
+        public List<GameUserAchievement> Achievements = new List<GameUserAchievement>();
+
         public GameUser(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
 
@@ -58,6 +62,8 @@ namespace Server.Game.Users {
             Friends = GetFriends();
 
             Badges = GetBadges();
+
+            Achievements = GetAchievements();
         }
 
         public List<GameUserFriend> GetFriends() {
@@ -134,6 +140,24 @@ namespace Server.Game.Users {
                 badges.Add(new GameUserBadge(reader));
 
             return badges;
+        }
+
+        public List<GameUserAchievement> GetAchievements() {
+            List<GameUserAchievement> achievements = new List<GameUserAchievement>();
+
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+
+            connection.Open();
+
+            using MySqlCommand command = new MySqlCommand("SELECT * FROM user_achievements WHERE user = @user", connection);
+            command.Parameters.AddWithValue("@user", Id);
+
+            using MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+                achievements.Add(new GameUserAchievement(reader));
+
+            return achievements;
         }
     }
 }
