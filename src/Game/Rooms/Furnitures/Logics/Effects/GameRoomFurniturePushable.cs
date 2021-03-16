@@ -60,7 +60,7 @@ namespace Server.Game.Rooms.Furnitures.Logics {
             GameRoomFurniture nextFurniture = Furniture.Room.Map.GetFloorFurniture(position.Row, position.Column);
 
 			if(nextFurniture != null) {
-                if(!nextFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Stackable))
+                if(!nextFurniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Walkable))
                     return null;
 
                 position.Depth = nextFurniture.Position.Depth;
@@ -72,36 +72,65 @@ namespace Server.Game.Rooms.Furnitures.Logics {
         public int GetInvertedPoint(GameRoomPoint position, int direction) {
             switch(direction) {
                 case (int)GameRoomPointDirections.NorthWest: {
-                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.North) == null) {
-                        if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.SouthWest) == null) {
-                            direction = (int)GameRoomPointDirections.SouthEast;
-                        }
-                        else
-                            direction = (int)GameRoomPointDirections.SouthWest;
-                    }
-                    else
-                        direction = (int)GameRoomPointDirections.North;
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.SouthEast) != null)
+                        return (int)GameRoomPointDirections.SouthEast;
+                        
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.South) != null)
+                        return (int)GameRoomPointDirections.South;
+                        
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.East) != null)
+                        return (int)GameRoomPointDirections.East;
 
                     break;
                 }
                     
-                case 0: direction = 4;
+                case 0: direction = (int)GameRoomPointDirections.South;
                     break;
                     
-                case 1: direction = 3;
+                case 1: {
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.East) != null)
+                        return (int)GameRoomPointDirections.East;
+
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.West) != null)
+                        return (int)GameRoomPointDirections.West;
+
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.SouthWest) != null)
+                        return (int)GameRoomPointDirections.SouthWest;
+                    
                     break;
+                }
                     
                 case 2: direction = 6;
                     break;
                     
-                case 3: direction = 7;
+                case 3: {
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.West) != null)
+                        return (int)GameRoomPointDirections.West;
+
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.North) != null)
+                        return (int)GameRoomPointDirections.North;
+
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.NorthWest) != null)
+                        return (int)GameRoomPointDirections.NorthWest;
+                    
                     break;
+                }
                     
                 case 4: direction = 0;
                     break;
                     
-                case 5: direction = 3;
+                case 5: {
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.NorthEast) != null)
+                        return (int)GameRoomPointDirections.NorthEast;
+                        
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.SouthEast) != null)
+                        return (int)GameRoomPointDirections.SouthEast;
+                        
+                    if(GetNextPoint(Furniture.Position, (int)GameRoomPointDirections.NorthWest) != null)
+                        return (int)GameRoomPointDirections.NorthWest;
+                        
                     break;
+                }
                     
                 case 6: direction = 2;
                     break;
