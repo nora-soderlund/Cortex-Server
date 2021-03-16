@@ -25,14 +25,18 @@ namespace Server.Game.Users.Badges {
         public bool Equipped;
 
         [JsonProperty("timestamp")]
-        public int Timestamp;
+        public long Timestamp;
+
+        public GameUserBadge() {
+            
+        }
 
         public GameUserBadge(MySqlDataReader reader) {
             Id = reader.GetInt32("id");
             
             Badge = reader.GetString("badge");
 
-            Timestamp = reader.GetInt32("timestamp");
+            Timestamp = reader.GetUInt32("timestamp");
 
             Equipped = reader.GetBoolean("equipped");
         }

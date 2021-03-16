@@ -7,6 +7,11 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
+using Server.Game.Users;
+using Server.Game.Users.Badges;
+
+using Server.Socket.Messages;
+
 namespace Server.Game.Badges {
     class GameBadgeManager {
         public static List<GameBadge> Badges = new List<GameBadge>();
@@ -33,6 +38,37 @@ namespace Server.Game.Badges {
             Badges.Add(badge);
 
             return badge;
+        }
+
+        public static GameUserBadge AddBadge(GameUser user, string badge, bool notify) {
+            if(user.Badges.Find(x => x.Badge == badge) != null)
+                return null;
+
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+            connection.Open();
+
+            long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+            using MySqlCommand command = new MySqlCommand("INSERT INTO user_badges (user, badge, timestamp) VALUES (@user, @badge, @timestamp)", connection);
+            command.Parameters.AddWithValue("@user", user.Id);
+            command.Parameters.AddWithValue("@badge", badge);
+            command.Parameters.AddWithValue("@timestamp", timestamp);
+
+            command.ExecuteNonQuery();
+
+            GameUserBadge userBadge = new GameUserBadge() {
+                Id = (int)command.LastInsertedId,
+                Badge = badge,
+                Equipped = false,
+                Timestamp = timestamp
+            };
+
+            user.Badges.Add(userBadge);
+
+            if(notify)
+                user.Client.Send(new SocketMessage("OnUserBadgeAdd", userBadge).Compose());
+
+            return userBadge;
         }
     }
 }
