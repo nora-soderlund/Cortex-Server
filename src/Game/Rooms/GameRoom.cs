@@ -139,6 +139,18 @@ namespace Server.Game.Rooms {
 
             message.Add("OnRoomEntityAdd", properties);
 
+            List<object> effects = new List<object>();
+
+            foreach(GameRoomUser effectUser in Users.Where(x => x.Effect != 0))
+                effects.Add(new {
+                    id = effectUser.Id,
+
+                    effect = effectUser.Effect
+                });
+            
+            if(effects.Count != 0)
+                message.Add("OnRoomUserEffect", effects);
+
             user.Client.Send(message.Compose());
 
             foreach(GameRoomFurniture furniture in Furnitures.Where(x => x.Logic != null))
