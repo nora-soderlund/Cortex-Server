@@ -14,6 +14,7 @@ using Server.Socket.Messages;
 using Server.Socket.Events;
 
 using Server.Game.Rooms.Users;
+using Server.Game.Rooms.Users.Actions;
 using Server.Game.Rooms.Chat.Commands;
 
 namespace Server.Game.Rooms.Chat {
@@ -26,6 +27,15 @@ namespace Server.Game.Rooms.Chat {
 
             Console.WriteLine("Loaded " + Commands.Count + " room chat commands...");
         }
+
+        public static Dictionary<string, string> Actions = new Dictionary<string, string>() {
+            { "o/", "Wave" },
+            { ":D", "Laugh" },
+            { ":)", "GestureSmile" },
+            { ":(", "GestureSad" },
+            { ":@", "GestureAngry" },
+            { ":O", "GestureSurprised" }
+        };
 
         public static void Call(GameRoomUser user, string input) {
             try {
@@ -44,6 +54,14 @@ namespace Server.Game.Rooms.Chat {
 
                     message = input
                 }).Compose());
+
+                foreach(KeyValuePair<string, string> action in Actions) {
+                    if(input.Contains(action.Key)) {
+                        user.User.Room.Actions.AddEntity(user.Id, new GameRoomUserAction(user, action.Value, 2000));
+                        
+                        break;
+                    }
+                }
             }
             catch(Exception exception) {
                 Console.Exception(exception);
