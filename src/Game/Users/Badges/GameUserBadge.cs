@@ -24,6 +24,9 @@ namespace Server.Game.Users.Badges {
         [JsonProperty("equipped")]
         public bool Equipped;
 
+        [JsonIgnore]
+        public long EquippedTimestamp;
+
         [JsonProperty("timestamp")]
         public long Timestamp;
 
@@ -39,6 +42,7 @@ namespace Server.Game.Users.Badges {
             Timestamp = reader.GetUInt32("timestamp");
 
             Equipped = reader.GetBoolean("equipped");
+            EquippedTimestamp = reader.GetUInt32("equipped_timestamp");
         }
     }
 }

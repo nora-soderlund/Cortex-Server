@@ -37,8 +37,21 @@ namespace Server.Game.Users.Inventory.Events {
                 return 0;
 
             userBadge.Equipped = !userBadge.Equipped;
+            userBadge.EquippedTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+            client.User.Badges = client.User.Badges.OrderBy(x => x.EquippedTimestamp).ThenBy(x => x.Timestamp).ToList();
 
             client.Send(new SocketMessage("OnUserInventoryBadges", true).Compose());
+
+            using MySqlConnection connection = new MySqlConnection(Program.Connection);
+            connection.Open();
+
+            using MySqlCommand command = new MySqlCommand("UPDATE user_badges SET equipped = @equipped, equipped_timestamp = @equipped_timestamp WHERE id = @id", connection);
+            command.Parameters.AddWithValue("@id", userBadge.Id);
+            command.Parameters.AddWithValue("@equipped", userBadge.Equipped);
+            command.Parameters.AddWithValue("@equipped_timestamp", userBadge.EquippedTimestamp);
+
+            command.ExecuteNonQuery();
 
             return 1;
         }

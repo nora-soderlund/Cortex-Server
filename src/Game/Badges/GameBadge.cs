@@ -18,6 +18,10 @@ namespace Server.Game.Badges {
         [JsonProperty("description")]
         public string Description;
 
+        public GameBadge() {
+
+        }
+
         public GameBadge(MySqlDataReader reader) {
             Id = reader.GetString("id");
 

@@ -30,8 +30,17 @@ namespace Server.Game.Badges {
 
             using MySqlDataReader reader = command.ExecuteReader();
 
-            if(!reader.Read())
-                return null;
+            if(!reader.Read()) {
+                badge = new GameBadge() {
+                    Id = id,
+                    Title = id,
+                    Description = "No badge description..."
+                };
+
+                Badges.Add(badge);
+
+                return badge;
+            }
 
             badge = new GameBadge(reader);
 
