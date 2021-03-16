@@ -8,6 +8,7 @@ using RoyT.AStar;
 
 using Server.Game.Furnitures;
 using Server.Game.Rooms.Furnitures;
+using Server.Game.Rooms.Furnitures.Logics;
 
 namespace Server.Game.Rooms.Map {
     class GameRoomMap {
@@ -15,7 +16,7 @@ namespace Server.Game.Rooms.Map {
         public GameRoom Room;
 
         [JsonProperty("floor")]
-        public List<string> Floor = new List<string>();
+        public string[] Floor;
 
         [JsonProperty("door")]
         public GameRoomPoint Door;
@@ -29,9 +30,9 @@ namespace Server.Game.Rooms.Map {
         public GameRoomMap(GameRoom room, string floor, GameRoomPoint door) {
             Room = room;
 
-            Floor = floor.ToUpper().Split('|').ToList();
+            Floor = floor.ToUpper().Split('|');
 
-            Rows = Floor.Count;
+            Rows = Floor.Length;
 
             for(int row = 0; row < Rows; row++)
                 if(Floor[row].Length > Columns)
@@ -41,6 +42,9 @@ namespace Server.Game.Rooms.Map {
         }
 
         public double GetFloorDepth(int row, int column) {
+            if(!IsValidFloor(row, column))
+                return 'X';
+
             if(Char.ToUpper(Floor[row][column]) != Char.ToLower(Floor[row][column]))
                 return (double)((Floor[row][column] - 97) - '0');
 
@@ -57,10 +61,14 @@ namespace Server.Game.Rooms.Map {
                     continue;
                 }
 
+                if(GetFloorFurniture(row, column, null, GameFurnitureFlags.Sitable) != null) {
+                    continue;
+                }
+
                 GameRoomFurniture furniture = GetFloorFurniture(row, column);
 
                 if(furniture != null) {
-                    if(!furniture.UserFurniture.Furniture.Flags.HasFlag(GameFurnitureFlags.Walkable)) {
+                    if(furniture.Logic != null && !furniture.Logic.IsWalkable()) {
                         grid.BlockCell(new Position(row, column));
 
                         continue;
@@ -71,12 +79,18 @@ namespace Server.Game.Rooms.Map {
             return grid.GetPath(new Position(start.Row, start.Column), new Position(end.Row, end.Column));
         }
 
-        public GameRoomFurniture GetFloorFurniture(int row, int column) {
-
-
+        public GameRoomFurniture GetFloorFurniture(int row, int column, Type logic = null, Enum flag = null) {
             GameRoomFurniture result = null;
 
-            foreach(GameRoomFurniture furniture in Room.Furnitures) {
+            List<GameRoomFurniture> furnitures = new List<GameRoomFurniture>(Room.Furnitures);
+
+            if(logic != null)
+                furnitures.RemoveAll(x => (x.Logic == null) || (x.Logic.GetType() != logic));
+
+            if(flag != null)
+                furnitures.RemoveAll(x => !x.UserFurniture.Furniture.Flags.HasFlag(flag));
+
+            foreach(GameRoomFurniture furniture in furnitures) {
                 if(furniture.Position.Row > row)
                     continue;
                     
@@ -101,10 +115,10 @@ namespace Server.Game.Rooms.Map {
         }
 
         public bool IsValidFloor(int row, int column) {
-            if(Floor[row] == null)
+            if(row < 0 || row >= Floor.Length)
                 return false;
 
-            if(Floor[row].Length < column)
+            if(column < 0 || column >= Floor[row].Length)
                 return false;
 
             if(Floor[row][column] == 'X')

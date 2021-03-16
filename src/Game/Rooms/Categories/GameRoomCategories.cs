@@ -40,7 +40,7 @@ namespace Server.Game.Rooms.Categories {
                     while(reader.Read())
                         Categories.Add(new GameRoomCategory(reader));
 
-                    Program.WriteLine("Read " + Categories.Count + " room categories to the memory...");
+                    Console.WriteLine("Read " + Categories.Count + " room categories to the memory...");
                 }
             }
         }

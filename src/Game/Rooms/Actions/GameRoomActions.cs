@@ -17,53 +17,39 @@ using Server.Socket.Messages;
 namespace Server.Game.Rooms.Actions {
     class GameRoomActions {
         public GameRoom Room;
+
+        public Timer Timer = new Timer(500);
+
+        public Dictionary<int, Dictionary<string, IGameRoomEntityAction>> EntityActions = new Dictionary<int, Dictionary<string, IGameRoomEntityAction>>();
         
         public GameRoomActions(GameRoom room) {
             Room = room;
-        }
 
-        public Dictionary<int, Timer> Timers = new Dictionary<int, Timer>();
-
-        public Dictionary<int, Dictionary<int, Dictionary<string, IGameRoomEntityAction>>> EntityActions = new Dictionary<int, Dictionary<int, Dictionary<string, IGameRoomEntityAction>>>();
-
-        public void AddEntity(int id, int interval, IGameRoomEntityAction action) {
-            if(!EntityActions.ContainsKey(interval))
-                EntityActions.Add(interval, new Dictionary<int, Dictionary<string, IGameRoomEntityAction>>());
-
-            if(!EntityActions[interval].ContainsKey(id))
-                EntityActions[interval].Add(id, new Dictionary<string, IGameRoomEntityAction>());
-
-            if(EntityActions[interval][id].ContainsKey(action.Property))
-                EntityActions[interval][id].Remove(action.Property);
-
-            EntityActions[interval][id].Add(action.Property, action);
-
-            Start(interval);
-        }
-
-        public void Start(int interval) {
-            if(Timers.ContainsKey(interval)) {
-                if(Timers[interval].Enabled == true)
-                    return;
-
-                Timers[interval].Start();
-
-                return;
-            }
-
-            Timers[interval] = new Timer(interval) { Enabled = true };
-
-            Timers[interval].Elapsed += (source, args) => {
-                Elapse(interval);
+            Timer.Elapsed += (a, b) => {
+                Elapse();
             };
 
-            Elapse(interval);
+            Timer.Start();
         }
 
-        public void Elapse(int interval) {
+        public void AddEntity(int id, IGameRoomEntityAction action) {
+            if(!EntityActions.ContainsKey(id))
+                EntityActions.Add(id, new Dictionary<string, IGameRoomEntityAction>());
+
+            if(EntityActions[id].ContainsKey(action.Property))
+                EntityActions[id].Remove(action.Property);
+
+            EntityActions[id].Add(action.Property, action);
+        }
+
+        public void Elapse() {
             Dictionary<string, Dictionary<int, Dictionary<string, object>>> entities = new Dictionary<string, Dictionary<int, Dictionary<string, object>>>();
 
-            foreach(KeyValuePair<int, Dictionary<string, IGameRoomEntityAction>> entityAction in EntityActions[interval]) {
+            Dictionary<int, Dictionary<string, IGameRoomEntityAction>> actions = new Dictionary<int, Dictionary<string, IGameRoomEntityAction>>(EntityActions);
+
+            for(int entityActionIndex = 0; entityActionIndex < actions.Count; entityActionIndex++) {
+                KeyValuePair<int, Dictionary<string, IGameRoomEntityAction>> entityAction = actions.ElementAt(entityActionIndex);
+
                 for(int index = 0; index < entityAction.Value.Count; index++) {
                     KeyValuePair<string, IGameRoomEntityAction> property = entityAction.Value.ElementAt(index);
 
@@ -89,19 +75,11 @@ namespace Server.Game.Rooms.Actions {
                 }
 
                 if(entityAction.Value.Count == 0)
-                    EntityActions[interval].Remove(entityAction.Key);
+                    EntityActions.Remove(entityAction.Key);
             }
 
             if(entities.Count != 0)
                 Room.Send(new SocketMessage("OnRoomEntityUpdate", entities).Compose());
-
-            if(EntityActions[interval].Count == 0) {
-                EntityActions.Remove(interval);
-                
-                Timers[interval].Stop();
-
-                Timers.Remove(interval);
-            }
         }
     }
 }

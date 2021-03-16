@@ -26,6 +26,11 @@ namespace Server.Game.Rooms.Furnitures.Events {
         public int Execute(SocketClient client, JToken data) {
             if(client.User.Room == null)
                 return 0;
+
+            GameRoomUser roomUser = client.User.Room.GetUser(client.User.Id);
+
+            if(!roomUser.HasRights())
+                return 0;
             
             int id = data["id"].ToObject<int>();
             
@@ -58,7 +63,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             client.Send(new SocketMessage("OnRoomFurnitureMove", roomFurniture.Id).Compose());
 
-            client.User.Room.Actions.AddEntity(roomFurniture.Id, 500, new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
+            client.User.Room.Actions.AddEntity(roomFurniture.Id, new GameRoomFurniturePosition(roomFurniture, new GameRoomPoint(row, column, depth, direction)));
 
             return 1;
         }

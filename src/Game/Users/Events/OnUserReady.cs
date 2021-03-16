@@ -38,9 +38,13 @@ namespace Server.Game.Users.Events {
             }
 
             client.Send(new SocketMessage("OnUserUpdate", new {
+                id = client.User.Id,
+                
                 home = client.User.Home,
 
-                furnitures = furnitures
+                furnitures = furnitures,
+
+                figure = client.User.Figure
             }).Compose());
 
             if(client.User.Room == null && client.User.Home != null)

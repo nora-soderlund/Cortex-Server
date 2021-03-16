@@ -33,7 +33,7 @@ namespace Server.Game.Shop.Events {
 
             List<GameShopFurniture> furnitures = new List<GameShopFurniture>();
 
-            foreach(GameShopFurniture furniture in Shop.GameShop.Furnitures.FindAll(x => (x.Furniture.Title != null && x.Furniture.Title.ToLower().Contains(input)) || (x.Furniture.Description != null && x.Furniture.Description.ToLower().Contains(input)))) {
+            foreach(GameShopFurniture furniture in Shop.GameShop.Furnitures.FindAll(x => x.Furniture.Id.ToLower().Contains(input) || (x.Furniture.Title != null && x.Furniture.Title.ToLower().Contains(input)) || (x.Furniture.Description != null && x.Furniture.Description.ToLower().Contains(input)))) {
                 if(furnitures.Count > 32)
                     break;
 

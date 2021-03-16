@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Timers;
 using System.Collections.Generic;
 
 using MySql.Data.MySqlClient;
@@ -12,6 +13,7 @@ using Server.Game.Rooms.Map;
 using Server.Game.Rooms.Users;
 using Server.Game.Rooms.Actions;
 using Server.Game.Rooms.Furnitures;
+using Server.Game.Rooms.Furnitures.Logics;
 using Server.Game.Rooms.Navigator;
 
 using Server.Socket.Messages;
@@ -21,7 +23,7 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public int Id;
         
-        [JsonIgnore]
+        [JsonProperty("user")]
         public int User;
         
         [JsonIgnore]
@@ -44,6 +46,9 @@ namespace Server.Game.Rooms {
 
         [JsonIgnore]
         public GameRoomActions Actions;
+
+        [JsonProperty("rights")]
+        public List<int> Rights = new List<int>();
 
         [JsonIgnore]
         public GameRoomNavigator Navigator;
@@ -83,10 +88,24 @@ namespace Server.Game.Rooms {
 
                 using(MySqlDataReader reader = command.ExecuteReader()) {
                     while(reader.Read()) {
-                        Furnitures.Add(new GameRoomFurniture(reader));
+                        Furnitures.Add(new GameRoomFurniture(this, reader));
                     }
                 }
             }
+
+            using(MySqlCommand command = new MySqlCommand("SELECT * FROM room_rights WHERE room = @room", connection)) {
+                command.Parameters.AddWithValue("@room", Id);
+
+                using(MySqlDataReader reader = command.ExecuteReader())
+                    while(reader.Read())
+                        Rights.Add(reader.GetInt32("user"));
+
+                Rights.Add(User);
+            }
+
+            Timer.Elapsed += OnTimerElapsed;
+
+            Timer.Start();
         }
 
         public void AddUser(GameUser user) {
@@ -121,6 +140,62 @@ namespace Server.Game.Rooms {
             message.Add("OnRoomEntityAdd", properties);
 
             user.Client.Send(message.Compose());
+
+            foreach(GameRoomFurniture furniture in Furnitures.Where(x => x.Logic != null))
+                furniture.Logic.OnUserStreamIn(roomUser);
+        }
+
+        public void RemoveUser(GameUser user) {
+            GameRoomUser roomUser = Users.FirstOrDefault(x => x.User == user);
+
+            if(roomUser == null)
+                return;
+
+            foreach(GameRoomFurniture furniture in Furnitures.Where(x => x.Logic != null))
+                furniture.Logic.OnUserStreamOut(roomUser);
+
+            user.Room.Send(new SocketMessage("OnRoomEntityRemove", new { users = roomUser.Id }).Compose());
+
+            foreach(GameRoomFurniture stacked in user.Room.Furnitures.FindAll(x => x.Position.Row == roomUser.Position.Row && x.Position.Column == roomUser.Position.Column)) {
+                if(stacked.Logic == null)
+                    continue;
+
+                stacked.Logic.OnUserLeave(roomUser);
+            }
+
+            user.Room.Users.Remove(roomUser);
+
+            user.Room = null;
+        }
+
+        public GameRoomUser GetUser(int id) {
+            return Users.Find(x => x.Id == id);
+        }
+
+        public Timer Timer = new Timer(500);
+
+        public void OnTimerElapsed(Object source, System.Timers.ElapsedEventArgs e) {
+            List<IGameRoomFurnitureIntervalLogic> logics = new List<IGameRoomFurnitureIntervalLogic>();
+
+            foreach(GameRoomFurniture furniture in Furnitures) {
+                if(furniture.Logic == null || !(furniture.Logic is IGameRoomFurnitureIntervalLogic))
+                    continue;
+
+                IGameRoomFurnitureIntervalLogic logic = furniture.Logic as IGameRoomFurnitureIntervalLogic;
+
+                logic.IntervalCount += (int)Timer.Interval;
+
+                if(logic.IntervalCount >= logic.Interval) {
+                    logic.OnTimerPrepare();
+
+                    logic.IntervalCount = 0;
+
+                    logics.Add(logic);
+                }
+            }
+
+            foreach(IGameRoomFurnitureIntervalLogic logic in logics)
+                logic.OnTimerElapsed();
         }
 
         public void Send(string message) {

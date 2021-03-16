@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 using Server.Game.Users;
+using Server.Game.Rooms.Users.Actions;
 using Server.Game.Rooms.Actions;
+
+using Server.Socket.Messages;
 
 namespace Server.Game.Rooms.Users {
     class GameRoomUser {
@@ -13,6 +16,12 @@ namespace Server.Game.Rooms.Users {
 
         [JsonIgnore]
         public GameUser User;
+
+        [JsonProperty("name")]
+        public string Name;
+
+        [JsonProperty("effect")]
+        public int Effect;
 
         [JsonProperty("position")]
         public GameRoomPoint Position;
@@ -23,25 +32,38 @@ namespace Server.Game.Rooms.Users {
         [JsonProperty("actions")]
         public List<string> Actions = new List<string>();
 
-        public int AddAction(string action) {
-            if(Actions.Contains(action))
-                return 0;
-
-            //User.Room.Events.AddUser(this, new GameRoomUserAction(this, action, GameRoomUserActionType.Add));
-
-            return 1;
-        }
-
         public GameRoomUser(GameUser user) {
             Id = user.Id;
             
             User = user;
+
+            Name = user.Name;
 
             Position = new GameRoomPoint();
 
             Figure = user.Figure;
 
             //User.Room.Events.AddUser(this, new GameRoomUserAction(this, "GestureAngry", GameRoomUserActionType.Add));
+        }
+
+        public bool HasRights() {
+            if(Id == User.Room.User)
+                return true;
+
+            if(User.Room.Rights.Contains(Id))
+                return true;
+
+            return false;
+        }
+
+        public void SetEffect(int effect) {
+            Effect = effect;
+
+            User.Room.Send(new SocketMessage("OnRoomUserEffect", new {
+                id = Id,
+
+                effect = effect
+            }).Compose());
         }
     }
 }

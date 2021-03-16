@@ -29,5 +29,69 @@ namespace Server.Game.Rooms {
             Depth = point.Depth;
             Direction = point.Direction;
         }
+
+        public int GetDistance(GameRoomPoint point) {
+            return (int)Math.Sqrt(Math.Pow(((double)point.Row - (double)Row), 2) + Math.Pow(((double)point.Column - (double)Column), 2));
+        }
+
+        public void FromDirection(int direction) {
+            switch(direction) {
+                case 0: {
+                    Row--;
+
+                    break;
+                }
+                
+                case 1: {
+                    Row--;
+                    Column++;
+
+                    break;
+                }
+
+                case 2: {
+                    Column++;
+
+                    break;
+                }
+                
+                case 3: {
+                    Row++;
+                    Column++;
+
+                    break;
+                }
+                
+                case 4: {
+                    Row++;
+
+                    break;
+                }
+                
+                case 5: {
+                    Row++;
+                    Column--;
+
+                    break;
+                }
+                
+                case 6: {
+                    Column--;
+
+                    break;
+                }
+                
+                case 7: {
+                    Row--;
+                    Column--;
+
+                    break;
+                }
+            }
+        }
+    }
+
+    enum GameRoomPointDirections {
+        North, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest
     }
 }

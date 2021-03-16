@@ -6,6 +6,9 @@ using Discord;
 using Discord.WebSocket;
 
 using Server.Events;
+using Server.Game.Users;
+using Server.Game.Shop;
+using Server.Game.Furnitures;
 
 using Server.Discord.Sandbox;
 
@@ -21,6 +24,7 @@ namespace Server.Discord {
             Client.Ready += ReadyAsync;
 
             Sandbox = new DiscordSandbox(Client);
+            new DiscordRCON(Client);
         }
 
         public void Start() {
@@ -34,6 +38,34 @@ namespace Server.Discord {
                 Title = ":x: " + exception.Message,
 
                 Description = exception.StackTrace,
+
+                Color = Color.DarkRed
+            }.Build());
+
+            return Task.CompletedTask;
+        }
+
+        public Task Furniture(GameUser user, GameFurniture furniture, double depth) {
+            SocketTextChannel channel = Client.GetGuild(713415610264191006).GetTextChannel(816508223611076628);
+
+            channel.SendMessageAsync("", false, new EmbedBuilder() {
+                Title = user.Name + " is making a furniture depth change!",
+
+                Description = user.Name + " is changing HabboFurnitures/" + furniture.Line + "/" + furniture.Id + "'s depth from " + furniture.Dimension.Depth + " to " + depth,
+
+                Color = Color.DarkRed
+            }.Build());
+
+            return Task.CompletedTask;
+        }
+
+        public Task Shop(GameUser user, GameShopPage shop, int icon) {
+            SocketTextChannel channel = Client.GetGuild(713415610264191006).GetTextChannel(816508223611076628);
+
+            channel.SendMessageAsync("", false, new EmbedBuilder() {
+                Title = "HabboShop/" + shop.Title + " change!",
+
+                Description = user.Name + " is changing HabboShop/" + shop.Title + "'s icon from " + shop.Icon + " to " + icon,
 
                 Color = Color.DarkRed
             }.Build());

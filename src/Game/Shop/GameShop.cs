@@ -36,6 +36,8 @@ namespace Server.Game.Shop {
             }
 
             Pages.OrderBy(x => x.Parent).ThenBy(x => x.Order).ToList();
+
+            Console.WriteLine("Loaded " + Pages.Count + " shop pages to memory...");
         }
     }
 }

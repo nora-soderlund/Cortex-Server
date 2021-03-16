@@ -25,6 +25,11 @@ namespace Server.Game.Rooms.Furnitures.Events {
         public int Execute(SocketClient client, JToken data) {
             if(client.User.Room == null)
                 return 0;
+
+            GameRoomUser roomUser = client.User.Room.GetUser(client.User.Id);
+
+            if(!roomUser.HasRights())
+                return 0;
             
             string id = data["id"].ToString();
 
@@ -75,7 +80,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
                 furniture = command.LastInsertedId;
             }
 
-            GameRoomFurniture roomFurniture = new GameRoomFurniture((int)furniture, userFurniture.Id, new GameRoomPoint(row, column, depth, direction));
+            GameRoomFurniture roomFurniture = new GameRoomFurniture(client.User.Room, (int)furniture, userFurniture.Id, new GameRoomPoint(row, column, depth, direction));
 
             client.User.Room.Send(new SocketMessage("OnRoomEntityAdd", new { furnitures = roomFurniture }).Compose());
 
@@ -90,6 +95,16 @@ namespace Server.Game.Rooms.Furnitures.Events {
                 command.Parameters.AddWithValue("@room", client.User.Room.Id);
 
                 command.ExecuteNonQuery();
+            }
+
+            foreach(GameRoomFurniture stacked in roomFurniture.Room.Furnitures.FindAll(x => x.Position.Row == roomFurniture.Position.Row && x.Position.Column == roomFurniture.Position.Column)) {
+                if(stacked.Id == roomFurniture.Id)
+                    continue;
+
+                if(stacked.Logic == null)
+                    continue;
+
+                stacked.Logic.OnFurnitureEnter(roomFurniture);
             }
 
             return 1;

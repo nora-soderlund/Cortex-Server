@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
@@ -41,17 +43,15 @@ namespace Server.Socket {
                     ThreadPool.QueueUserWorkItem(state => onMessage(socket, message));
                 };
             });
-
-            Program.Write(Environment.NewLine);
             
-            Program.WriteLine("Listening to connections to port 81..." + Environment.NewLine);
+            Console.WriteLine(Environment.NewLine + "Listening to connections to port 81..." + Environment.NewLine);
         }
     
         private void onOpen(IWebSocketConnection socket) {
             try {
                 string key = socket.ConnectionInfo.Path.Substring(1);
 
-                Program.WriteLine("Receiving connection from client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + " with key " + key + "...");
+                Console.WriteLine("Receiving connection from client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + " with key " + key + "...");
 
                 using MySqlConnection connection = new MySqlConnection(Program.Connection);
 
@@ -119,18 +119,13 @@ namespace Server.Socket {
 
                 clients.Add(client);
                 
-                client.Send(new SocketMessage("OnSocketAuthenticate", user).Compose());
+                client.Send(new SocketMessage("OnSocketAuthenticate", true).Compose());
 
                 if(Program.Discord != null)
                     Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
-                if(Program.Discord != null)
-                    Program.Discord.Exception(exception);
-
-                Console.WriteLine(exception.Message);
-
-                Console.WriteLine(exception.StackTrace);
+                Console.Exception(exception);
             }
         }
 
@@ -139,22 +134,20 @@ namespace Server.Socket {
                 SocketClient client = clients.Find(x => x.Connection == socket);
 
                 if(client == null) {
-                    Program.WriteLine("Received message from unrecognized client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + "...");
-                    Program.WriteLine(message);
+                    Console.WriteLog("Received message from unrecognized client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + ": " + message);
 
                     return;
                 }
 
                 client.Received++;
 
-                Program.WriteLine("Received message from " + client.GetAddressPort() + ":");
-                Program.WriteLine(message);
+                Console.WriteLog("Received message from " + client.GetAddressPort() + ": " + message);
 
                 JObject items = JObject.Parse(message);
 
                 foreach(KeyValuePair<string, JToken> item in items) {
                     if(!events.ContainsKey(item.Key)) {
-                        Program.WriteLine("Event " + item.Key + " has no handlers on the server!!");
+                        Console.WriteLine("Event " + item.Key + " has no handlers on the server!!");
 
                         socket.Send(new SocketMessage(item.Key).Compose());
 
@@ -163,7 +156,7 @@ namespace Server.Socket {
 
                     foreach(ISocketEvent socketEvent in events[item.Key]) {
                         if(socketEvent.Execute(client, item.Value) == 0) {
-                            Program.WriteLine("Event " + item.Key + " didn't execute properly!!");
+                            Console.WriteLine("Event " + item.Key + " didn't execute properly!!");
 
                             socket.Send(new SocketMessage(item.Key).Compose());
                         }
@@ -171,12 +164,7 @@ namespace Server.Socket {
                 }
             }
             catch(Exception exception) {
-                if(Program.Discord != null)
-                    Program.Discord.Exception(exception);
-
-                Console.WriteLine(exception.Message);
-
-                Console.WriteLine(exception.StackTrace);
+                Console.Exception(exception);
             }
         }
 
@@ -185,7 +173,7 @@ namespace Server.Socket {
                 SocketClient client = clients.Find(x => x.Connection == socket);
 
                 if(client == null) {
-                    Program.WriteLine("Lost connection with unrecognized client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + "!");
+                    Console.WriteLine("Lost connection with unrecognized client at " + socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort + "!");
 
                     return;
                 }
@@ -193,7 +181,10 @@ namespace Server.Socket {
                 foreach(ISocketEvent socketEvent in events["OnSocketClose"])
                     socketEvent.Execute(client, null);
 
-                Program.WriteLine("Lost connection with client at " + client.GetAddressPort() + "!");
+                foreach(ISocketEvent socketEvent in events["OnUserDisconnect"])
+                    socketEvent.Execute(client, null);
+
+                Console.WriteLine("Lost connection with client at " + client.GetAddressPort() + "!");
 
                 clients.Remove(client);
 
@@ -201,12 +192,7 @@ namespace Server.Socket {
                     Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
-                if(Program.Discord != null)
-                    Program.Discord.Exception(exception);
-
-                Console.WriteLine(exception.Message);
-
-                Console.WriteLine(exception.StackTrace);
+                Console.Exception(exception);
             }
         }
     }

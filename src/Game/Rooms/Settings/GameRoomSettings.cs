@@ -28,6 +28,17 @@ namespace Server.Game.Rooms.Settings {
                     client.User.Room.Map = new Map.GameRoomMap(client.User.Room, data["map"]["floor"].ToString(), client.User.Room.Map.Door);   
 
                     client.User.Room.Send(new SocketMessage("OnRoomSettingsUpdate", new { map = client.User.Room.Map }).Compose());
+
+                    using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
+                        connection.Open();
+
+                        using(MySqlCommand command = new MySqlCommand("UPDATE rooms SET map = @map WHERE id = @id", connection)) {
+                            command.Parameters.AddWithValue("@id", client.User.Room.Id);
+                            command.Parameters.AddWithValue("@map", data["map"]["floor"].ToString());
+
+                            command.ExecuteNonQuery();
+                        }
+                    }
                 }
 
                 if(data["title"] != null) {

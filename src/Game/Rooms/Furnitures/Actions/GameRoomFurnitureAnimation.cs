@@ -24,26 +24,13 @@ namespace Server.Game.Rooms.Furnitures.Actions {
         public object Result  { get; set; }
 
         public int Execute() {
-            Result = RoomFurniture.Animation;
-
             return -1;
         }
 
         public GameRoomFurnitureAnimation(GameRoomFurniture furniture, int animation) {
             RoomFurniture = furniture;
 
-            RoomFurniture.Animation = animation;
-
-            using(MySqlConnection connection = new MySqlConnection(Program.Connection)) {
-                connection.Open();
-
-                using(MySqlCommand command = new MySqlCommand("UPDATE room_furnitures SET animation = @animation WHERE id = @id", connection)) {
-                    command.Parameters.AddWithValue("@id", RoomFurniture.Id);
-                    command.Parameters.AddWithValue("@animation", RoomFurniture.Animation);
-
-                    command.ExecuteNonQuery();
-                }
-            }
+            Result = animation;
         }
     }
 }

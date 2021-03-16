@@ -45,7 +45,7 @@ namespace Server.Game.Rooms.Models {
                     while(reader.Read())
                         Models.Add(new GameRoomModel(reader));
 
-                    Program.WriteLine("Read " + Models.Count + " room models to the memory...");
+                    Console.WriteLine("Read " + Models.Count + " room models to the memory...");
                 }
             }
         }
