@@ -131,7 +131,7 @@ namespace Server.Game.Users {
 
             connection.Open();
 
-            using MySqlCommand command = new MySqlCommand("SELECT * FROM user_badges WHERE user = @user", connection);
+            using MySqlCommand command = new MySqlCommand("SELECT * FROM user_badges WHERE user = @user ORDER BY timestamp DESC", connection);
             command.Parameters.AddWithValue("@user", Id);
 
             using MySqlDataReader reader = command.ExecuteReader();

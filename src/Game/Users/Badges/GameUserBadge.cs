@@ -21,7 +21,7 @@ namespace Server.Game.Users.Badges {
         [JsonProperty("badge")]
         public string Badge;
 
-        [JsonIgnore]
+        [JsonProperty("equipped")]
         public bool Equipped;
 
         [JsonProperty("timestamp")]
