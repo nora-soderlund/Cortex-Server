@@ -29,8 +29,8 @@ namespace Server.Game.Rooms.Chat {
 
         public static void Call(GameRoomUser user, string input) {
             try {
-                if(input[0] == ':') {
-                    string[] parameters = input.Split(' ');
+                if(input[0] == ':' || input[0] == '/') {
+                    string[] parameters = input.Substring(1).Split(' ');
 
                     IGameRoomChatCommand command = Commands.Find(x => x.Command == parameters[0]);
 
