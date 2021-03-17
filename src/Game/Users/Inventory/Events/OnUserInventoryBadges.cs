@@ -36,6 +36,9 @@ namespace Server.Game.Users.Inventory.Events {
             if(userBadge == null)
                 return 0;
 
+            if(userBadge.Equipped == false && client.User.Badges.Count(x =>x.Equipped) == 5)
+                return 0;
+
             userBadge.Equipped = !userBadge.Equipped;
             userBadge.EquippedTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
 
