@@ -208,6 +208,8 @@ namespace Server.Game.Rooms {
 
             foreach(IGameRoomFurnitureIntervalLogic logic in logics)
                 logic.OnTimerElapsed();
+
+            Actions.Elapse();
         }
 
         public void Send(string message) {

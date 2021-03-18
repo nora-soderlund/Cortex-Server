@@ -18,18 +18,10 @@ namespace Server.Game.Rooms.Actions {
     class GameRoomActions {
         public GameRoom Room;
 
-        public Timer Timer = new Timer(500);
-
         public Dictionary<int, Dictionary<string, IGameRoomEntityAction>> EntityActions = new Dictionary<int, Dictionary<string, IGameRoomEntityAction>>();
         
         public GameRoomActions(GameRoom room) {
             Room = room;
-
-            Timer.Elapsed += (a, b) => {
-                Elapse();
-            };
-
-            Timer.Start();
         }
 
         public void AddEntity(int id, IGameRoomEntityAction action) {
