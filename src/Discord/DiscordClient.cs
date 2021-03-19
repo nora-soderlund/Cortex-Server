@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Newtonsoft.Json.Linq;
+
 using Discord;
 using Discord.WebSocket;
 
@@ -11,6 +13,8 @@ using Server.Game.Shop;
 using Server.Game.Furnitures;
 
 using Server.Discord.Sandbox;
+
+using Server.Socket.Clients;
 
 namespace Server.Discord {
     class DiscordClient {
@@ -38,6 +42,24 @@ namespace Server.Discord {
                 Title = ":x: " + exception.Message,
 
                 Description = exception.StackTrace,
+
+                Color = Color.DarkRed
+            }.Build());
+
+            return Task.CompletedTask;
+        }
+
+        public Task Exception(SocketClient client, JToken data) {
+            SocketTextChannel channel = Client.GetGuild(713415610264191006).GetTextChannel(822501817426247680);
+
+            channel.SendMessageAsync("", false, new EmbedBuilder() {
+                Title = data["exception"].ToString(),
+
+                Description = data["stack"].ToString(),
+
+                Footer = new EmbedFooterBuilder() {
+                    Text = client.Connection.ConnectionInfo.Headers["Cache-Control"] + " " + client.Connection.ConnectionInfo.Headers["User-Agent"]
+                },
 
                 Color = Color.DarkRed
             }.Build());
