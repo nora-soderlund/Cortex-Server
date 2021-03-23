@@ -20,6 +20,7 @@ namespace Server.Game.Users.Achievements {
         public string Achievement;
 
         public int Score;
+        public int Level;
 
         public GameUserAchievement() {
             
@@ -31,6 +32,7 @@ namespace Server.Game.Users.Achievements {
             Achievement = reader.GetString("achievement");
 
             Score = reader.GetInt32("score");
+            Level = reader.GetInt32("level");
         }
     }
 }

@@ -12,6 +12,8 @@ using Server.Game.Users.Achievements;
 
 using Server.Events;
 
+using Server.Socket.Messages;
+
 namespace Server.Game.Achievements {
     class GameAchievements {
         public static string BattleBallTilesLocked = "BattleBallTilesLocked";
@@ -53,20 +55,35 @@ namespace Server.Game.Achievements {
             return userAchievement;
         }
 
-        public static void AddScore(GameUser user, string achievement, int score) {
-            GameUserAchievement userAchievement = user.Achievements.Find(x => x.Achievement == achievement);
+        public static void AddScore(GameUser user, string id, int score) {
+            GameUserAchievement userAchievement = user.Achievements.Find(x => x.Achievement == id);
 
             if(userAchievement == null)
-                userAchievement = CreateScore(user, achievement);
+                userAchievement = CreateScore(user, id);
 
             userAchievement.Score += score;
+
+            GameAchievement achievement = Achievements.Find(x => x.Id == id);
+
+            if(userAchievement.Level != achievement.LevelCount) {
+                GameAchievementLevel achievementLevel = achievement.Levels.Find(x => x.Level == userAchievement.Level + 1);
+
+                if(achievementLevel != null) {
+                    if(userAchievement.Score >= achievementLevel.Score) {
+                        user.Client.Send(new SocketMessage("OnAchievementUnlocked", new { achievement, level = achievementLevel }).Compose());
+
+                        userAchievement.Level = achievementLevel.Level;
+                    }
+                }
+            }
 
             using MySqlConnection connection = new MySqlConnection(Program.Connection);
             connection.Open();
 
-            using MySqlCommand command = new MySqlCommand("UPDATE user_achievements SET score = @score WHERE id = @id", connection);
+            using MySqlCommand command = new MySqlCommand("UPDATE user_achievements SET score = @score, level = @level WHERE id = @id", connection);
             command.Parameters.AddWithValue("@id", userAchievement.Id);
             command.Parameters.AddWithValue("@score", userAchievement.Score);
+            command.Parameters.AddWithValue("@level", userAchievement.Level);
             
             command.ExecuteNonQuery();
         }
