@@ -24,7 +24,7 @@ namespace Server {
 
         public static void WriteLine(object input) {
             try {
-                string prefix = "[" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "." + DateTime.Now.Second + "] ";
+                string prefix = "[" + DateTime.Now.Hour.ToString("00") + ":" + DateTime.Now.Minute.ToString("00") + "." + DateTime.Now.Second.ToString("00") + "] ";
 
                 string[] inputs = input.ToString().Split('\n');
 
@@ -53,7 +53,7 @@ namespace Server {
 
         public static void WriteLog(object input) {
             try {
-                string prefix = "[" + DateTime.Now.Hour + ":" + DateTime.Now.Minute + "." + DateTime.Now.Second + "] ";
+                string prefix = "[" + DateTime.Now.Hour.ToString("00") + ":" + DateTime.Now.Minute.ToString("00") + "." + DateTime.Now.Second.ToString("00") + "] ";
                 
                 string[] inputs = input.ToString().Split('\n');
 
