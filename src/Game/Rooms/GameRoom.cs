@@ -53,6 +53,18 @@ namespace Server.Game.Rooms {
         [JsonIgnore]
         public GameRoomNavigator Navigator;
 
+        [JsonProperty("floor_material")]
+        public string FloorMaterial;
+
+        [JsonProperty("floor_thickness")]
+        public int FloorThickness;
+
+        [JsonProperty("wall_material")]
+        public string WallMaterial;
+
+        [JsonProperty("wall_thickness")]
+        public int WallThickness;
+
         public GameRoom(MySqlDataReader room) {
             Id = room.GetInt32("id");
             
@@ -61,6 +73,12 @@ namespace Server.Game.Rooms {
             Access = room.GetInt32("access");
             
             Title = room.GetString("title");
+            
+            FloorMaterial = room.GetString("floor_material");
+            FloorThickness = room.GetInt32("floor_thickness");
+            
+            WallMaterial = room.GetString("wall_material");
+            WallThickness = room.GetInt32("wall_thickness");
 
             Navigator = GameRoomManager.Navigator.Find(x => x.Id == Id);
 
@@ -184,6 +202,7 @@ namespace Server.Game.Rooms {
             return Users.Find(x => x.Id == id);
         }
 
+        [JsonIgnore]
         public Timer Timer = new Timer(500);
 
         public void OnTimerElapsed(Object source, System.Timers.ElapsedEventArgs e) {
