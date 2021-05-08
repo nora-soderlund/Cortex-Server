@@ -90,7 +90,8 @@ namespace Server.Game.Rooms {
 
             Navigator.Room = this;
 
-            Description = room.GetString("description");
+            if(room["description"] != DBNull.Value)
+                Description = room.GetString("description");
 
             Map = new GameRoomMap(this, room.GetString("map"), new GameRoomPoint(room.GetInt32("door_row"), room.GetInt32("door_column"), 0, room.GetInt32("door_direction")));
 
