@@ -28,6 +28,29 @@ namespace Server.Discord.Sandbox {
         }
 
         public async Task OnMessageReceived(SocketMessage message) {
+            if(message.Author.Id == 614864031945326595)
+                return;
+
+            SocketGuildUser guildUser = Client.GetGuild(713415610264191006).GetUser(message.Author.Id);
+
+            if(message.Content.ToLower().Contains("tag")) {
+                SocketRole role = guildUser.Guild.GetRole(854756677970034699);
+
+                if(guildUser.Roles.Contains(role)) {
+                    if(message.MentionedUsers.Count == 1) {
+                        await guildUser.RemoveRoleAsync(role);
+                        
+                        foreach(var tag in message.MentionedUsers) {
+                            SocketGuildUser mentionedGuildUser = Client.GetGuild(713415610264191006).GetUser(tag.Id);
+
+                            await mentionedGuildUser.AddRoleAsync(role);
+
+                            await message.Channel.SendMessageAsync("Tag! " + mentionedGuildUser.Mention + " is it!");
+                        }
+                    }
+                }
+            }
+
             if(message.Channel.Id != 816275048595718153 && message.Author.Id != 614863575126638641)
                 return;
                 

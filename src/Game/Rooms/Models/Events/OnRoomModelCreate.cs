@@ -32,7 +32,7 @@ namespace Server.Game.Rooms.Models.Events {
                 using(MySqlCommand command = new MySqlCommand("INSERT INTO rooms (user, title, description, category, access, password, map, door_row, door_column, door_direction) VALUES (@user, @title, @description, @category, @access, @password, @map, @door_row, @door_column, @door_direction)", connection)) {
                     command.Parameters.AddWithValue("@user", client.User.Id);
                     command.Parameters.AddWithValue("@title", (title == null)?("No room title"):(title));
-                    command.Parameters.AddWithValue("@description", description);
+                    command.Parameters.AddWithValue("@description", (description == null)?("No room description..."):(description));
                     command.Parameters.AddWithValue("@category", (category == null)?(1):(category));
                     command.Parameters.AddWithValue("@access", (access == null)?(1):(access));
                     command.Parameters.AddWithValue("@password", password);
