@@ -109,7 +109,7 @@ namespace Server.Discord {
         {
             Console.WriteLine($"{Client.CurrentUser} is connected!");
 
-            Client.SetGameAsync("with myself...");
+            Client.SetGameAsync("Project Cortex");
 
             return Task.CompletedTask;
         }

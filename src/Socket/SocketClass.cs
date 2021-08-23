@@ -122,7 +122,7 @@ namespace Server.Socket {
                 client.Send(new SocketMessage("OnSocketAuthenticate", true).Compose());
 
                 if(Program.Discord != null)
-                    Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
+                    Program.Discord.Client.SetGameAsync("Project Cortex with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
                 Console.Exception(exception);
@@ -189,7 +189,7 @@ namespace Server.Socket {
                 clients.Remove(client);
 
                 if(Program.Discord != null)
-                    Program.Discord.Client.SetGameAsync("with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
+                    Program.Discord.Client.SetGameAsync("Project Cortex with " + clients.Count + " other" + ((clients.Count == 1)?(""):("s")) + "!");
             }
             catch(Exception exception) {
                 Console.Exception(exception);
