@@ -66,7 +66,12 @@ namespace Server.Discord.Sandbox {
             try {
                 string[] parameters = message.Content.Split(' ');
 
-                if(parameters[0] == "!users") {
+                if(parameters[0] == "!say") {
+                    await message.Channel.SendMessageAsync(message.Content.Substring(5));
+                    
+                    await message.DeleteAsync();
+                }
+                else if(parameters[0] == "!users") {
                     EmbedBuilder embed = new EmbedBuilder() {
                         Color = Color.DarkRed,
 

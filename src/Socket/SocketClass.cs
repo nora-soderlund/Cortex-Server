@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 using Fleck;
 
@@ -19,7 +20,7 @@ using Server.Game.Users;
 
 namespace Server.Socket {
     class SocketClass {
-        public readonly WebSocketServer server = new WebSocketServer("ws://" + Program.Config["socket"]["address"].ToString() + ":" + Program.Config["socket"]["port"].ToString());
+        public readonly WebSocketServer server = new WebSocketServer("wss://" + Program.Config["socket"]["address"].ToString() + ":" + Program.Config["socket"]["port"].ToString());
 
         public List<SocketClient> clients = new List<SocketClient>();
 
@@ -30,6 +31,10 @@ namespace Server.Socket {
         }
 
         public void Open() {
+            X509Certificate2 certificate = new X509Certificate2("C:\\cortex5.pfx", "123");
+
+            server.Certificate = certificate;
+
             server.Start(socket => {
                 socket.OnOpen += () => {
                     ThreadPool.QueueUserWorkItem(state => onOpen(socket));
