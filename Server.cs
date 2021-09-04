@@ -21,7 +21,7 @@ namespace Server {
 
         public static JObject Config = JObject.Parse(File.ReadAllText(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/Server.json"));
         
-        public static string Connection = "server=" + Config["database"]["host"].ToString() + ";uid=" + Config["database"]["user"].ToString() + ";database=" + Config["database"]["database"].ToString() + ";pwd=" + Config["database"]["password"].ToString() + "";
+        public static string Connection = "server=" + Config["database"]["host"].ToString() + ";uid=" + Config["database"]["user"].ToString() + ";database=" + Config["database"]["database"].ToString() + ";pwd=" + Config["database"]["password"].ToString() + ";SslMode=none";
         public static string ConnectionTest = "server=" + Config["database"]["host"].ToString() + ";uid=" + Config["database"]["user"].ToString() + ";database=" + Config["database"]["database"].ToString() + "_test";
 
         public static DiscordClient Discord;

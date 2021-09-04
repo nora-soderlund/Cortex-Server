@@ -20,7 +20,7 @@ using Server.Game.Users;
 
 namespace Server.Socket {
     class SocketClass {
-        public readonly WebSocketServer server = new WebSocketServer("wss://" + Program.Config["socket"]["address"].ToString() + ":" + Program.Config["socket"]["port"].ToString());
+        public WebSocketServer server;
 
         public List<SocketClient> clients = new List<SocketClient>();
 
@@ -31,9 +31,13 @@ namespace Server.Socket {
         }
 
         public void Open() {
-            X509Certificate2 certificate = new X509Certificate2("C:\\cortex5.pfx", "123");
+            server = new WebSocketServer("ws" + (((bool)Program.Config["socket"]["ssl"])?("s"):("")) + "://" + Program.Config["socket"]["address"].ToString() + ":" + Program.Config["socket"]["port"].ToString());
 
-            server.Certificate = certificate;
+            if((bool)Program.Config["socket"]["ssl"]) {
+                X509Certificate2 certificate = new X509Certificate2((string)Program.Config["socket"]["certificate"]["path"], (string)Program.Config["socket"]["certificate"]["password"]);
+
+                server.Certificate = certificate;
+            }
 
             server.Start(socket => {
                 socket.OnOpen += () => {
@@ -78,13 +82,13 @@ namespace Server.Socket {
 
                 string address = keyReader.GetString("address");
 
-                if(address != "Discord" && address != socket.ConnectionInfo.ClientIpAddress) {
+                /*if(address != "Discord" && address != socket.ConnectionInfo.ClientIpAddress) {
                     socket.Send(new SocketMessage("OnSocketClose", "USER_KEY_UNAUTHORIZED").Compose());
 
                     socket.Close();
 
                     return;
-                }
+                }*/
 
                 long id = keyReader.GetInt64("user");
 
