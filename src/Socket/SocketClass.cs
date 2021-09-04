@@ -37,6 +37,7 @@ namespace Server.Socket {
                 X509Certificate2 certificate = new X509Certificate2((string)Program.Config["socket"]["certificate"]["path"], (string)Program.Config["socket"]["certificate"]["password"]);
 
                 server.Certificate = certificate;
+                server.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12;
             }
 
             server.Start(socket => {
@@ -53,7 +54,7 @@ namespace Server.Socket {
                 };
             });
             
-            Console.WriteLine(Environment.NewLine + "Listening to connections to port 81..." + Environment.NewLine);
+            Console.WriteLine(Environment.NewLine + "Listening to connections to " + server.Location + "..." + Environment.NewLine);
         }
     
         private void onOpen(IWebSocketConnection socket) {
