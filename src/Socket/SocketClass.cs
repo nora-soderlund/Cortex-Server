@@ -51,7 +51,7 @@ namespace Server.Socket {
 
                 socket.OnMessage += (message) => {
                     ThreadPool.QueueUserWorkItem(state => onMessage(socket, message));
-                };
+                };  
             });
             
             Console.WriteLine(Environment.NewLine + "Listening to connections to " + server.Location + "..." + Environment.NewLine);
