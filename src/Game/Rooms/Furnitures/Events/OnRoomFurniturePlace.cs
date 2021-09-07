@@ -66,7 +66,7 @@ namespace Server.Game.Rooms.Furnitures.Events {
 
             long furniture = 0;
 
-            using(MySqlCommand command = new MySqlCommand("INSERT INTO room_furnitures (room, furniture, row, `column`, depth, direction) VALUES (@room, @furniture, @row, @column, @depth, @direction)", connection)) {
+            using(MySqlCommand command = new MySqlCommand("INSERT INTO room_furnitures (room, furniture, `row`, `column`, depth, direction) VALUES (@room, @furniture, @row, @column, @depth, @direction)", connection)) {
                 command.Parameters.AddWithValue("@room", client.User.Room.Id);
                 command.Parameters.AddWithValue("@furniture", userFurniture.Id);
                 command.Parameters.AddWithValue("@row", row);
