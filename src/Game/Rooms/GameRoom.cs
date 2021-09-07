@@ -7,18 +7,18 @@ using MySql.Data.MySqlClient;
 
 using Newtonsoft.Json;
 
-using Server.Game.Users;
+using Cortex.Server.Game.Users;
 
-using Server.Game.Rooms.Map;
-using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Actions;
-using Server.Game.Rooms.Furnitures;
-using Server.Game.Rooms.Furnitures.Logics;
-using Server.Game.Rooms.Navigator;
+using Cortex.Server.Game.Rooms.Map;
+using Cortex.Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Rooms.Furnitures;
+using Cortex.Server.Game.Rooms.Furnitures.Logics;
+using Cortex.Server.Game.Rooms.Navigator;
 
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Rooms {
+namespace Cortex.Server.Game.Rooms {
     class GameRoom {
         [JsonIgnore]
         public int Id;

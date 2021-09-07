@@ -7,12 +7,12 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Users.Badges;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Users.Badges;
 
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Badges {
+namespace Cortex.Server.Game.Badges {
     class GameBadgeManager {
         public static List<GameBadge> Badges = new List<GameBadge>();
 

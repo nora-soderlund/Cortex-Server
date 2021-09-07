@@ -10,9 +10,9 @@ using Discord.Commands;
 
 using MySql.Data.MySqlClient;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-namespace Server.Discord.Sandbox {
+namespace Cortex.Server.Discord.Sandbox {
     class DiscordSandbox {
         public readonly DiscordSocketClient Client;
 

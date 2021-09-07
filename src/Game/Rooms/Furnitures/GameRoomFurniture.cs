@@ -7,16 +7,16 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Game.Rooms.Furnitures.Actions;
-using Server.Game.Rooms.Furnitures.Logics;
+using Cortex.Server.Game.Rooms.Furnitures.Actions;
+using Cortex.Server.Game.Rooms.Furnitures.Logics;
 
-using Server.Game.Furnitures;
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Furnitures;
+using Cortex.Server.Game.Users.Furnitures;
 
-namespace Server.Game.Rooms.Furnitures {
+namespace Cortex.Server.Game.Rooms.Furnitures {
     class GameRoomFurniture {
         [JsonProperty("id")]
         public int Id;

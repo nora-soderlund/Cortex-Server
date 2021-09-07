@@ -6,18 +6,18 @@ using MySql.Data.MySqlClient;
 
 using Newtonsoft.Json;
 
-using Server.Game.Users;
+using Cortex.Server.Game.Users;
 
-using Server.Game.Furnitures;
+using Cortex.Server.Game.Furnitures;
 
-using Server.Game.Rooms.Map;
-using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Furnitures;
-using Server.Game.Rooms.Navigator;
+using Cortex.Server.Game.Rooms.Map;
+using Cortex.Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Furnitures;
+using Cortex.Server.Game.Rooms.Navigator;
 
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Shop.Furnitures {
+namespace Cortex.Server.Game.Shop.Furnitures {
     class GameShopFurniture {
         [JsonProperty("id")]
         public int Id;

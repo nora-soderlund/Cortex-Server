@@ -7,15 +7,15 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-using Server.Socket.Clients;
-using Server.Socket.Messages;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
 
-using Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Users;
 
-namespace Server.Game.Rooms.Chat.Commands.User {
+namespace Cortex.Server.Game.Rooms.Chat.Commands.User {
     class GameRoomChatCommandEffect : IGameRoomChatCommand {
         public string Command => "effect";
 

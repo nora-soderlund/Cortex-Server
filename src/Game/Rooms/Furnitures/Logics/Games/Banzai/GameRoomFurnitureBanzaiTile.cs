@@ -7,22 +7,22 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Furnitures;
+using Cortex.Server.Game.Furnitures;
 
-using Server.Game.Users;
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Users.Furnitures;
 
-using Server.Game.Rooms.Actions;
-using Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Rooms.Users;
 
-using Server.Game.Rooms.Furnitures.Actions;
+using Cortex.Server.Game.Rooms.Furnitures.Actions;
 
-using Server.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Events;
+using Cortex.Server.Socket.Messages;
 
-using Server.Game.Achievements;
+using Cortex.Server.Game.Achievements;
 
-namespace Server.Game.Rooms.Furnitures.Logics {
+namespace Cortex.Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureBanzaiTile : IGameRoomFurnitureLogic {
         public GameRoomFurniture Furniture { get; set; }
 

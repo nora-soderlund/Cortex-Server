@@ -2,7 +2,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace Server.Game.Rooms {
+namespace Cortex.Server.Game.Rooms {
     class GameRoomDirection {
         public static int FromPosition(GameRoomPoint from, GameRoomPoint to) {
             if((from.Row - 1 == to.Row) && (from.Column == to.Column))

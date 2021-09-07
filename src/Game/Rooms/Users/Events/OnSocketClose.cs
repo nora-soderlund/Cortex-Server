@@ -4,13 +4,13 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
 
-namespace Server.Game.Rooms.Users.Events {
+namespace Cortex.Server.Game.Rooms.Users.Events {
     class OnSocketClose : ISocketEvent {
         public string Event => "OnSocketClose";
 

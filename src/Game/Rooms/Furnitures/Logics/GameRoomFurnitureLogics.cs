@@ -6,15 +6,15 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Game.Furnitures;
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Furnitures;
+using Cortex.Server.Game.Users.Furnitures;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-namespace Server.Game.Rooms.Furnitures.Logics {
+namespace Cortex.Server.Game.Rooms.Furnitures.Logics {
     class GameRoomFurnitureLogics {
         public static IGameRoomFurnitureLogic CreateLogic(GameRoomFurniture furniture) {
             switch(furniture.UserFurniture.Furniture.Logic) {

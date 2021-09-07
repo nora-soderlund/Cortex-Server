@@ -6,20 +6,20 @@ using MySql.Data.MySqlClient;
 
 using Newtonsoft.Json.Linq;
 
-using Server.Game.Users;
+using Cortex.Server.Game.Users;
 
-using Server.Game.Rooms.Map;
-using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Actions;
-using Server.Game.Rooms.Furnitures;
-using Server.Game.Rooms.Navigator;
+using Cortex.Server.Game.Rooms.Map;
+using Cortex.Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Rooms.Furnitures;
+using Cortex.Server.Game.Rooms.Navigator;
 
-using Server.Socket;
-using Server.Socket.Messages;
-using Server.Socket.Events;
-using Server.Socket.Clients;
+using Cortex.Server.Socket;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
 
-namespace Server.Game {
+namespace Cortex.Server.Game {
     class Game {
         public static GameUser GetUser(long id) {
             List<SocketClient> clients = Program.Socket.clients.FindAll(x => x.User != null);

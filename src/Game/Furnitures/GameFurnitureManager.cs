@@ -6,16 +6,16 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Game.Furnitures.Videos;
+using Cortex.Server.Game.Furnitures.Videos;
 
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Users.Furnitures;
 
 using VideoLibrary;
 
-namespace Server.Game.Furnitures {
+namespace Cortex.Server.Game.Furnitures {
     class GameFurnitureManager {
         public static List<GameFurniture> Furnitures = new List<GameFurniture>();
         public static List<GameUserFurniture> UserFurnitures = new List<GameUserFurniture>();

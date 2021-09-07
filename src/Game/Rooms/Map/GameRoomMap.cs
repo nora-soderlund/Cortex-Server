@@ -6,11 +6,11 @@ using Newtonsoft.Json;
 
 using RoyT.AStar;
 
-using Server.Game.Furnitures;
-using Server.Game.Rooms.Furnitures;
-using Server.Game.Rooms.Furnitures.Logics;
+using Cortex.Server.Game.Furnitures;
+using Cortex.Server.Game.Rooms.Furnitures;
+using Cortex.Server.Game.Rooms.Furnitures.Logics;
 
-namespace Server.Game.Rooms.Map {
+namespace Cortex.Server.Game.Rooms.Map {
     class GameRoomMap {
         [JsonIgnore]
         public GameRoom Room;

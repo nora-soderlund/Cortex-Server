@@ -3,11 +3,11 @@ using System.Linq;
 
 using Newtonsoft.Json.Linq;
 
-using Server.Socket.Clients;
-using Server.Socket.Messages;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
 
-namespace Server.Socket.Network {
+namespace Cortex.Server.Socket.Network {
     class OnSocketPing : ISocketEvent {
         public string Event => "OnSocketPing";
 

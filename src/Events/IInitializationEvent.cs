@@ -5,9 +5,9 @@ using Fleck;
 
 using Newtonsoft.Json.Linq;
 
-using Server.Socket.Clients;
+using Cortex.Server.Socket.Clients;
 
-namespace Server.Events {
+namespace Cortex.Server.Events {
     interface IInitializationEvent {
         void OnInitialization();   
     }

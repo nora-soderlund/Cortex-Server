@@ -10,15 +10,15 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-using Server.Game.Users;
+using Cortex.Server.Game.Users;
 
 using VideoLibrary;
 
-namespace Server.Videos {
+namespace Cortex.Server.Videos {
     class YouTubeManager {
         public static string Get(string id) {
             string link = "https://www.youtube.com/watch?v=" + id;

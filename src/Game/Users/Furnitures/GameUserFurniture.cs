@@ -5,12 +5,12 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Game.Furnitures;
+using Cortex.Server.Game.Furnitures;
 
-namespace Server.Game.Users.Furnitures {
+namespace Cortex.Server.Game.Users.Furnitures {
     class GameUserFurniture {
         [JsonIgnore]
         public int Id;

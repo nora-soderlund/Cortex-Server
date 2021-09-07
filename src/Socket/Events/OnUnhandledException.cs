@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 
-using Server.Game.Badges;
+using Cortex.Server.Game.Badges;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Socket.Events {
+namespace Cortex.Server.Socket.Events {
     class OnUnhandledException : ISocketEvent {
         public string Event => "OnUnhandledException";
 

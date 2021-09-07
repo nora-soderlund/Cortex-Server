@@ -2,14 +2,14 @@ using System;
 
 using Newtonsoft.Json.Linq;
 
-using Server.Game.Users;
-using Server.Game.Rooms;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Shop.Events {
+namespace Cortex.Server.Game.Shop.Events {
     class OnShopUpdate : ISocketEvent {
         public string Event => "OnShopUpdate";
 

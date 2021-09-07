@@ -6,13 +6,13 @@ using Newtonsoft.Json;
 
 using RoyT.AStar;
 
-using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Furnitures;
-using Server.Game.Rooms.Map;
+using Cortex.Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Furnitures;
+using Cortex.Server.Game.Rooms.Map;
 
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Actions {
+namespace Cortex.Server.Game.Rooms.Actions {
     interface IGameRoomAction {
         object Result { get; set; }
 

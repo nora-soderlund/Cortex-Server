@@ -8,13 +8,13 @@ using MySql.Data.MySqlClient;
 
 using Newtonsoft.Json;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-using Server.Socket.Clients;
-using Server.Socket.Messages;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
 
-namespace Server.Game.Rooms.Navigator {
+namespace Cortex.Server.Game.Rooms.Navigator {
     class GameRoomNavigator {
         [JsonProperty("id")]
         public int Id;

@@ -5,9 +5,9 @@ using Fleck;
 
 using Newtonsoft.Json.Linq;
 
-using Server.Socket.Clients;
+using Cortex.Server.Socket.Clients;
 
-namespace Server.Socket.Events {
+namespace Cortex.Server.Socket.Events {
     interface ISocketEvent {
         string Event { get; }
         

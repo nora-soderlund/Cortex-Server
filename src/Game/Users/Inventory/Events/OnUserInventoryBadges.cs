@@ -5,18 +5,18 @@ using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 
-using Server.Game.Users;
-using Server.Game.Users.Furnitures;
-using Server.Game.Rooms;
-using Server.Game.Rooms.Users;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Rooms;
+using Cortex.Server.Game.Rooms.Users;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-using Server.Game.Users.Badges;
+using Cortex.Server.Game.Users.Badges;
 
-namespace Server.Game.Users.Inventory.Events {
+namespace Cortex.Server.Game.Users.Inventory.Events {
     class OnUserInventoryBadges : ISocketEvent {
         public string Event => "OnUserInventoryBadges";
 

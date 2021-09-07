@@ -7,16 +7,16 @@ using Newtonsoft.Json.Linq;
 using Discord;
 using Discord.WebSocket;
 
-using Server.Events;
-using Server.Game.Users;
-using Server.Game.Shop;
-using Server.Game.Furnitures;
+using Cortex.Server.Events;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Shop;
+using Cortex.Server.Game.Furnitures;
 
-using Server.Discord.Sandbox;
+using Cortex.Server.Discord.Sandbox;
 
-using Server.Socket.Clients;
+using Cortex.Server.Socket.Clients;
 
-namespace Server.Discord {
+namespace Cortex.Server.Discord {
     class DiscordClient {
         public readonly DiscordSocketClient Client;
 
@@ -36,7 +36,7 @@ namespace Server.Discord {
         }
 
         public Task Exception(Exception exception) {
-            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["channels"]["logs-server"].ToObject<ulong>());
+            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["bot"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["bot"]["channels"]["logs-server"].ToObject<ulong>());
 
             channel.SendMessageAsync("", false, new EmbedBuilder() {
                 Title = ":x: " + exception.Message,
@@ -50,7 +50,7 @@ namespace Server.Discord {
         }
 
         public Task Exception(SocketClient client, JToken data) {
-            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["channels"]["logs-client"].ToObject<ulong>());
+            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["bot"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["bot"]["channels"]["logs-client"].ToObject<ulong>());
 
             channel.SendMessageAsync("", false, new EmbedBuilder() {
                 Title = data["exception"].ToString(),
@@ -68,7 +68,7 @@ namespace Server.Discord {
         }
 
         public Task Furniture(GameUser user, GameFurniture furniture, double depth) {
-            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["channels"]["logs-server"].ToObject<ulong>());
+            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["bot"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["bot"]["channels"]["logs-server"].ToObject<ulong>());
 
             channel.SendMessageAsync("", false, new EmbedBuilder() {
                 Title = user.Name + " is making a furniture depth change!",
@@ -82,7 +82,7 @@ namespace Server.Discord {
         }
 
         public Task Shop(GameUser user, GameShopPage shop, int icon) {
-            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["channels"]["logs-server"].ToObject<ulong>());
+            SocketTextChannel channel = Client.GetGuild(Program.Config["discord"]["bot"]["guild"].ToObject<ulong>()).GetTextChannel(Program.Config["discord"]["bot"]["channels"]["logs-server"].ToObject<ulong>());
 
             channel.SendMessageAsync("", false, new EmbedBuilder() {
                 Title = "HabboShop/" + shop.Title + " change!",
@@ -98,7 +98,7 @@ namespace Server.Discord {
         public async Task MainAsync()
         {
             // Tokens should be considered secret data, and never hard-coded.
-            await Client.LoginAsync(TokenType.Bot, Program.Config["discord"]["token"].ToString());
+            await Client.LoginAsync(TokenType.Bot, Program.Config["discord"]["bot"]["token"].ToString());
             await Client.StartAsync();
 
             // Block the program until it is closed.

@@ -6,15 +6,15 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-using Server.Socket.Clients;
-using Server.Socket.Messages;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
 
-using Server.Game.Rooms.Navigator;
+using Cortex.Server.Game.Rooms.Navigator;
 
-namespace Server.Game.Rooms.Navigator.Events {
+namespace Cortex.Server.Game.Rooms.Navigator.Events {
     class OnRoomNavigatorEnter : ISocketEvent {
         public string Event => "OnRoomNavigatorEnter";
 

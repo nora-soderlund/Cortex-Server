@@ -12,13 +12,13 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-using Server.Game.Users;
+using Cortex.Server.Game.Users;
 
-namespace Server.Socket {
+namespace Cortex.Server.Socket {
     class SocketClass {
         public WebSocketServer server;
 

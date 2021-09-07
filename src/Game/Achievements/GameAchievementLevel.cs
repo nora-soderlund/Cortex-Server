@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-namespace Server.Game.Achievements {
+namespace Cortex.Server.Game.Achievements {
     class GameAchievementLevel {
         public int Id;
 

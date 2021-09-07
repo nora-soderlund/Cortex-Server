@@ -6,16 +6,16 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Socket.Clients;
+using Cortex.Server.Socket.Clients;
 
-using Server.Game.Rooms;
-using Server.Game.Furnitures;
-using Server.Game.Users.Friends;
-using Server.Game.Users.Furnitures;
-using Server.Game.Users.Badges;
-using Server.Game.Users.Achievements;
+using Cortex.Server.Game.Rooms;
+using Cortex.Server.Game.Furnitures;
+using Cortex.Server.Game.Users.Friends;
+using Cortex.Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Users.Badges;
+using Cortex.Server.Game.Users.Achievements;
 
-namespace Server.Game.Users {
+namespace Cortex.Server.Game.Users {
     class GameUser {
         [JsonIgnore]
         public int Id;

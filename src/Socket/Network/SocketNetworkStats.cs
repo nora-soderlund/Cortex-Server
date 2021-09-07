@@ -8,12 +8,12 @@ using Fleck;
 
 using Newtonsoft.Json;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-using Server.Socket.Messages;
-using Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
 
-namespace Server.Socket.Network {
+namespace Cortex.Server.Socket.Network {
     class SocketNetworkStats : IInitializationEvent {
         public static Timer Timer = new Timer(1000) {
             Enabled = true

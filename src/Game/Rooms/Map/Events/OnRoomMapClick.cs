@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json.Linq;
 
-using Server.Game.Users;
-using Server.Game.Rooms;
-using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Users.Actions;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms;
+using Cortex.Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Users.Actions;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Map.Events {
+namespace Cortex.Server.Game.Rooms.Map.Events {
     class OnRoomMapClick : ISocketEvent {
         public string Event => "OnRoomMapClick";
 

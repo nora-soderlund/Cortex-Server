@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Users;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Users;
 
-using Server.Socket.Messages;
-using Server.Events;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Events;
 
-using Server.Game.Rooms.Navigator;
+using Cortex.Server.Game.Rooms.Navigator;
 
-namespace Server.Game.Rooms {
+namespace Cortex.Server.Game.Rooms {
     class GameRoomManager : IInitializationEvent {
 
         public static List<GameRoom> Rooms = new List<GameRoom>();

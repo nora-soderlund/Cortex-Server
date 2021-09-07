@@ -5,21 +5,21 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Users.Furnitures;
 
-using Server.Game.Rooms;
-using Server.Game.Rooms.Users;
-using Server.Game.Rooms.Actions;
-using Server.Game.Rooms.Furnitures.Actions;
+using Cortex.Server.Game.Rooms;
+using Cortex.Server.Game.Rooms.Users;
+using Cortex.Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Rooms.Furnitures.Actions;
 
-using Server.Game.Furnitures;
+using Cortex.Server.Game.Furnitures;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Furnitures.Events {
+namespace Cortex.Server.Game.Rooms.Furnitures.Events {
     class OnRoomFurnitureUse : ISocketEvent {
         public string Event => "OnRoomFurnitureUse";
 

@@ -13,11 +13,11 @@ using Discord.Commands;
 
 using MySql.Data.MySqlClient;
 
-using Server.Events;
-using Server.Socket;
-using Server.Socket.Clients;
+using Cortex.Server.Events;
+using Cortex.Server.Socket;
+using Cortex.Server.Socket.Clients;
 
-namespace Server.Discord.Sandbox {
+namespace Cortex.Server.Discord.Sandbox {
     class DiscordRCON {
         public readonly DiscordSocketClient Client;
 

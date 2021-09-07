@@ -6,7 +6,7 @@ using Fleck;
 
 using Newtonsoft.Json;
 
-namespace Server.Socket.Messages {
+namespace Cortex.Server.Socket.Messages {
     class SocketMessage {
         private JsonSerializerSettings settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 

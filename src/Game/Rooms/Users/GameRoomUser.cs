@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Users.Actions;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Users.Actions;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Rooms.Users {
+namespace Cortex.Server.Game.Rooms.Users {
     class GameRoomUser {
         [JsonProperty("id")]
         public int Id;

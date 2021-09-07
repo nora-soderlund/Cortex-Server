@@ -2,7 +2,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace Server.Game.Rooms {
+namespace Cortex.Server.Game.Rooms {
     class GameRoomPoint {
         [JsonProperty("row")]
         public int Row;

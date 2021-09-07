@@ -5,12 +5,12 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Actions;
 
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Users.Furnitures;
 
-namespace Server.Game.Furnitures {
+namespace Cortex.Server.Game.Furnitures {
     [Flags]
     public enum GameFurnitureFlags {
         Stackable   = 1 << 0,

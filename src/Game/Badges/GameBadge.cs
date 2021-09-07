@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-namespace Server.Game.Badges {
+namespace Cortex.Server.Game.Badges {
     class GameBadge {
         [JsonProperty("id")]
         public string Id;

@@ -7,14 +7,14 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Users.Achievements;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Users.Achievements;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Messages;
 
-namespace Server.Game.Achievements {
+namespace Cortex.Server.Game.Achievements {
     class GameAchievements {
         public static string BattleBallTilesLocked = "BattleBallTilesLocked";
     }

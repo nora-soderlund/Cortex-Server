@@ -5,9 +5,9 @@ using Fleck;
 
 using Newtonsoft.Json;
 
-using Server.Game.Users;
+using Cortex.Server.Game.Users;
 
-namespace Server.Socket.Clients {
+namespace Cortex.Server.Socket.Clients {
     class SocketClient {
         public IWebSocketConnection Connection;
 

@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Threading;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-namespace Server {
+namespace Cortex.Server {
     class Console  {
         private static string file = "logs/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "-" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + ".log";
         

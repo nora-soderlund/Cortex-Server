@@ -7,13 +7,13 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Events;
+using Cortex.Server.Events;
 
-using Server.Socket.Clients;
-using Server.Socket.Messages;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
 
-namespace Server.Game.Rooms.Categories {
+namespace Cortex.Server.Game.Rooms.Categories {
     class GameRoomCategory {
         [JsonProperty("id")]
         public long Id;

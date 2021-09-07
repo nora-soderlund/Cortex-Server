@@ -4,15 +4,15 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms;
-using Server.Game.Rooms.Users;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms;
+using Cortex.Server.Game.Rooms.Users;
 
-using Server.Socket.Clients;
-using Server.Socket.Messages;
-using Server.Socket.Events;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Messages;
+using Cortex.Server.Socket.Events;
 
-namespace Server.Game.Rooms.Events {
+namespace Cortex.Server.Game.Rooms.Events {
     class OnRoomRightsUpdate : ISocketEvent {
         public string Event => "OnRoomRightsUpdate";
 

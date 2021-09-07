@@ -6,17 +6,17 @@ using Newtonsoft.Json.Linq;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms;
 
-using Server.Socket.Clients;
-using Server.Socket.Events;
-using Server.Socket.Messages;
+using Cortex.Server.Socket.Clients;
+using Cortex.Server.Socket.Events;
+using Cortex.Server.Socket.Messages;
 
-using Server.Game.Furnitures;
-using Server.Game.Shop.Furnitures;
+using Cortex.Server.Game.Furnitures;
+using Cortex.Server.Game.Shop.Furnitures;
 
-namespace Server.Game.Shop.Events {
+namespace Cortex.Server.Game.Shop.Events {
     class OnShopFurniturePurchase : ISocketEvent {
         public string Event => "OnShopFurniturePurchase";
 

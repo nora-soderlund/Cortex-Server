@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 
 using MySql.Data.MySqlClient;
 
-using Server.Game.Users;
-using Server.Game.Rooms.Actions;
-using Server.Game.Rooms;
+using Cortex.Server.Game.Users;
+using Cortex.Server.Game.Rooms.Actions;
+using Cortex.Server.Game.Rooms;
 
-using Server.Game.Users.Furnitures;
+using Cortex.Server.Game.Users.Furnitures;
 
-namespace Server.Game.Furnitures.Videos {
+namespace Cortex.Server.Game.Furnitures.Videos {
     class GameFurnitureVideo {
         [JsonProperty("id")]
         public string Id;
